@@ -1,0 +1,168 @@
+\chapter{DTI e DTA}
+\section{Target Prediction}
+L'identificazione di un bersaglio biologico rappresenta una delle sfide iniziali della pipeline di sviluppo di un farmaco. L'oggetto di questa ricerca è una molecola \textit{target} che dimostra una particolare importanza nel contesto di una patologia, e di cui l'attività può essere "attaccata" o "drogata" da un farmaco, per ottenere un effetto terapeutico.
+
+Storicamente, l'identificazione dei target si è basata su un processo sperimentale di \textit{trial and error} e intuizione scientifica (basata quindi sulle conoscenze dei ricercatori).
+Tra gli approcci tradizionali più comunemente utilizzati si distinguono:
+\begin{itemize}
+    \item L'\textbf{Affinity Pull-down} usato per isolare le proteine bersaglio tramite affinità specifica ad altre molecole "di prova" \cite{zhang2025}.
+    \item Lo \textbf{screening knockdown} dell'intero genoma, volto a identificare il ruolo dei target tramite disattivazione genica \cite{zhang2025}.
+    \item L'\textbf{High-Throughput Screening (HTS)}, screening ad alta velocità per l'analisi massiva di interazioni molecolari automatizzate \cite{mondalAIdrivenDrugTarget2026a}.
+    \item \textbf{Metodi sperimentali} ad alta precisione, come la \textbf{cristallografia a raggi X} o la \textbf{spettroscopia NMR}, che vengono tutt'ora impiegate per descrivere le interazioni ligando-proteine su scale più ridotte \cite{kumarPredictingDrugtargetInteractions2026a}.
+\end{itemize}
+
+Tuttavia, questi approcci presentavano ostacoli significativi, che rendevano lo sviluppo di nuovi farmaci particolarmente dispendioso e inefficiente, con un \textit{attrition rate} medio del 90\% \cite{freedmanHuntingNewDrugs}. 
+Le cause principali di queste criticità sono spesso ricondicibili a \textbf{bias soggettivi} dei ricercatori, che possono restringere eccessivamente lo spettro della \textit{discovery} ed escludendo dal processo composti adeguati ma sconosciuti.
+Inoltre, la limitata scalabilità di questo tipo di approcci sperimentali impedisce la copertura dell'enorme spazio biochimico di candidati possibili (composto da tutte le combinazioni farmaco-target).
+
+Rimane, oltre ai problemi riguardanti l'efficacia dei legami con il bersaglio, la questione della \textbf{druggability}. Oltre il 90\% delle proteine umane è ancora poco conosciuto dal punto di vista strutturale \cite{freedmanHuntingNewDrugs} oppure è privo di opportuni \textit{binding points} (o punti di legame) per l'agganciamento stabile di piccole molecole. Questi target vengono definiti \textbf{"Undruggable"}. 
+
+Oggi l'\textbf{Intelligenza Artificiale} sta rivoluzionando questo campo, permettendo l'analisi sistematica di volumi enormi di dati biologici provenienti da fonti diverse, basandosi sul riconoscimento di schemi e pattern ricorrenti tra diverse patologie. 
+
+\section{Drug Target Interaction (DTI)}
+La fase di \textit{target prediction} può essere facilmente ricondotta al problema computazionale della \textbf{Drug-Target Interaction (DTI)}. Questo consiste nel prevedere attraverso modelli matematici e algoritmi, se, e con quale intensità, una determinata molecola interagirà con un target specifico.
+
+Il nucleo di questo problema computazionale risiede nella capacità di modellare correttamente la \textbf{funzione di interazione} (o funzione di \textbf{scoring}), il cui ruolo principale è lo stimare l'energia libera di legame (ovvero l'affinità di legame) prevista tra farmaco e proteina-bersaglio \cite{mondalAIdrivenDrugTarget2026a}.
+$$f(d,t) \xrightarrow{} y$$
+In questo contesto, l'algoritmo ha il compito di filtrare lo spazio chimico. Data una proteina $t$ (\textit{target}), il modello esplora un dataset massivo di sequenze molecolari $\{d_1,d_2,...,d_n\}$ per identificare quelle che massimizzano la \textbf{funzione di scoring}.
+Questi valori calcolati permettono di creare un \textit{ranking} dei potenziali composti candidati e delle interazioni più potenzialmente efficaci.
+
+Questo processo è il passaggio cruciale della ricerca farmacologica moderna da problema sperimentale biochimico a problema di \textbf{ottimizzazione} e ricerca in uno \textbf{spazio latente} a dimensionalità alta.
+
+La funzione può determinare, in base alla sua tipologia di output, due approcci principali:
+\begin{itemize}
+    \item \textbf{Classificazione Binaria} \{0,1\}, se il modello fornisce un output booleano, che indica la assenza/presenza di interazione con il target \cite{mondalAIdrivenDrugTarget2026a}.
+    \item \textbf{Regressione}, se il modello ritorna un valore continuo che quantifica la forza di legame, ovvero la \textbf{Drug-Target Affinity (DTA)}. 
+    Questa stima si pone come obiettivo la previsione di parametri biologici come la \textbf{costante di dissociazione} ($K_d$), la \textbf{cstante di inibizione} ($K_i$) o la \textbf{concentrazione inibente} ($IC_{50}$). Una volta calcolati, questi valori vengono convertiti in scala logaritmica per stabilizzare la convergenza durante la fase di \textit{training} dei modelli di Deep Learning \cite{kumarPredictingDrugtargetInteractions2026a}.
+\end{itemize}
+
+Sia $D$ lo spazio chimico dei farmaci, e $T$ lo spazio biologico dei target, l'insieme delle relazioni tra i due può essere formalizzato attraverso una \textbf{matrice di interazione} farmaco-bersaglio (DTI matrix) \cite{mondalAIdrivenDrugTarget2026a}, in cui le righe rappresentano i ligandi, mentre le colonne rappresentano i bersagli biologici. 
+Di conseguenza, ogni cella $M_{i,j}$ contiene il valore dell'interazione tra il farmaco $i$-esimo e il target $j$-esimo (in formato binario per la DTI e come valore continuo nella DTA).
+
+Questo tipo di rappresentazione presenta tuttavia una problematica strutturale:
+le matrici di interazione sono infatti estremamente \textbf{sparse}, a causa del fatto che la maggiorparte delle coppie $d$-$t$ non sono mai state testate sperimentalmente e non si hanno quindi informazioni a riguardo. 
+Per superare tale limite, si ricorre a tecniche di \textit{Matrix Factorization} avanzate, come la \textit{Neighbourhood Regu-larized Logistic Matrix Factorization (NRLMF)}, che decompongono la matrice in componentni latenti per identificare pattern nascosti e prevedere interazioni sconosciute \cite{mondalAIdrivenDrugTarget2026a}.
+
+Tuttavia, questo approccio tratta la matrice come un oggetto isolato e non sfrutta le relazioni strutturali tra i composti stessi, come la \textbf{similarità} chimica o funzionale tra molecole. 
+Per integrare questo tipo di informazioni, le DTI matrix vendono reinterpretate come le matrici di adiacenza di una \textbf{DTI Network}:
+
+Si tratta di un \textbf{modello di rete bipartita eterogenea}, in cui i nodi di una partizione (composti) sono collegati ai nodi dell'altra (target) tramite archi archi che rappresentano le interazioni note tra i due.
+Questa riformulazione supera la staticità della matrice "piatta" e permette di modellare le relazioni intra-partizione, oltre a quelle farmaco-target, arricchendo ulteriormente il quadro informativo per la predizione \cite{mondalAIdrivenDrugTarget2026a}.
+
+%forse da spostare in metodologie di predizione:
+Modelli di ML supervisionato come il \textit{Bipartite Local Model} (BLM) sfruttano questa struttura per costruire dei classificatori \textit{locali} specifici per ogni nodo della rete.
+A differenza di modelli globali che analizzano la rete nella sua interità, il BLM addestra un classificatore separato per ogni farmaco e ogni target, rifacendosi alle interazione nel \textit{neighbourhood} del nodo come segnale supervisionato. Questa strategia permette di catturare pattern specifici dei protagonisti dell'interazione, che i modelli globali generalizzerebbero eccessivamente.
+
+\subsection{Rappresentazione degli input}
+
+
+\section{Metodologie di Predizione}
+L'obiettivo è la cosrtuzione di un modello che, in seguito ad un addestramento, sia in grado di fare generalizzazioni su coppie farmaco-target mai osservate prima, stimando correttamente la probabilità di interazione e la sua intensità.
+
+Queste metodologie si differenziano in base al tipo di informazione su cui si basano:
+\begin{itemize}
+    \item I metodi \textbf{ligand-based}, tra cui rientrano i modelli \textbf{QSAR (\textit{Quantitative Structure-Activity Relationship})}, che associano le proprietà strutturali di un determinato composto con la sua attività biologica.
+    Storicamente implementati tramite modelli lineari, i modelli QSAR si sono nel tempo evoluti verso modelli di ML e DL di complessità ed efficienza maggiore, rimanendo comunque di natura \textit{ligand-based}.
+    Anche la \textbf{modellazione farmacoforica} fa parte di questa categoria, e serve ad identificare le caratteristiche strutturali minime di un composto per ottenere l'interazione desiderata con il bersaglio, stringendo il cerchio di possibili candidati (risulta particolarmente utile nei casi in cui la struttura 3D della proteina non è ricavabile \cite{mondalAIdrivenDrugTarget2026a}).
+    \item I metodi \textbf{structure-based} che, al contrario dei precedenti, richiedono la conoscenza della struttura 3D della proteina target, al fine di simulare l'interazione chimica. Il rappresentate principale di questa categoria è il \textbf{docking molecolare}, che verrà trattato nella sezione successiva.
+    \item I metodi \textbf{network-based}, comprendono la DTI network e il modello BLM, già citati in precedenza. Questi rappresentato i farmaci e i target attraverso i nodi di un grafo e sfruttano la topologia della rete per analizzare nuove connessioni/interazioni.
+    \item I metodi basati \textbf{Machine Learning} e \textbf{Deep Learning}, infine, rappresentano lo stato dell'arte.
+    I modelli di ML classico apprendono pattern complessi a partire da descrittori progettati manualmente, mentre le architetture di DL estraggono automaticamente le indormazioni facendo affidamento solo al dataset di input, senza richiedere \textit{feature engineering}.
+    Entrambi verranno trattati in dettaglio più avanti.
+\end{itemize}
+
+\subsection{Docking Molecolare} % DTA
+
+\subsection{Machine Learning (ML) e Deep Learning (DL)}
+Le metodologie computazionali per la predizione di interazioni farmaco-target hanno seguito un processo evolutivo motivato dalle limitazioni riportate dalle generazioni precedenti.
+I primi approcci si basavano su descrittori delle proprietà molecolari dei composti progettati manualmente e basati unicamente sulle competenze e conoscienze scientifiche degli esperti di laboratorio. Il subentro del \textbf{Deep Learning} ha risolto questa situazione di alta complessità e alto rischio di errore affrontando i problemi di DTI e DTA come un \textbf{task di apprendimento supervisionato}:
+Come menzionato in precedenza, il modello apprende la seguente funzione
+$$ f(d,t) \xrightarrow{} y$$
+in grado di generalizzare su coppie drug-target non osservate, riconoscendo pattern chimici e biologici di alta complessità.
+
+Questa sezione si propone di analizzare i modelli di ML e DL più utilizzati in questa fase della \textit{drug discovery} e di seguirne l'evoluzione fino allo stato dell'arte.
+
+\subsubsection{Algoritmi di Machine Learning Classici}
+I modelli di ML tradizionale si basano spesso sulla \textit{feature engineering} manuale, eseguita prima dell'addestramento del modello da ricercatori incaricati di selezionare le caratteristiche descrittive delle molecole, ovvero le loro proprietà fisico-chimiche.
+Tra questi modelli abbiamo i \textbf{Modelli Lineari} \cite{odugbemiArtificialIntelligenceAntidiabetic2024}:
+\begin{itemize}
+    \item \textbf{MLR (Multiple Linear Regression)}
+    \item La regressione dei \textbf{minimi quadrati parziali (PLS)}
+    \item La \textbf{Regressione Lineare Bayesiana (RLB)}
+\end{itemize}
+Questi rappresentano tecniche statistiche in grado di generare una funzione lineare che descrive il legame tra i descrittori molecolari (le variabili $x$, dette "indipendenti") e l'esito della predizione, ovvero l'affinità di legame (variabili $y$, "dipendenti") \cite{odugbemiArtificialIntelligenceAntidiabetic2024}. 
+In questo modo, il modello è capace di calcolare come i cambiamenti nelle proprietà dei composti influenzino l'attività biologica di essi. Diventa quindi possibile prevedere il comportamento di nuovi composti da analizzare, semplicemente "consultando" la linea di regressione e inserendo i nuovi parametri nella funzione.
+
+Il limite di questi modelli, tuttavia, risiede proprio nella loro possibilità di catturare unicamente relazioni lineari, escludendo quindi pattern di interazione più complessi.
+
+\hfill \break
+Per superare questo ostacolo di complessità subentrano metodi più avanzati, come \textbf{Random Forest} e gli \textbf{alberi di decisione} (\textbf{DT}), che sono in grado di ricavare dai dati relazioni complesse, rappresentabili da funzioni non-lineari.
+
+I \textbf{DT} sono una struttura dati ad albero in cui i dati vengono ricorsivamente partizionati in sottoinsiemi in base a caratteristiche specifiche come, in questo caso, particolari proprietà molecolari. 
+In questo modo i rami della struttura rappresentano i possibili esiti del problema di classificazione/regressione (in base al tipo di task che viene affrontato, DTI o DTA).
+Una volta "riempito", il DT può essere usato come modello predittivo, in grado di classificare nuovi composti in base al loro percorso guidato dalla radice fino alle foglie dell'albero \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
+Queste tecniche sono efficaci e facili da interpretare, ma soffrono di \textbf{overfitting}: 
+infatti, questi modelli tendono a "memorizzare" le caratteristiche dei dati del \textit{training set}, senza realmente apprendere dei pattern per generalizzare il comportamento dei vari input. In questo modo, le prestazioni risultano eccellenti durante la fase di training ma abbastanza scarse durante la fase di test o l'identificazione di nuovi dati.
+
+La \textbf{Random Forest (RF)} è una tecnica di \textit{ensemble learning} progettata per ridurre il fenomeno di overfitting. È composta da più DT combinati e addestrati su sottoinsiemi differenti del dataset generale. La decisione finale avvene tramite voto di maggioranza, nel caso della DTI, o tramite media, nel caso della DTA.
+
+Oltre agli algoritmi \textit{tree-based}, sono utilizzate anche techiche come \textbf{Support Vector Machines (SVM)}. Queste affrontano la classificazione DTI cercando, all'interno dello spazio dei descrittori, l'\textbf{iperpiano di separazione} con margine massimo tra coppie in interazione e non interagenti.
+L'iperpiano ottimale è quello che massimizza la distanza tra i punti più vicini di ciascuna delle due classi, infatti più il margine è ampio e migliore sarà la capacità del modello di fare previsioni su coppie mai osservate. 
+Questi punti "di confine" vengono chiamati \textbf{vettori di supporto} e garantiscono la funzionalità del sistema \cite{montesinoslopezSupportVectorMachines2022}. 
+
+Per gestire la non-linearità delle proprietà biologiche, SVM ricorre al \textbf{kernel trick}, che "solleva" i dati di una dimensione, garantendo sempre la separazione lineare. 
+Il kernel non necessita delle coordinate dei punti nello spazio, ma ricava direttamente il loro \textbf{prodotto scalare} calcolandolo in uno spazio a dimensionalità superiore \cite{montesinoslopezSupportVectorMachines2022}. 
+
+Il limite strutturale comune a tutti gli approcci di ML tradizionale è la dipendenza della predizione dalla qualità dei descrittori selezionati \cite{ahmadMachineLearningDrugtarget2026}.
+L'inadeguatezza delle proprietà molecolari in esame può compromettere il lavoro del modello indipendentemente dalla sua potenza di calcolo o dalla sua efficienza.
+Questo vincolo è proprio la motivazione del passaggio verso le architetture di \textbf{Deep Learning}, in grado di apprendere in modo autonomo le informazioni dai dataset.
+
+\subsubsection{Algoritmi di Deep Learning}
+
+Invece di ricevere parametri calcolari manualmente, questi modelli ricavano le caratteristiche più informative direttamente dai dati "grezzi", siano questi stringhe SMILES, sequenze amminoacidiche o grafi molecolari \cite{wangUnifiedSurveyDrugtarget2026a}. 
+
+\paragraph{Modelli basati su sequenze}
+I modelli \textit{sequence-based} affrontano il problema DTI trattando direttamente le stringhe SMILES o i fingerprint del farmaco e le sequenze delle proteine come dati testuali unidimensionali, senza richiedere input formalizzati "su misura" \cite{tangTCDTAPredictingDrugTarget2024a}.
+
+Le \textbf{CNN} o \textbf{Reti Neurali Convoluzionali} rappresentano una delle prime architetture DL applicate con successo a questo tipo di input biologico.
+Nascono principalmente per processare dati in formato a griglia come i pixel nelle immagini, ma possono essere adottate in ambito di predizione DTI e DTA per lavorare su task di QSAR, tramite \textbf{convoluzione unidimensionale}\cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
+Il processo si divide in tre fasi principali che seguono i diversi strati della rete:
+\begin{itemize}
+    \item \textbf{Layers Convoluzionali}, che scansionano le sequenze dei composti e ricercano al loro interno dei pattern strutturali locali, detti \textit{\textbf{motif}}.
+    Il risultato del passaggio attraverso questi strati è la composizione di una matrice \textbf{feature map}, che indica le feature estratte e il grado di certezza nella loro rilevazione.
+    \item \textbf{Layers di Pooling}, che riducono la dimesionalità delle feature map ottenute, riassumendo solo le informazioni più importanti e utili per la previsione di nuovi composti. Questo step, oltre a rendere il modello più leggero, è fondamentale per la riduzione del \textit{noise}, ovvero informazioni superflue che potrebbero compromettere il risultato del procedimento con piccole variazioni di misurazione e impurità nei dati.
+    \item \textbf{Layers Fully Connected}, infine, sono strati densi che combinano tra loro le caratteristiche apprese dalle mappature nei livelli precedenti, per generare una previsione finale.
+\end{itemize}
+
+Questo tipo di reti neurali sono facilmente scalabili e molto efficienti ma, facendo uso di informazioni 1D, fanno anch'esse fatica ad incorporare strutture tridimensionali più complesse e a catturare le dipendenze biochimiche tra elelmenti \cite{houDGCADTADeepGraph2025}.
+\hfill \break
+
+Le \textbf{RNN (Recurrent Neural Networks)} sono un'altra architettura di Deep Learning progettata per l'elaborazione di dati sequenziali. A differenza delle CNN, però, queste reti non sono in grado di modellare in modo corretto e affidabile le dipendenze tra atomi tra loro distanti \cite{wangUnifiedSurveyDrugtarget2026a}.
+
+Operano mantenendo un \textbf{layer nascosto}, che si evolve con l'elaborazione della sequenza di input. 
+Nel contesto della predizione di interazioni con il target farmacologico, le RNN, come le CNN, analizzano efficacemente le stringhe SMILES dei composti per apprendere i \textbf{motifs} strutturali e i pattern nelle relazioni che determinanto l'affinità di legame.
+
+\paragraph{Modelli basati sui grafi}
+I modelli \textit{sequence-based}, anche se risultano più semplici nella formattazione degli input e più facilmente scalabili, faticano a prendere conoscenza del contesto tridimensionale del sito di legame \cite{wangUnifiedSurveyDrugtarget2026a}. Questa perdita di informazioni può essere superata grazie alla rappresentazione a grafo tipica dei modelli trattati in questa sezione.
+
+Come accennato nel capitolo precedente, questo tipo di rappresentazione permette l'elaborazione dei contesti da parte
+delle \textbf{GNN (Graph Neural Netwroks)}, che operano simulando la topologia e le relazioni spaziali reali dei composti chimici (legami tra atomi \textit{intra} e \textit{inter} composto) propagando informazioni tra i nodi tramite il meccanismo di \textit{message passing}.
+
+\subsection{GNN per molecole}
+Le \textbf{Graph Neural Networks} sono modelli di deep learning progettati per operare direttamente sulla struttura dei grafi.
+Il meccanismo centrale che permette ai nodi di raccogliere le informazioni dai propri vicini è il \textbf{Message passing}. Questo processo avviene in due passaggi iterativi \cite{wangGraphNeuralNetworks2023}:
+\begin{itemize}
+    \item \textbf{Computazione e Aggregazione:} Il modello calcola un messaggio elaborando le caratteristiche del nodo centrale, con quelle dei nodi e degli archi ad esso adiacenti.
+    \item \textbf{Aggiornamento:} Lo stato del nodo viene aggiornato integrando il nuovo messaggio con la sua informazione precedente.
+\end{itemize}
+
+Queste informazioni elaborate vengono poi lette tramite l'operazione di \textbf{Readout}. Attraverso un meccanismo simile al pooling, le caratteristiche di tutti i nodi vengono aggregate e aggiornate in un unico vettore di caratteristiche globali, in grado di rappresentare lo stato dell'intera molecola \cite{wangGraphNeuralNetworks2023}.
+
+In generale, nel contesto di drug discovery le GNN stanno rivoluzionando il concetto di tradizionale \textbf{Computer-Aided Drug Design} (CADD), trasformando il processo in una ricerca automatizzata.
+Queste architetture consentono di esplorare lo spazio chimico per generare e ottimizzare (come nella \textit{Lead Optimization}) nuove entità molecolari, apportando migliorie nelle proprietà desiderate, come bioattività, stabilità e sintetizzabilità.
+Le GNN risultano, inoltre, fondamentali nello screening virtuale per prevedere con efficienza le affinità di legame tra farmaci e target. Questo permette uno studio precoce di proprietà ADMET e della tossicità, portando a una riduzione drastica di fallimenti nei test clinici \cite{wangGraphNeuralNetworks2025}.
+
+Nel contesto di DTA/DTI...
+
+\paragraph{Transorfmer e modelli linguistici}
+%\paragraph{modelli ibridi}
