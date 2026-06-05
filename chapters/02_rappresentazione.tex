@@ -16,7 +16,8 @@ Senza una rappresentazione standardizzata che rispetti i principi \textbf{FAIR} 
 La necessità di disporre di dati FAIR e \textit{machine readable/actionable} ha portato allo sviluppo di diverse metodologie di codifica di dati chimici in formati meno complessi, processabili da algoritmi e metodi di machine learning.
 
 \subsection{SMILES}
-Il sistema \textbf{SMILES} (Simplified Molecular-Input Line-Entry System) rappresenta oggi lo standard più diffuso per la rappresentazione di molecole chimiche nell'ambito delle applicazioni di intelligienza artificiale.
+Il sistema \textbf{SMILES} (Simplified Molecular-Input Line-Entry System) rappresenta lo standard moderno più diffuso per la rappresentazione di molecole chimiche nell'ambito delle applicazioni di intelligienza artificiale.
+
 Si basa sulla descrizione di strutture chimiche attraverso stringhe di caratteri alfanumerici ASCII \cite{aksamitHybridFragmentSMILESTokenization2024}, sottoponibili a processi NLP.
 Una stringa SMILES rappresenta la molecola come una catena di atomi, dove le ramificazioni sono indicate tra parentesi tonde, le chiusure degli anelli da numeri corrispondenti (per esempio, 1 con 1, ecc...), i simboli "-", "=", "\#" \cite{sadeghiCanLargeLanguage2024} rappresentano diversi tipi di legame, mentre "@", "/", "\textbackslash" diverse conformazioni isomeriche \cite{aksamitHybridFragmentSMILESTokenization2024}.
 \\
@@ -27,6 +28,56 @@ $$CC(C)(C)C(=O)C(N1C=CN=C1)OC2=CC=C(C=C2)Cl$$
     \caption{Rappresentazione SMILES e struttura molecolare del Climbazolo.}
     \label{fig:climbazolo_smiles}
 \end{figure}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[
+        block/.style={
+            rectangle, 
+            draw=black, 
+            thick, 
+            minimum width=4.5cm, 
+            minimum height=1cm, 
+            align=center,
+            font=\small\sffamily
+        },
+        textnode/.style={
+            font=\small\sffamily\bfseries,
+            align=center
+        },
+        arrow/.style={
+            -{Stealth[scale=1.2]}, 
+            thick
+        },
+        node distance=1.0cm
+    ]
+
+        \node[textnode] (smiles) {Stringa SMILES};
+        
+        \node[block, below=of smiles] (scomp) {1. Scomposizione};
+        
+        \node[block, below=of scomp] (ident) {2. Identificazione};
+        
+        \node[block, below=of ident] (mapp) {3. Mappatura};
+        
+        \node[textnode, below=of mapp] (bits) {Vettore di Bit \\ \normalfont\ttfamily[0, 1, 0, ...]};
+        \draw[arrow] (smiles) -- (scomp);
+        \draw[arrow] (scomp)  -- (ident);
+        \draw[arrow] (ident)  -- (mapp);
+        \draw[arrow] (mapp)   -- (bits);
+
+    \end{tikzpicture}
+    \caption{Flusso verticale del processo di trasformazione chimico-digitale da stringa SMILES a vettore di bit.}
+    \label{fig:smiles_to_bits_vertical}
+\end{figure}
+
+Le SMILES vengono tradotte in bit tramite \textit{processing} a Fingerprint Molecolari:
+Le stringhe entrano in input per passare in una prima \textbf{Fase di Scomposizione}, da cui si ottengono frammenti di natura diversa in base all'algoritmo usato (possono essere percorsi tra atomi, aree di intorno circolare, ecc...) \cite{boldiniEffectivenessMolecularFingerprints2024}.
+
+Segue poi la fase di \textbf{Encoding}, in cui ogni frammento riceve un identificatore numerico basato sulle proprietà atomiche.
+
+Infine la fase di \textbf{Hashing}, dove gli identificatori vengono mappati in un vettore di bit a dimensione fissa, tramite funzioni di hashing.
+
     
 Nonostante la sua ampia diffusione, \textbf{SMILES} presenta criticità strutturali che ne limitano l'efficacia e lo rendono inadeguato agli strumenti computazionali moderni:
 \begin{itemize}
@@ -64,10 +115,8 @@ Inoltre, questa maggiore compattezza permette ai \textbf{Transformer} di allocar
 
 \section{Fingerprint molecolari}
 I \textit{fingerprint} dall'altro canto adottano un approccio vettoriale: 
-La molecola viene decomposta in frammenti locali che vengono poi convertiti, tramite funzioni di hashing, in un formato \textit{machine-readable}, ovvero in un vettore numerico di lunghezza fissa.
+Come citato prima, la molecola viene decomposta in frammenti locali che vengono poi convertiti, tramite funzioni di hashing, in un formato \textit{machine-readable}, ovvero in un vettore numerico di lunghezza fissa (di solito pari a 1024 bit).
 Questi vettori codificano caratteristiche specifiche, come la presenza o l'assenza di determinate strutture (\textit{binary fingerprints}) o il numero di occorrenze di determinati pattern molecolari (\textit{count-based fingerprints}), permettendo agli algoritmi di ML di analizzare le molecole per task di \textit{Virtual Screening} e previsione di proprietà biologiche \cite{boldiniEffectivenessMolecularFingerprints2024}.
-
-%TO-DO figura fingerprint
 
 Esistono diverse categorie principali di fingerprint, suddivise in base al tipo di informazione che catturano \cite{boldiniEffectivenessMolecularFingerprints2024}:
 \begin{itemize}
@@ -83,9 +132,8 @@ Esistono diverse categorie principali di fingerprint, suddivise in base al tipo 
 \subsection{Esempi di fingerprints}
 Alcuni esempi appartenenti alla categoria di rappresentazione con \textbf{fingerprint molecolari} sono le \textbf{Morgan fingerprints} (o \textit{Extended Connectivity Fingerprints} (ECFP)) e le \textbf{MACCS key}.
 
-Le prime si distinguono come strumento fondamentale e standard \textit{de facto} per la codifica dei composti farmaceutici \textit{drug-like}. \\Queste fingerprints \textbf{circolari} sono in grado di costruire dinamicamente i frammenti delle sottostrutture molecolari, a partire dalla loro rappresentazione a grafo \cite{boldiniEffectivenessMolecularFingerprints2024}.
-
-Per prima cosa, gli atomi del composto vengono identificati in base alle loro proprietà chimiche con un numero identificativo univoco. Successivamente avviene l'aggregazione a raggio crescente (descritta precedentemente) e infine l'\textit{hashing}, che trasforma la sequenza di identificatori in un vettore di tipicamente \textbf{1024 bit}.
+Le prime si distinguono come strumento fondamentale e standard \textit{de facto} per la codifica dei composti farmaceutici \textit{drug-like}. 
+\\Queste fingerprints \textbf{circolari}, con lunghezza pari a $1024$ bit, sono in grado di costruire dinamicamente i frammenti delle sottostrutture molecolari, a partire dalla loro rappresentazione a grafo \cite{boldiniEffectivenessMolecularFingerprints2024}.
 
 Le \textbf{MACCS key (Molecular Access System)}, invece, si basano su un approccio più storico e utilizzano, come suggerito dal nome, un \textbf{dizionario} statico predefinito di sottostrutture, da cui attingere per codificare le strutture:\\
 Sono rappresentate da un vettore binario da \textbf{166} bit di lunghezza. Ognuno di questi bit codifica la assenza/presenza ({0,1}) di una specifica caratteristica strutturale, definita tramite i pattern \textbf{SMARTS} (SMILES Arbitrary Target 
@@ -162,3 +210,51 @@ I vettori di embedding possono essere generati principalmente in due modi distin
 Per verificare la qualità dell'embedding estratto si utilizzano i \textbf{modelli di probe}, ovvero semplici classificatori lineari addestrati su vettori fissi, che sono in grado di verificare le informazioni catturate.
 
 Un embedding di alta qualità dovrebbe essere in grado di rappresentare correttamente \textbf{proprietà topologiche}, \textbf{proprietà nello spazio} e \textbf{sottostrutture molecolari}.
+
+\section{Rappresentazione delle proteine target: FASTA}
+Oltre alle piccole molecole, è necessario anche rappresentare in modo corretto le sequenze amminoacidiche che compongono i target terapeutici.
+
+Lo standard \textbf{FASTA} è un formato testuale ampiamente utilizzato per questo task.
+La struttura primaria della proteina viene codificata come una stringa lineare di caratteri simbolici in cui ogni lettera corrisponde a un amminoacido specifico \cite{wangUnifiedSurveyDrugtarget2026a}.
+Essendo unidimensionale però, questo formato di rappresentazione non è adatto a cogliere gli aspetti più importanti delle sequenze proteiche, ovvero la loro conformazione tridimensionale.
+
+Nel contesto dell'analisi sequence-based, la stringa in formato FASTA rappresenta l'input standard per i modelli predittivi di Deep Learning, come vedremo nei capitoli successivi. Di seguito viene riportata la sequenza primaria nativa del target biologico \textbf{COX-2} umano, estratta dal database di riferimento \textbf{UniProt} (ID: P35354):
+
+\begin{lstlisting}[caption={Sequenza FASTA ufficiale della Prostaglandin G/H synthase 2 umana (UniProt P35354).}, label={lst:fasta_cox2}]
+>sp|P35354|PGH2_HUMAN Prostaglandin G/H synthase 2 OS=Homo sapiens OX=9606 GN=PTGS2 PE=1 SV=2
+MLARALLLCAVLALSHTANPCCSHPCQNRGVCMSVGFDQYKCDCTRTGFYGENCSTPEFL
+TRIKLFLKPTPNTVHYILTHFKGFWNVVNNIPFLRNAIMSYVLTSRSHLIDSPPTYNADY
+GYKSWEAFSNLSYYTRALPPVPDDCPTPLGVKGKKQLPDSNEIVEKLLLRRKFIPDPQGS
+NMMFAFFAQHFTHQFFKTDHKRGPAFTNGLGHGVDLNHIYGETLWARHRELRQEGVTMYS
+VNYKNGVLRIIDYEPMDFLELLWPRDLKYIIDGVEIVKNPHSIPTLLQYIQMKMKIIPNL
+LYLNPFPTLSSLYILPDKSGFQNINKIYARTQAPLSVVEIDYLPGIDYVSPPTGLNVALF
+TLNLYVMLWPRNLIFVFFLMSTIFVFLKTRKMNLIFLFFIFVFLMRVIVMLWPRNLYVMF
+FFLMSTIFVFLKTRKMNLIFLFFIFVFLMRVIVK
+\end{lstlisting}
+
+\subsection{AlphaFold}
+Si tratta di una tecnologia di Intelligenza Artificiale che permette la predizione della conformazione 3D di una proteina, a partire solo dalla sua sequenza FASTA 1D \cite{mondalAIdrivenDrugTarget2026a}.
+
+Questa tecnologia, sviluppata da \textbf{DeepMind}, ha segnato un importante punto di svolta nel campo della biologia computazionale, superando i limiti di oltre 50 anni di ricerca precedenti \cite{jumperHighlyAccurateProtein2021}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.95\linewidth]{figures/alphafold_pipeline.png}
+    \caption{Schema semplificato della rete neurale di AlphaFold. Adattato e modificato dall'opera originale di Jumper et al. (2021), disponibile in Open Access sotto licenza Creative Commons Attribution 4.0 International (\url{http://creativecommons.org/licenses/by/4.0/}).}
+    \label{fig:alphafold}
+\end{figure}
+
+Viene sfruttata un'architettura a rete neurale per integrare le nozioni chimico-fisiche e biologiche all'interno di un insieme di regole di conformazione proteica.
+Il modello si divide in due fasi principali:
+\begin{enumerate}
+    \item \textbf{Evoformer:} Primo modulo incaricato delle previsione della struttura. Si approccia al problema computazionale interpretandolo come un \textbf{problema di inferenza di grafi} nello spazio tridimensionale. Tiene traccia degli amminoacidi propensi a mutare insieme, e a creare quindi strutture di avvolgimento complesse, tramite \textbf{Multiple Sequence Alignments} o \textbf{MSA}. Queste sono collezioni di sequenze di proteine omologhe allineate tra loro in un array bidimensionale, la cui analisi risulta utile per predirre coordinazioni tra amminoacidi e siti di ripiegamento proteico \cite{jumperHighlyAccurateProtein2021}.
+    \item \textbf{Modello di Struttura:} Trasforma le informazioni ricavate dall'Evoformer in coordinate 3D reali. Ogni amminoacido è trattato come un corpo rigido indipendente, o "residue gas", che può ruotare e traslare nello spazio fino ad assumere la sua posizione "corretta" all'interno della conformazione della catena proteica.
+    Viene usato un meccanismo di \textbf{Attenzione} (\textbf{Invariant Point Attentio, o IPA}) le cui iterazioni raffinano le informazioni spaziali degli elementi.
+\end{enumerate}
+
+Il successo straordinario di AlphaFold, che ha portato alla vittoria del Premio Nobel per la Chimica nel 2024, rappresenta uno degli esempri più lampanti del potenziale dell'Intelligenza Artificiale applicata alle scienze della vita. 
+Lo stacco netto tra la qualità della ricerca prima e dopo l'introduzione di AlphaFold dimostra come il Deep Learning non sia più un mero strumento computazionale sussidiario di ottimizzazione, ma un vero e proprio motore di scoperta scientifica, capace di raggiungere straordinari traguardi.
+
+
+
+
