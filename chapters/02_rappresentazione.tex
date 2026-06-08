@@ -67,7 +67,7 @@ $$CC(C)(C)C(=O)C(N1C=CN=C1)OC2=CC=C(C=C2)Cl$$
         \draw[arrow] (mapp)   -- (bits);
 
     \end{tikzpicture}
-    \caption{Flusso verticale del processo di trasformazione chimico-digitale da stringa SMILES a vettore di bit.}
+    \caption{Flusso del processo di trasformazione chimico-digitale da stringa SMILES a vettore di bit.}
     \label{fig:smiles_to_bits_vertical}
 \end{figure}
 
@@ -121,7 +121,7 @@ Questi vettori codificano caratteristiche specifiche, come la presenza o l'assen
 Esistono diverse categorie principali di fingerprint, suddivise in base al tipo di informazione che catturano \cite{boldiniEffectivenessMolecularFingerprints2024}:
 \begin{itemize}
     \item Fingerprints "\textbf{String-based"}: Operano direttamente sulla stringa SMILES, frammentando la stringa in sottosequenze di dimensione fissa e calcolando il numero di occorrenze di questi frammenti.
-    \item Fingerprints "\textbf{Path-based"}: Data una rappresentazione \textbf{a grafo} della molecola (che verrà approfondita nella prossima sezione), vengono analizzati i \textbf{cammini lineari}, utilizzando, ad esempio, algoritmi come il \textbf{DFS (Depth First Search)}, che percorrono la molecola partendo da ogni singolo atomo fino ad una distanza di \textit{d} legami, mantenendo un record di ogni percorso unico.
+    \item Fingerprints "\textbf{Path-based"}: Data una rappresentazione molecolare \textbf{a grafo} (che verrà approfondita nella prossima sezione), vengono analizzati i \textbf{cammini lineari}, utilizzando, ad esempio, algoritmi come il \textbf{DFS (Depth First Search)}, che percorrono la molecola partendo da ogni singolo atomo fino ad una distanza di \textit{d} legami, mantenendo un record di ogni percorso unico.
     \item Fingerprints \textbf{Farmacoforici}: Si focalizzano sulla reattività chimica piuttosto che sulla strutttura scheletrica. I farmacofori sono l'insieme di caratteristiche chiave di una molecola all'interno del suo ambiente biochimico, come i punti di interazione, donatori/accettori, legami a idrogeno, gruppi idrofobici, ecc...
     Questi fingerprints codificano il modo in cui la molecola interagisce con l'ambiente circostante, concentrandosi maggiormente sulle proprietà funzionali, piuttosto che sulla struttura anatomica esatta.
     \item Fingerprints "\textbf{Substructure-based}": Basati sulla presenza di sottostrutture chimiche predefinite. Questo tipo di fingerprints utilizza un "dizionario" di frammenti noti, precedentemente individuati da esperti.
@@ -159,7 +159,7 @@ Le stringhe SMILES vengono quindi utilizzate per costruire la sintassi dei finge
 \end{figure}
 \begin{figure}
     \centering
-    \includegraphics[width=0.5\linewidth]{figures/vettore_maccs_ibu.png}
+    \includegraphics[width=0.4\linewidth]{figures/vettore_maccs_ibu.png}
     \caption{Primi 100 bit del fingerprint dell'Ibuprofene}
 \end{figure}
 
@@ -187,7 +187,7 @@ Questa rappresentazione è il prilastro fondamentale per le \textbf{GNN (Graph N
     \centering
     \includegraphics[width=0.75\linewidth]{figures/molecular_graph_ibu.png}
     \caption{Rappresentazione topologica non orientata $G = (V, E)$ dell'Ibuprofene generata da codice grazie a librerie RDKit e NetworkX.}
-    \label{fig:placeholder}
+    \label{fig:graph}
 \end{figure}
 
 \section{Embedding molecolari e modelli pre-addestrati}
@@ -239,7 +239,7 @@ Questa tecnologia, sviluppata da \textbf{DeepMind}, ha segnato un importante pun
 
 \begin{figure}
     \centering
-    \includegraphics[width=0.95\linewidth]{figures/alphafold_pipeline.png}
+    \includegraphics[width=1\linewidth]{figures/alphafold_pipeline.png}
     \caption{Schema semplificato della rete neurale di AlphaFold. Adattato e modificato dall'opera originale di Jumper et al. (2021), disponibile in Open Access sotto licenza Creative Commons Attribution 4.0 International (\url{http://creativecommons.org/licenses/by/4.0/}).}
     \label{fig:alphafold}
 \end{figure}

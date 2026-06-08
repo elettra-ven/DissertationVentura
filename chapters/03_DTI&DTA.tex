@@ -200,8 +200,16 @@ A seconda della flessibilità delle molecole, inoltre, il Docking viene suddivis
     \item \textbf{Flexible Docking:} o "Soft" Doking, dove entrambi i componenti sono flessibili. Sono docking più precisi ma con un costo computazionale decisamente maggiore, dato che richiedono la mappatura di tutte le configurazioni possibili.
 \end{itemize}
 
-Il limite principale del Docking tradizionale è proprio la sua scarsa scalabilità, data dal suo elevato costo computazionale.
-Il costo del docking per una singola coppia ligando-recettore lo rende inadatto ad analisi su librerie di composti molto elevate, che sono l'ambito richiesto dai problemi di DTA.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/docking.png}
+    \caption{Rappresentazione schematica delle differenze tra Rigid Docking e Flexible Docking.}
+    \label{fig:docking}
+\end{figure}
+
+Il limite principale del Docking tradizionale risiede proprio nella sua scarsa scalabilità, una conseguenza diretta dell'elevato costo computazionale richiesto.
+
+La spesa in termini di tempo e risorse per la simulazione di una singola coppia ligando-recettore rende infatti questo approccio inadatto ad analisi su librerie di composti massive, che costituiscono invece il dominio operativo dei problemi di DTA.
 Per questo motivo si scelgono algoritmi in grado di "passare in rassegna" dataset molto grandi in modo efficiente, e si fanno uso sempre di più di tecniche AI-enhanced e di Machine Learning. 
 
 \section{Machine Learning Classico}
@@ -215,31 +223,43 @@ e conoscenze scientifiche degli esperti di laboratorio.
 
 \subsection{Modelli lineari}
 
-I modelli di ML tradizionale si basano spesso sulla \textit{feature 
+I modelli di ML tradizionale cercano di stabilire una relazione matematica diretta e proporzionale tra le variabili predittrici di una molecola e la sua attività biologica.
+
+Si basano spesso sulla \textit{feature 
 engineering} manuale, eseguita prima dell'addestramento del modello da 
 ricercatori incaricati di selezionare le caratteristiche descrittive delle 
 molecole, ovvero le loro proprietà fisico-chimiche.
-Tra questi approcci si distinguono i \textbf{Modelli Lineari} 
+
+Di seguito sono descritti i principali modelli di questa categoria
 \cite{odugbemiArtificialIntelligenceAntidiabetic2024}:
 \begin{itemize}
     \item \textbf{MLR (Multiple Linear Regression)}
     \item La regressione dei \textbf{minimi quadrati parziali (PLS)}
     \item La \textbf{Regressione Lineare Bayesiana (RLB)}
 \end{itemize}
-Questi rappresentano tecniche statistiche in grado di generare una 
-funzione lineare che descrive il legame tra i descrittori molecolari 
+Queste tecniche statistiche sono in grado di generare una 
+\textbf{funzione lineare} che descrive il legame tra i descrittori molecolari 
 (le variabili $x$, dette ``indipendenti'') e l'esito della predizione, 
 ovvero l'affinità di legame (variabili $y$, ``dipendenti'') 
 \cite{odugbemiArtificialIntelligenceAntidiabetic2024}. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\linewidth]{figures/regressione_lineare.png}
+    \caption{Rappresentazione grafica del limite strutturale dei modelli lineari. La retta di regressione (in nero) non è in grado di curvare per approssimare l'andamento non lineare dei dati sperimentali biologici, generando un elevato errore di predizione nelle regioni geometriche estreme.}
+    \label{fig:modello lineare}
+\end{figure}
+
 In questo modo, il modello è capace di calcolare come i cambiamenti nelle 
 proprietà dei composti influenzino l'attività biologica di essi. Diventa 
-quindi possibile prevedere il comportamento di nuovi composti da analizzare, 
+quindi possibile prevedere in modo trasparente ed interpretabile il comportamento di nuovi composti da analizzare, 
 semplicemente ``consultando'' la linea di regressione e inserendo i nuovi 
 parametri nella funzione.
 
-Il limite di questi modelli, tuttavia, risiede proprio nella loro 
-possibilità di catturare unicamente relazioni lineari, escludendo quindi 
+Il limite di questi modelli, tuttavia, risiede proprio nella loro completa
+incapacità di catturare  relazioni non-lineari, che esclude quindi dalla predizione
 pattern di interazione più complessi.
+
 
 \subsection{Alberi decisionali e Random Forest}
 
@@ -259,23 +279,25 @@ in grado di classificare nuovi composti in base al loro percorso guidato
 dalla radice fino alle foglie dell'albero 
 \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
 Queste tecniche sono efficaci e facili da interpretare, ma soffrono di 
-\textbf{overfitting}: 
-indeed, questi modelli tendono a ``memorizzare'' le caratteristiche dei 
+\textbf{overfitting}: questi modelli tendono a ``memorizzare'' le caratteristiche dei 
 dati del \textit{training set}, senza realmente apprendere dei pattern 
-per generalizzare il comportamento dei vari input. In questo modo, le 
+per generalizzare il comportamento dei vari input.
+Possono infatti venirsi a generare rami profondi ed eccessivamente precisi, modellati su caratteristiche molto specifiche e non generalizzabili. 
+
+In questo modo, le 
 prestazioni risultano eccellenti durante la fase di training ma abbastanza 
 scarse durante la fase di test o l'identificazione di nuovi dati.
 
 La \textbf{Random Forest (RF)} è una tecnica di \textit{ensemble learning} 
 progettata per ridurre il fenomeno di overfitting. È composta da più DT 
-combinati e addestrati su sottoinsiemi differenti del dataset generale. 
+combinati e addestrati su sottoinsiemi differenti e randomici del dataset generale. 
 La decisione finale avviene tramite voto di maggioranza, nel caso della 
 DTI, o tramite media, nel caso della DTA.
 
-\subsection{Support Vector Machines}
 
+\subsection{Support Vector Machines}
 Oltre agli algoritmi \textit{tree-based}, sono utilizzate anche tecniche 
-come \textbf{Support Vector Machines (SVM)}. Queste affrontano la 
+come \textbf{Support Vector Machines (SVM)} (o \textbf{Support Vector Regression (SVR)} per i task di regressione DTA). Queste affrontano la 
 classificazione DTI cercando, all'interno dello spazio dei descrittori, 
 l'\textbf{iperpiano di separazione} con margine massimo tra coppie in 
 interazione e non interagenti.
@@ -294,6 +316,13 @@ Il kernel non necessita delle coordinate dei punti nello spazio, ma
 ricava direttamente il loro \textbf{prodotto scalare} calcolandolo in uno 
 spazio a dimensionalità superiore 
 \cite{montesinoslopezSupportVectorMachines2022}. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/kernel_trick.png}
+    \caption{Principio geometrico del kernel trick. Il grafico bidimensionale mostra una distribuzione di dati non linearmente separabile. La proiezione nello spazio tridimensionale permette di trovare un iperpiano di separazione a massimo margine in grado di dividere la classe interna (blu) da quella esterna (rossa).}
+    \label{fig:kernel}
+\end{figure}
 
 Il limite strutturale comune a tutti gli approcci di ML tradizionale è 
 la dipendenza della predizione dalla qualità dei descrittori selezionati 
@@ -454,7 +483,102 @@ A differenza delle RNN, che elaborano i token uno alla
 volta in modo sequenziale, i Transformer processano l'intera sequenza 
 simultaneamente, rendendo il training più efficiente e la cattura del 
 contesto globale più affidabile \cite{wangUnifiedSurveyDrugtarget2026a}.
+
 % figura di architettura generale di un Transformer encoder
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+    node distance = 0.55cm and 1.8cm,
+    box/.style = {
+        rectangle, rounded corners=4pt,
+        minimum width=4.2cm, minimum height=0.75cm,
+        text centered, font=\small
+    },
+    addnorm/.style = {
+        box,
+        draw=gray!60, fill=gray!10
+    },
+    mainblock/.style = {
+        box,
+        draw=teal!70!black, fill=teal!12,
+        font=\small\bfseries
+    },
+    ioblock/.style = {
+        box,
+        draw=orange!70!black, fill=orange!12,
+        font=\small
+    },
+    embedblock/.style = {
+        box,
+        draw=violet!60!black, fill=violet!10,
+        font=\small
+    },
+    arrow/.style = {
+        ->, >=stealth, thick, gray!70!black
+    },
+    skiparrow/.style = {
+        ->, >=stealth, thick, dashed, gray!50
+    }
+]
+
+\node[ioblock]      (input)    {Input sequenza (SMILES / FASTA)};
+
+\node[embedblock,
+      above=of input]  (embed)  {Token Embedding};
+
+\node[embedblock,
+      above=of embed]  (posenc) {Positional Encoding};
+
+\node[mainblock,
+      above=of posenc] (mhsa)   {Multi-Head Self-Attention};
+
+\node[addnorm,
+      above=of mhsa]   (an1)    {Add \& Norm};
+
+\node[mainblock,
+      above=of an1]    (ffn)    {Feed-Forward Network};
+
+\node[addnorm,
+      above=of ffn]    (an2)    {Add \& Norm};
+
+\node[ioblock,
+      above=of an2]    (output) {Output: rappresentazione contestuale};
+
+\draw[arrow] (input)  -- (embed);
+\draw[arrow] (embed)  -- (posenc);
+\draw[arrow] (posenc) -- (mhsa);
+\draw[arrow] (mhsa)   -- (an1);
+\draw[arrow] (an1)    -- (ffn);
+\draw[arrow] (ffn)    -- (an2);
+\draw[arrow] (an2)    -- (output);
+
+\draw[skiparrow]
+    (posenc.east)
+    -- ++(1.5,0)
+    |- (an1.east);
+
+\draw[skiparrow]
+    (an1.east)
+    -- ++(1.5,0)
+    |- (an2.east);
+
+\node[
+    draw=teal!50, dashed, rounded corners=6pt,
+    fit=(mhsa)(an1)(ffn)(an2),
+    inner sep=8pt,
+    label={[font=\footnotesize\itshape, text=teal!70!black]
+           left:{\rotatebox{90}{Encoder Block ($\times N$)}}}
+] {};
+
+\end{tikzpicture}
+
+\caption{Architettura di un encoder Transformer applicato a sequenze 
+molecolari o proteiche. Le frecce tratteggiate indicano le connessioni 
+residuali, che sommano l'input di ogni 
+sotto-blocco al suo output prima della normalizzazione.}
+\label{fig:transformer-encoder}
+\end{figure}
+
 
 Tra i modelli più rappresentativi si distinguono:
 \begin{itemize}
@@ -472,6 +596,128 @@ Tra i modelli più rappresentativi si distinguono:
     stringhe SELFIES tramite Transformer, con l'obiettivo di ottenere 
     predizioni a grana fine sul sito di legame specifico.
 \end{itemize}
+
+\subsubsection{Approfondimento su TC-DTA (Transformer and Convolutional Neural Networks for Drug-Target Affinity)}
+Si tratta di un modello di \textbf{deep-learning} avanzato progettato per il task di predizione di DTA \cite{tangTCDTAPredictingDrugTarget2024a}. Come già menzionato, utilizza per il modulo dei farmaci, tre strati di \textbf{CNN} unidimensionali consecutivi per estrarre i pattern locali dall'input di stringhe SMILES.
+Ad ogni strato cresce il numero di filtri utilizzati per estrarre le caratteristiche molecolari. 
+Per le proteine viene usato un \textbf{encoder Transformer}, in grado di modellare dipendenze a lungo raggio nelle sequenze amminoacidiche tramite \textbf{multi-head self-attention} e \textbf{positional encoding}.
+
+Le rappresentazioni prodotte dai due moduli vengono concatenate e passate a un \textbf{Multi-Layer Perceptron (MLP)} composto da quattro strati lineari, con funzioni di attivazione \textbf{ReLU} per prevenire \textit{overfitting}.
+
+
+\begin{figure}[ht]
+\centering
+
+\scalebox{0.8}{%
+\begin{tikzpicture}[
+    node distance = 0.5cm and 1.6cm,
+    box/.style = {
+        rectangle, rounded corners=4pt,
+        minimum width=3.2cm, minimum height=0.7cm,
+        text centered, font=\small
+    },
+    cnnbox/.style  = {box, draw=orange!70!black,  fill=orange!12},
+    tranbox/.style = {box, draw=teal!70!black,    fill=teal!12},
+    mlpbox/.style  = {box, draw=violet!60!black,  fill=violet!10},
+    iobox/.style   = {box, draw=gray!60,          fill=gray!10,
+                      minimum width=3.0cm},
+    fusebox/.style = {box, draw=gray!50,          fill=gray!6,
+                      minimum width=3.2cm, font=\small\itshape},
+    arrow/.style   = {->, >=stealth, thick, gray!70!black},
+    label/.style   = {font=\footnotesize\itshape, text=gray!60!black}
+]
+
+\node[iobox]   (smiles)  {SMILES};
+
+\node[cnnbox,  above=of smiles]
+               (conv1)   {CNN Layer — 32 filtri};
+\node[cnnbox,  above=of conv1]
+               (conv2)   {CNN Layer — 64 filtri};
+\node[cnnbox,  above=of conv2]
+               (conv3)   {CNN Layer — 96 filtri};
+\node[cnnbox,  above=of conv3]
+               (pool)    {Max Pooling};
+
+\node[iobox,   right=3.8cm of smiles]
+               (fasta)   {Sequenza amminoacidica};
+
+\node[tranbox, above=of fasta]
+               (posenc)  {Positional Encoding};
+\node[tranbox, above=of posenc]
+               (mhsa)    {Multi-Head Self-Attention};
+\node[tranbox, above=of mhsa]
+               (ffn)     {Feed-Forward Network};
+\node[tranbox, above=of ffn]
+               (repP)    {Rappresentazione proteina};
+
+\coordinate (midH) at ($(pool)!0.5!(repP)$);
+\node[fusebox, above=1.1cm of midH]
+               (concat)  {Concatenazione};
+
+\node[mlpbox, above=0.55cm of concat]
+               (mlp1)    {MLP Layer + ReLU};
+\node[mlpbox, above=of mlp1]
+               (mlp2)    {MLP Layer + ReLU};
+\node[mlpbox, above=of mlp2]
+               (mlp3)    {MLP Layer + ReLU};
+\node[mlpbox, above=of mlp3]
+               (mlp4)    {MLP Layer (output)};
+
+\node[iobox,   above=of mlp4]
+               (out)     {Affinità di legame ($\hat{y}$)};
+
+\draw[arrow] (smiles) -- (conv1);
+\draw[arrow] (conv1)  -- (conv2);
+\draw[arrow] (conv2)  -- (conv3);
+\draw[arrow] (conv3)  -- (pool);
+\draw[arrow] (pool)   -- (concat);
+
+\draw[arrow] (fasta)  -- (posenc);
+\draw[arrow] (posenc) -- (mhsa);
+\draw[arrow] (mhsa)   -- (ffn);
+\draw[arrow] (ffn)    -- (repP);
+\draw[arrow] (repP)   -- (concat);
+
+\draw[arrow] (concat) -- (mlp1);
+\draw[arrow] (mlp1)   -- (mlp2);
+\draw[arrow] (mlp2)   -- (mlp3);
+\draw[arrow] (mlp3)   -- (mlp4);
+\draw[arrow] (mlp4)   -- (out);
+
+\node[
+    draw=orange!40, dashed, rounded corners=5pt,
+    fit=(smiles)(conv1)(conv2)(conv3)(pool),
+    inner sep=6pt,
+    label={[font=\footnotesize\bfseries\color{orange!70!black}]
+           left:{Modulo farmaco (CNN)}}
+] {};
+
+\node[
+    draw=teal!40, dashed, rounded corners=5pt,
+    fit=(fasta)(posenc)(mhsa)(ffn)(repP),
+    inner sep=6pt,
+    label={[font=\footnotesize\bfseries\color{teal!70!black}]
+           right:{Modulo proteina (Transformer)}}
+] {};
+
+\node[
+    draw=violet!40, dashed, rounded corners=5pt,
+    fit=(mlp1)(mlp2)(mlp3)(mlp4),
+    inner sep=6pt,
+    label={[font=\footnotesize\bfseries, text=violet!60!black]
+           right:{MLP}}
+] {};
+
+\end{tikzpicture}
+}
+\caption{Architettura di TC-DTA: il ramo CNN estrae pattern 
+locali dalla stringa SMILES del farmaco, mentre l'encoder Transformer modella le dipendenze globali nella sequenza proteica. Le 
+rappresentazioni vengono concatenate e processate dall'MLP per 
+produrre il valore continuo di affinità di legame.}
+\label{fig:tcdta}
+\end{figure}
+
+Il modello è stato valutato sui dataset standard \textbf{Davis} e \textbf{KIBA}, ottenendo in entrambi i casi risultati superiori alle baseline di riferimento (tra cui DeepDTA) con un MSE (\textit{mean squared error}) di 0.2312 su Davis e 0.1771 su KIBA. L'indice $r^2_m > 0.5$ (indica il potenziale predittivo esterno del modello di regressione) in entrambi i dataset indica una solida capacità di generalizzazione su dati esterni. 
 
 \subsubsection{Graph Transformer}
 Un'ulteriore evoluzione consiste nell'applicare la logica dei Transformer 
