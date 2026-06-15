@@ -7,9 +7,11 @@ In questo nuovo contesto, il framework ADMET non viene più interpretato come un
 Il framework \textbf{ADMET} è uno strumento fondamentale della ricerca 
 farmaceutica, progettato per valutare le proprietà farmacocinetiche e la 
 sicurezza di un composto candidato.  I suoi cinque parametri coprono 
-l'intero ciclo di vita del farmaco nell'organismo: mentre i parametri 
+l'intero ciclo di vita del farmaco nell'organismo: 
+
+I parametri 
 \textbf{ADME} descrivono come la concentrazione del composto varia nel 
-tempo nei diversi compartimenti biologici, il parametro \textbf{T} si 
+tempo nei diversi ambiti biologici, mentre il parametro \textbf{T} si 
 concentra sui possibili effetti nocivi e collaterali.
 
 L'obiettivo finale è selezionare molecole che siano facilmente assorbibili, metabolicamente stabili e prive di tossicità.
@@ -43,7 +45,7 @@ strutturali e trasformazioni metaboliche del composto.
 
 Una delle cause più comuni è la trasformazione metabolica dei composti in \textbf{metaboliti reattivi}, attraverso il fenomeno di "bioattivazione" \cite{houckUnderstandingMechanismsToxicity2008}.
 È importante sottolineare che molti composti richiedono questa 
-biotrasformazione per diventare tossici: se il sistema metabolico è 
+biotrasformazione per diventare tossici, quindi se il sistema metabolico è 
 assente o alterato, l'attività tossica potrebbe non essere rilevata nelle 
 fasi iniziali dello screening.
 
@@ -71,7 +73,7 @@ da rilevare nelle fasi precoci dello sviluppo farmacologico \cite{houckUnderstan
 L'impiego del Machine Learning in questo campo rappresenta un'importante svolta metodologica rispetto ai test empirici tradizionali \cite{yangPredictionEffectADMET2022}, poiché permette di processare grandi volumi di dati molecolari per prevederne il comportamento farmacocinetico con costi e tempi drasticamente ridotti, allargando il primo "collo di bottiglia" del processo di ricerca.
 
 Storicamente, i primi tentatici di razionalizzare le proprietà e l'attività biologica delle molecole si basava su metodi come \textit{quantitative structure-activity relationship} (QSAR) e \textit{structure-activity relationship} (SAR) \cite{liEnhancingADMETProperty2026a}.
-Tuttavia questi metodi presentavano un limite fondamentale: la necessità di una selezione manuale e di un'accurata rappresentazione delle \textit{feature} chimiche. %Approfondisci
+Tuttavia questi metodi presentavano un limite fondamentale: la necessità di una selezione manuale e di un'accurata rappresentazione delle \textit{feature} chimiche. %Approfondisci?
 Con l'avvento del ML classico, tuttavia, l'attenzione si è spostata verso l'uso di rappresentazioni come i \textit{chemical fingerprints}, che vengono presi come input da algoritmi come \textbf{Random Forest}, \textbf{Support Vector Machines}, \textbf{k-Nearest Neighbors} e \textbf{XGBoost}. 
 Questi ultimi hanno permesso di apprendere classificazioni complesse, trattando la molecola come un vettore binario che indica presenza/assenza di frammenti chimici, e raggiungendo risultati in modo veloce e con processi parzialmente interpretabili.
 Tuttavia, questi algoritmi ignorano la struttura tridimensionale e la connettività delle molecole, e le leggono invece come una sequenza di caratteristiche booleane, rendendo le interazioni tra frammenti vicini nello spazio ma lontani nella stringa di difficile predizione.
@@ -83,18 +85,16 @@ L'idea centrale è proprio quella di rappresentare la molecola come in un \textb
     \item Value viene processata da \textbf{ResNet-50}, una CNN in grado di estrarre immagini molecolari bidimensionali e catturare così la forma, la simmetria e l'arrangiamento degli atomi dei soggetti candidati. La rete viene preaddestrata su 10 milioni di molecole. Contruibuisce a circa il 22\% della contibuzione media finale.
     \item Key, infine, fa uso di \textbf{fingerprint MACCS}, composta da 166 bit che codifica l'occorrenza di gruppi chimici specifici. Contruibuisce a circa il 42\% della contibuzione media finale.
 \end{itemize}
-La funzione di punteggio di Attention è definita come segue:
-$$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
-La modalità Query "interroga" la modalità Key per determinare quali elementi siano più rilevanti all'interno del contesto corrente. Il risultato è infine un media pesata dalla modalità Value. Tradotto nell'ambito molecolare, la rappresentazione a grafo può interrogare le \textit{fingerprint} per comprendere al meglio quali siano le caratteristiche strutturali locali più coerenti con la topologia generale, mentre il risultato finale viene modulato dalle immagini estratte da ResNet. 
-%TO_DO interpretabilità e gradcam
-\cite{liEnhancingADMETProperty2026a}
+
+La modalità Query "interroga" la modalità Key per determinare quali elementi siano più rilevanti all'interno del contesto corrente. Il risultato è infine un media pesata dalla modalità Value. Tradotto nell'ambito molecolare, la rappresentazione a grafo può interrogare le \textit{fingerprint} per comprendere al meglio quali siano le caratteristiche strutturali locali più coerenti con la topologia generale, mentre il risultato finale viene modulato dalle immagini estratte da ResNet
+\cite{liEnhancingADMETProperty2026a}.
 
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[
-    node distance = 1.2cm and 1.0cm, 
+    node distance = 1.5cm and 1.0cm, 
     box/.style = {
-        rectangle, rounded corners=5pt,
+        rectangle, rounded corners = 2pt,
         minimum width=3.6cm, minimum height=1.6cm,
         text centered, font=\small
     },
@@ -147,5 +147,30 @@ contributo medio di ciascuna modalità alla predizione
 \label{fig:cma-attention}
 \end{figure}
 
-\section{Multimodalità e meccanismi di Attention}
-%\section{Modelli predittivi/GNN per la previsione della sicurezza}
+\section{Interpretabilità}
+Un aspetto critico della predizione moderna di proprietà sensibili è la \textbf{spiegabilità}, ovvero la capacità di interpretare perché un modello classifichi una molecola come tossica o difficilmente assorbibile \cite{liEnhancingADMETProperty2026a}.
+
+In ambito farmacologico, questa esigenza è particolarmente rilevante, dato che un modello che predice correttamente ma non è in grado di giustificare la propria decisione, offre scarso valore ai riceratori, che non possono 
+né validare biologicamente il risultato né guidare la modifica strutturale 
+del composto.
+
+Alcune tecniche di interpretabilità sono \textbf{Grad-CAM} e \textbf{SHAP}:
+
+\textbf{Grad-CAM}
+genera mappe di calore sulle rappresentazioni molecolari, evidenziando 
+le regioni strutturali che hanno maggiormente influenzato la predizione. 
+Applicato alla predizione della permeabilità della barriera 
+emato-encefalica ("blood-brain barrier", BBB), Grad-CAM ha mostrato come gruppi polari quali 
+ossidrili ($OH$) e carbossili ($COOH$) vengano identificati come 
+fattori che riducono la permeabilità, mentre le regioni aromatiche la 
+favoriscono. Questo risultato è coerente con le proprietà chimico-fisiche 
+note e che conferma la capacità del modello di apprendere 
+relazioni biochimicamente significative \cite{liEnhancingADMETProperty2026a}.
+
+\textbf{SHAP} (\textit{SHapley Additive exPlanations}) quantifica il contributo di ogni singola 
+feature alla predizione finale. 
+Nel contesto della predizione molecolare, 
+applicato a rappresentazioni come le Morgan fingerprints, SHAP permette 
+di identificare quali sottostrutture chimiche spingono la predizione verso 
+la tossicità o verso l'assorbibilità, producendo spiegazioni sia a livello 
+di singola molecola che aggregate sull'intero dataset.
