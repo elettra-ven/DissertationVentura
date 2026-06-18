@@ -9,7 +9,7 @@ Al giorno d'oggi, invece, sebbene la quasi totalità degli strumenti di laborato
 Risulta quindi necessaria, per sopperire a questa frammentazione di dati, una transizione verso una scienza più aperta, che integri l'implementazione di dati \textit{machine-actionable}, ovvero adatti all'automatizzazione computazionale.
 
 In questo contesto, la rappresentazione molecolare deve raggiungere un \textit{trade-off} tra completezza informativa e complessità. 
-Infatti, sebbene formati altamente strutturati, in grado di descrivere esaustivamente le properità chimiche, geometriche e funzionali delle molecole, si siano dimostrati ideali per modelli di ML, questi possono risultare estremamente onerosi per il lavoro dei chimici in laboratorio.
+Infatti, sebbene formati altamente strutturati, in grado di descrivere esaustivamente le proprietà chimiche, geometriche e funzionali delle molecole, si siano dimostrati ideali per modelli di ML, questi possono risultare estremamente onerosi per il lavoro dei chimici in laboratorio.
 
 Senza una rappresentazione standardizzata che rispetti i principi \textbf{FAIR} (\textit{Findable, Accessible, Interoperable, Reusable}), l'efficacia dei modelli di Machine Learning e Deep Learning nella previsione delle proprietà molecolari risulterebbe limitata dalla qualità del dato in ingresso \cite{jablonkaMakingCollectiveKnowledge2022}.
 
@@ -92,7 +92,7 @@ Nonostante la sua ampia diffusione, \textbf{SMILES} presenta criticità struttur
 \begin{itemize}
     \item Un primo limite della rappresentazione risiede nella \textbf{mancanza di univocità} che rende possibile la descrizione di una stessa molecola da molteplici stringhe diverse \cite{leonComparingSMILESSELFIES2024}.
     \item Inoltre, il sistema SMILES è soggetto a una notevole fragilità sintattica che può portare facilmente all'invalidazione delle stringe a causa di piccole mutazioni di caratteri singoli (come una parentesi non chiusa), che rendono il complesso privo di significato biologico. 
-    Tale vulnerabilità risulta particolarmente problematica nell'uso di \textbf{Language Model} e modelli generativi, i quali producono combinazioni casuali di simboli durante durante la campionatura dello spazio latente.
+    Questa vulnerabilità risulta particolarmente problematica nell'uso di \textbf{Language Model} e modelli generativi, i quali producono combinazioni casuali di simboli durante la campionatura dello spazio latente.
     \item Infine, la natura lineare delle stringhe non premette di raffigurare correttamente la conformazione tridimensionale della molecola e le sue complesse relazioni spaziali \cite{ucakReconstructionLosslessMolecular2023}.
 \end{itemize}
 
@@ -104,7 +104,7 @@ A differenza di SMILES, che è una notazione descrittiva, SELFIES è più simile
 I SELFIES sono racchiusi tra parentesi quadre e definiscono, tramite identificatori locali, le ramificazioni e gli anelli in un unico punto, specificandone la lunghezza tramite \textit{overloading}:
 
 Quando il modello incontra un token di ramificazione o di anello, i numeri immediatamente successivi vengono interpretati come dimensione della sottostruttura di riferimento \cite{leonComparingSMILESSELFIES2024}.
-In questo modo vengono evitati con successo variazioni indesiderate causate da riferimenti con indici lontani tra loro nella stringa. 
+In questo modo vengono evitate con successo variazioni indesiderate causate da riferimenti con indici lontani tra loro nella stringa. 
 
 Questa prorpietà rende i SELFIES particolarmente adatti per l'impiego in modelli generativi, poiché l'intero spazio latente esplorato da questi sarebbe composto da strutture chimicamente valide, che non richiederebbero ulteriori filtri o controlli. 
 
@@ -119,13 +119,13 @@ Questa prorpietà rende i SELFIES particolarmente adatti per l'impiego in modell
 
 Nonostante i vantaggi tecnici offerti dalle stringhe SELFIES in termini di robustezza, il sistema \textbf{SMILES} rimane comunque lo standard cheminformatico più popolare per diverse ragioni: 
 
-In particolare, la sintassi SELFIES e il suo meccanismo di overloading dei token risulta più difficile da interpretare visivamente e meno intuitivo per gli operatori umani \cite{leonComparingSMILESSELFIES2024}.
+In particolare, la sintassi SELFIES e il suo meccanismo di overloading dei token risultano più difficili da interpretare visivamente e meno intuitivi per gli operatori umani \cite{leonComparingSMILESSELFIES2024}.
 Inoltre, sorprendentemente, in alcuni task di classificazione, modelli basati su SMILES hanno mostrato di superare le controparti basate su SELFIES. Questo comportamento può essere dovuto al fatto che le SMILES, essendo più sensibili alla tokenizzazione (generano sequenze di token più brevi ed efficienti per la stessa molecola), permettono di catturare pattern unici, talvolta trascurati dai modelli SELFIES, che tendono invece a generalizzare eccessivamente le caratteristiche molecolari.
 
 Questa maggiore compattezza permette ad architetture come i \textbf{Transformer} di allocare la matrice di \textbf{attention} in modo più efficace, concentrandosi su un numero minore di unità informative \cite{leonComparingSMILESSELFIES2024}.
 
 \section{Fingerprint molecolari}
-I \textit{fingerprint} dall'altro canto adottano un approccio vettoriale: 
+I \textit{fingerprint} d'altro canto adottano un approccio vettoriale: 
 
 Come citato prima, la molecola viene decomposta in frammenti locali che vengono poi convertiti, tramite funzioni di hashing, in un formato \textit{machine-readable}, ovvero in un vettore numerico di lunghezza fissa (di solito pari a 1024 bit).
 Questi vettori codificano caratteristiche specifiche, come la presenza o l'assenza di determinate strutture (\textit{binary fingerprints}) o il numero di occorrenze di determinati pattern molecolari (\textit{count-based fingerprints}), permettendo agli algoritmi di ML di analizzare facilmente le molecole per task di \textit{Virtual Screening} e previsione di proprietà biologiche \cite{boldiniEffectivenessMolecularFingerprints2024}.
@@ -138,7 +138,7 @@ Esistono diverse categorie principali di fingerprint, suddivise in base al tipo 
     Questi fingerprints codificano il modo in cui la molecola interagisce con l'ambiente circostante, concentrandosi maggiormente sulle proprietà funzionali, piuttosto che sulla struttura anatomica esatta.
     \item Fingerprints "\textbf{Substructure-based}": Basati sulla presenza di sottostrutture chimiche predefinite. Questo tipo di fingerprints utilizza un "dizionario" di frammenti noti, precedentemente individuati da esperti.
     \item Fingerprints \textbf{Circolari}: Partendo da un atomo, l'algoritmo di fingerptint aggrega le informazioni degli atomi vicini tra loro entro un raggio crescente, di fatto scomponendo la molecola in frammenti sullo stesso arco.
-    Si tretta della tecnica più utilizzata per i modelli di Machine Learning, poiché è in grado di catturare informazioni sull'ambiente locale dell'atomo in modo strutturato ed esaustivo.
+    Si tratta della tecnica più utilizzata per i modelli di Machine Learning, poiché è in grado di catturare informazioni sull'ambiente locale dell'atomo in modo strutturato ed esaustivo.
 \end{itemize}
 
 \subsection{Esempi di fingerprints}
@@ -185,15 +185,15 @@ La rappresentazione a \textbf{grafo} contituisce l'approccio più intuitivo e fe
 
 La molecola viene rappresentata come un grafo non orientato  $G=(V,E)$ \cite{wangGraphNeuralNetworks2023}, in cui:
 \begin{description}
-    \item[Nodi ($V$):] Rappresentano gli atomi della molecola. 
-    \item[Archi ($E$):] Rappresentano i legami chimici interatomici.
+    \item[$V$ (Nodi):] Rappresentano gli atomi della molecola. 
+    \item[$E$ (Archi):] Rappresentano i legami chimici interatomici.
 \end{description}
 
 Tale struttura permette di codificare direttamente la topologia (informazioni bidimensionali, come i legami covalenti) e la connettività della molecola (la geometria, le informazioni tridimensionali), trasformando le proprietà del composto in \textbf{matrici} elaborabili da modelli di Intelligenza Artificiale. 
 
-Per essere interpretata dai computer, la struttura del grafo viene convertita in matrici, convertendo così la informazioni chimiche in un linguaggio matematico adatto ad essere appresso dai modelli \cite{wangGraphNeuralNetworks2025}.
+Per essere interpretata dai computer, la struttura del grafo viene convertita in matrici, convertendo così la informazioni chimiche in un linguaggio matematico adatto ad essere appreso dai modelli \cite{wangGraphNeuralNetworks2025}.
 
-Questa rappresentazione è il prilastro fondamentale per le \textbf{GNN (Graph Neural Networks)}, argomento che verrà affrontato nel prossimo capitolo.
+Questa rappresentazione è il pilastro fondamentale per le \textbf{GNN (Graph Neural Networks)}, argomento che verrà affrontato nel prossimo capitolo.
 
 \begin{figure}
     \centering
@@ -207,7 +207,7 @@ Questa rappresentazione è il prilastro fondamentale per le \textbf{GNN (Graph N
 L'\textbf{embedding molecolare} è un'operazione fondamentale nella ricerca farmaceutica.
 Questo processo consiste nel trasformare le informazioni relative al contesto strutturale e chimico di una molecola in una \textbf{rappresentazione numerica}, tipicamente sotto forma di vettori densi ad alta dimensione. 
 
-Questa pratica si basa su un'ipotesi di base: \textbf{tutte le molecole strutturalmente simili, presentano comportamenti e proprietà altrettanto simili}.  Seguendo questa ipotesi, l'embeddig cerca di mappare queste molecole in punti vicini nello spazio vettoriale \cite{sadeghiCanLargeLanguage2024}.
+Questa pratica si basa sulla seguente ipotesi: \textbf{tutte le molecole strutturalmente simili, presentano comportamenti e proprietà altrettanto simili}.  Seguendo questa ipotesi, l'embeddig cerca di mappare queste molecole in punti vicini nello spazio vettoriale \cite{sadeghiCanLargeLanguage2024}.
 
 I vettori di embedding possono essere generati principalmente in due modi distinti:
 \begin{itemize}
@@ -274,7 +274,7 @@ Il modello si divide in due fasi principali:
 \begin{enumerate}
     \item \textbf{Evoformer:} Primo modulo incaricato della previsione della struttura. Si approccia al problema computazionale interpretandolo come un \textbf{problema di inferenza di grafi} nello spazio tridimensionale. Tiene traccia degli amminoacidi propensi a mutare insieme, e a creare quindi strutture di avvolgimento complesse, tramite \textbf{Multiple Sequence Alignments} o \textbf{MSA}. Queste sono collezioni di sequenze di proteine omologhe allineate tra loro in un array bidimensionale, la cui analisi risulta utile per la previsone di coordinazioni tra amminoacidi e siti di ripiegamento proteico \cite{jumperHighlyAccurateProtein2021}.
     \item \textbf{Modello di Struttura:} Trasforma le informazioni ricavate dall'Evoformer in coordinate 3D reali. Ogni amminoacido è trattato come un corpo rigido indipendente, o "residue gas", che può ruotare e traslare nello spazio fino ad assumere la sua posizione "corretta" all'interno della conformazione della catena proteica.
-    Viene usato un meccanismo di \textbf{Attenzione} (\textbf{Invariant Point Attentio, o IPA}) le cui iterazioni raffinano le informazioni spaziali degli elementi.
+    Viene usato un meccanismo di \textbf{Attenzione} (\textbf{Invariant Point Attention, o IPA}) le cui iterazioni raffinano le informazioni spaziali degli elementi.
 \end{enumerate}
 
 \begin{figure}
