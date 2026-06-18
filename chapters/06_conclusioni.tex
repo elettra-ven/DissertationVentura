@@ -82,11 +82,11 @@ SMOTE (\textit{Synthetic Minority Over-sampling Technique}) e sampling randomico
 ma non lo risolvono alla radice, che risiede nella natura 
 stessa dei dati sperimentali disponibili. Infatti, visto che i dataset forniti includono spesso solo interazioni note, trattando tutte le altre coppie come negative, le metriche di validazione della classificazione, ad esempio AUROC (\textit{Area Under the Receiver Operating Characteristic curve}), possono risultare "gonfiate" artificialmente, portando a scarse prestazioni \cite{ahmadMachineLearningDrugtarget2026}.
 
-L'\textbf{interpretabilità} dei modelli deep learning 
-rappresenta infine un requisito necessario per 
+Infine, come menzionato in precedenza, l'\textbf{interpretabilità} dei modelli deep learning 
+rappresenta un requisito necessario per l'approvazione e 
 l'adozione clinica \cite{wangUnifiedSurveyDrugtarget2026a}. 
 Le mappe di \textit{Attention}, soprattutto nel contesto di predizione ADMET, hanno aperto la strada alla validazione biologica 
-delle predizioni, ma rimangono processi non investigabili e difficili da seguire nella loro esecuzione (per questo vengono definiti "Black Box").
+delle predizioni, ma rimangono processi non investigabili e difficili da seguire nella loro esecuzione "Black Box".
 
 La mancanza di spiegazioni trasparenti ostacola l'accettazione dei medicinali individuati da parte delle aziende regolatorie.
 
@@ -96,14 +96,14 @@ I metodi
 computazionali studiati non hanno sostituito la validazione 
 sperimentale, ma l'hanno resa più mirata, riducendo 
 drasticamente lo spazio di ricerca da esplorare in 
-laboratorio, concentrando le risorse sui candidati più promettenti, invece che limitarsi a eliminare l'incertezza dei dati biologici.
+laboratorio, concentrando le risorse sui candidati più promettenti, invece di limitarsi a eliminare l'incertezza dei dati biologici.
 
 I casi di studio descritti suggeriscono che i progressi 
 futuri più significativi non deriveranno 
 dall'affinamento di singole architetture, ma dalla capacità di scegliere la combinazione più appropriata
 di rappresentazione e modello in funzione della natura del problema:
 
-In particolare le architetture di tipo \textbf{ibrido} (come TC-DTA) si dimostrano ideali per fornire un buon compromesso tra l'efficienza di predizione e l'accuratezza della rappresentazione. Infatti, la multimodalità permette di separare l'elaborazione computazionale del farmaco da quella del target, fornendo rappresentazioni diverse e ottimizzando la raccolta delle informazioni (per esempio, le CNN colgono pattern locali su sequenze brevi come le SMILES, mentre i Transformer catturano le dipendenze a lungo raggio necessarie per le sequenze proteiche, ben più estese).
+In particolare le architetture di tipo \textbf{ibrido} (come TC-DTA) si dimostrano ideali per fornire un buon compromesso tra l'efficienza di predizione e l'accuratezza della rappresentazione. Infatti, queste combinazioni permettono di separare l'elaborazione computazionale del farmaco da quella del target, fornendo rappresentazioni diverse e ottimizzando la raccolta delle informazioni (per esempio, le CNN colgono pattern locali su sequenze brevi come le SMILES, mentre i Transformer catturano le dipendenze a lungo raggio necessarie per le sequenze proteiche, ben più estese).
 
 Inoltre, la crescente 
 disponibilità di dati biologici annotati, unita 

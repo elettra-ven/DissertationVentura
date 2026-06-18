@@ -151,8 +151,6 @@ Le \textbf{MACCS key (Molecular Access System)}, invece, si basano su un approcc
 Sono rappresentate da un vettore binario da \textbf{166} bit di lunghezza. Ognuno di questi bit codifica la assenza/presenza ({0,1}) di una specifica caratteristica strutturale, definita tramite i pattern \textbf{SMARTS} (SMILES Arbitrary Target 
 Specification) \cite{boldiniEffectivenessMolecularFingerprints2024} \cite{ucakReconstructionLosslessMolecular2023} che identificano, all'interno del dizionario, frammenti, gruppi funzionali o motivi molecolari.
 
-Le stringhe SMILES vengono quindi utilizzate per costruire la sintassi dei fingerprints MACCS key, rendendo la rappresentazione della molecola più estesa e arricchita, e con maggiori dettagli sulla struttura.
-
 \begin{lstlisting}[language=Python, caption={Estrazione delle MACCS Keys tramite RDKit}, label={lst:maccs_code}]
     from rdkit import Chem
     from rdkit.Chem import MACCSkeys
@@ -177,8 +175,8 @@ Le stringhe SMILES vengono quindi utilizzate per costruire la sintassi dei finge
 
 Nonostante i fingerprint molecolari offrano diversi vantaggi significativi rispetto alle rappresentazioni lineari, specialmente in termini di efficienza computazionale e interpretabilità, questi presentano una perdita di informazioni non trascurabile durante il loro processo di codifica \textit{hashing}, soprattutto per quanto riguarda i dati sulla connettività dei frammenti \cite{ucakReconstructionLosslessMolecular2023}.
 È quindi necessario risalire a una \textbf{ricostruzione lossless} (senza perdita di informazioni), invertendo la traduzione dei fingerprint.
-Si tratta di un processo computazionale basato sull'architettura \textbf{Transformer}, che viene utilizzata come un sistema di traduzione in grado di apprendere le dipendenze globali tra input (i bit del fingerprint) e output (token di stringhe molecolari molecolare), grazie al meccanismo di \textit{multi-head attention}
-Il modello riesce quindi a decodificare i fingerprint strutturali riconducendoli a rappresentazioni lineari univoche (SMILES o SELFIES) \cite{ucakReconstructionLosslessMolecular2023}.
+Si tratta di un processo computazionale basato sull'architettura \textbf{Transformer}, che viene utilizzata come un sistema di traduzione in grado di apprendere le dipendenze globali tra input (i bit del fingerprint) e output (token di stringhe molecolari molecolare), grazie al meccanismo di \textit{multi-head attention}.
+Il modello riesce quindi a decodificare i fingerprint strutturali riconducendoli a rappresentazioni lineari (SMILES o SELFIES) \cite{ucakReconstructionLosslessMolecular2023}.
 
 \section{Rappresentazione a grafo}
 La rappresentazione a \textbf{grafo} contituisce l'approccio più intuitivo e fedele alla realtà fisica per la digitalizzazione delle strutture chimiche, superando i limiti informativi delle notazioni lineari e minimizzando la perdita di dati.
