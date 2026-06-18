@@ -520,20 +520,19 @@ stato dell'intera molecola \cite{wangGraphNeuralNetworks2023}.
 
 In generale, nel contesto di drug discovery le GNN stanno rivoluzionando
 il concetto di tradizionale \textbf{Computer-Aided Drug Design} (CADD),
-trasformando il processo in una ricerca automatizzata.
-Queste architetture consentono di esplorare lo spazio chimico per generare
-e ottimizzare (come nella \textit{Lead Optimization}) nuove entità
-molecolari, apportando migliorie nelle proprietà desiderate, come
+trasformando il processo in una ricerca sempre più automatizzata.
+Queste architetture, grazie alla loro accurata rappresentazione della topologia molecolare, consentono di esplorare lo spazio chimico per generare
+e ottimizzare (come nella \textit{Lead Optimization}) nuove entità, apportando migliorie nelle proprietà desiderate, come
 bioattività, stabilità e sintetizzabilità.
 Queste permettono anche uno studio precoce di proprietà ADMET e della tossicità,
 portando a una riduzione drastica di fallimenti nei test clinici
 \cite{wangGraphNeuralNetworks2025}.
 
-Nel contesto del problema computazionale DTI/DTA, le GNN risultano fondamentali nello screening virtuale per prevedere con efficienza le affinità di legame tra farmaci e target attraverso l'implementazione di architetture a doppia branca (\textit{dual-branch}). In questo paradigma, il problema predittivo viene convertito in un compito di fusione di informazioni estratte in parallelo da due grafi distinti:
+Nel contesto del problema computazionale DTI/DTA, le GNN risultano fondamentali nello screening virtuale per prevedere con efficienza le affinità di legame tra farmaci e target attraverso l'implementazione di architetture ramificate (\textit{dual-branch}). In questo paradigma, il problema predittivo viene convertito in un compito di fusione di informazioni estratte in parallelo da due grafi distinti:
 
 \begin{itemize}
-    \item \textbf{Branca del Farmaco ($d$):} La piccola molecola viene convertita in un grafo molecolare in cui gli atomi rappresentano i nodi (caratterizzati da proprietà chimiche come numero atomico, valenza, ecc...) e i legami chimici costituiscono gli archi. Algoritmi come le \textit{Graph Convolutional Networks} (GCN) scansionano questa struttura per estrarre pattern locali e stereochimici stabili.
-    \item \textbf{Branca del Target ($t$):} La proteina viene modellata come un grafo di contatto dei residui. In questa struttura, i nodi rappresentano i singoli amminoacidi, mentre gli archi vengono tracciati tra nodi la cui distanza euclidea nello spazio 3D è inferiore a una determinata soglia, preservando la topologia del sito di legame \cite{ahmadMachineLearningDrugtarget2026}.
+    \item \textbf{Ramo del Farmaco ($d$):} La piccola molecola viene convertita in un grafo molecolare in cui gli atomi rappresentano i nodi (caratterizzati da proprietà chimiche come numero atomico, valenza, ecc...) e i legami chimici costituiscono gli archi. Algoritmi come le \textit{Graph Convolutional Networks} (GCN) scansionano questa struttura per estrarre pattern locali e stereochimici stabili.
+    \item \textbf{Ramo del Target ($t$):} La proteina viene modellata come un grafo di contatto dei residui. In questa struttura, i nodi rappresentano i singoli amminoacidi, mentre gli archi vengono tracciati tra nodi la cui distanza euclidea nello spazio 3D è inferiore a una determinata soglia, preservando la topologia del sito di legame \cite{ahmadMachineLearningDrugtarget2026}.
 \end{itemize}
 
 Una volta che i messaggi sono stati propagati all'interno delle rispettive strutture, le operazioni di \textit{readout} generano \textbf{due vettori di feature ad alta dimensionalità}. Questi vettori vengono successivamente combinati all'interno di un modulo di interazione, spesso arricchito da meccanismi di attenzione (\textit{Graph Attention Networks} - GAT) per pesare l'importanza relativa dei vari atomi e residui nel complesso farmaco-bersaglio \cite{ozsariDTAGNNToolkitConstructing2026}. Il vettore risultante viene infine processato da strati \textit{Fully Connected} per mappare l'interazione nell'output finale $y$, traducendosi in una classificazione booleana per i task di DTI o in un valore continuo di affinità ($K_d$, $K_i$, $IC_{50}$) per i task di DTA.

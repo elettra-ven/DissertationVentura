@@ -259,6 +259,31 @@ ISPSDRVKLFPHRNSSKCKSKPQIAALKEETEEEVQDTRL
 
 \end{lstlisting}
 
+\subsection{AlphaFold}
+La rappresentazione unidimensionale delle sequenze amminoacidiche non è sufficiente a spiegare in modo esaustivo la conformazione e il ripiegamento tridimensionale delle proteine target.
+
+Queste proprietà strutturali sono essenziali per capire al meglio le caratteristiche e i siti di legame del bersaglio, e si rende quindi necessario l'utilizzo di tools in grado di predirle.
+
+Uno di questi strumenti è proprio \textbf{AlphaFold}, citata nel capitolo di introduzione come uno dei casi più eclatanti di un dialogo di successo tra informatica e biochimica:
+
+
+Viene sfruttata un'architettura a rete neurale per integrare le nozioni chimico-fisiche e biologiche all'interno dell'insieme di regole di conformazione delle proteine.
+La rete prende in input una sequenza FASTA e la processa per ricercare le zone con avvolgimento più alto, le quali determinano la complessità della struttura.
+
+Il modello si divide in due fasi principali:
+\begin{enumerate}
+    \item \textbf{Evoformer:} Primo modulo incaricato della previsione della struttura. Si approccia al problema computazionale interpretandolo come un \textbf{problema di inferenza di grafi} nello spazio tridimensionale. Tiene traccia degli amminoacidi propensi a mutare insieme, e a creare quindi strutture di avvolgimento complesse, tramite \textbf{Multiple Sequence Alignments} o \textbf{MSA}. Queste sono collezioni di sequenze di proteine omologhe allineate tra loro in un array bidimensionale, la cui analisi risulta utile per la previsone di coordinazioni tra amminoacidi e siti di ripiegamento proteico \cite{jumperHighlyAccurateProtein2021}.
+    \item \textbf{Modello di Struttura:} Trasforma le informazioni ricavate dall'Evoformer in coordinate 3D reali. Ogni amminoacido è trattato come un corpo rigido indipendente, o "residue gas", che può ruotare e traslare nello spazio fino ad assumere la sua posizione "corretta" all'interno della conformazione della catena proteica.
+    Viene usato un meccanismo di \textbf{Attenzione} (\textbf{Invariant Point Attentio, o IPA}) le cui iterazioni raffinano le informazioni spaziali degli elementi.
+\end{enumerate}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/alphafold_pipeline.png}
+    \caption{Schema semplificato della rete neurale di AlphaFold. Adattato e modificato dall'opera originale di Jumper et al. (2021), disponibile in Open Access sotto licenza Creative Commons Attribution 4.0 International (\url{http://creativecommons.org/licenses/by/4.0/}).}
+    \label{fig:alphafold}
+\end{figure}
+
 
 
 
