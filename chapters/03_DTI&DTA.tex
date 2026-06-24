@@ -1,11 +1,11 @@
-\chapter{DTI e DTA:Predizione delle interazioni Farmaco-Bersaglio}
+\chapter{DTI e DTA: Predizione delle interazioni Farmaco-Bersaglio}
 
 \section{Il problema computazionale}
 
 Una delle fasi più complesse della pipeline è la corretta predizione delle
 interazioni biochimiche tra il target (precedentemente identificato nella fase di
 \textit{target prediction}) e i possibili farmaci candidati.
-Tradizionalmente affrontata tramite costosi esperimenti di laboratorio (\textit{wet-lab}) questa fase può essere ricondotta a un problema computazionale ben definito: determinare se, e con quale intensità, una determinata piccola molecola $d$ è in grado di legarsi e interagire con una proteina target $t$.
+Tradizionalmente affrontata tramite costosi esperimenti di laboratorio (\textit{wet-lab}) questa fase può essere ricondotta a un problema computazionale ben definito: determinare se, e con quale intensità, una piccola molecola $d$ è in grado di legarsi e interagire con una proteina target $t$.
 
 Dal punto di vista dell'apprendimento automatico, il problema viene formalizzato attraverso una \textbf{funzione di interazione} (o funzione
 di \textbf{scoring}).
@@ -14,16 +14,9 @@ di \textbf{scoring}).
     f(d,t) \xrightarrow{} y
 \end{equation}
 
-Che mappa la coppia farmaco-target $(d, t)$ in un esito di interazione $y$.
-L'algoritmo ha il compito di filtrare lo spazio chimico come segue:
+Quest'ultima mappa la coppia farmaco-target $(d, t)$ in un esito di interazione $y$.
 
-data una proteina $t$ (\textit{target}), il modello esplora un dataset
-massivo di sequenze molecolari $\{d_1,d_2,...,d_n\}$ per identificare
-quelle che massimizzano la \textbf{funzione di scoring}.
-Questi valori calcolati permettono di creare un \textit{ranking} dei
-potenziali composti candidati e delle interazioni più potenzialmente
-efficaci.
-Questo processo è il passaggio cruciale della ricerca farmacologica
+Questo processo rappresenta la trasformazione della ricerca farmacologica
 moderna da problema sperimentale biochimico a problema di
 \textbf{ottimizzazione} e ricerca in uno \textbf{spazio latente} a
 dimensionalità alta.
@@ -52,6 +45,7 @@ farmaco e proteina-bersaglio \cite{mondalAIdrivenDrugTarget2026a}.
 Il modello restituisce un valore continuo $\in \mathbb{R}$ corrispondente a parametri biologici (misurabili sperimentalmente) come la
 \textbf{costante di dissociazione} ($K_d$), la \textbf{costante di
 inibizione} ($K_i$) o la \textbf{concentrazione inibente} ($IC_{50}$).
+
 Una volta calcolati, questi valori vengono convertiti in scala logaritmica
 per ridurre la varianza e stabilizzare la convergenza durante la fase di \textit{training} dei
 modelli di Deep Learning \cite{kumarPredictingDrugtargetInteractions2026a}.
@@ -97,10 +91,10 @@ sfruttano questa struttura per costruire dei classificatori \textit{locali}
 specifici per ogni nodo della rete.
 A differenza di modelli globali che analizzano la rete nella sua interezza,
 il BLM addestra un classificatore separato per ogni farmaco e ogni target,
-rifacendosi alle interazioni nel \textit{neighbourhood} del nodo come
+rifacendosi alle interazioni conosciute nel \textit{neighbourhood} del nodo come
 segnale supervisionato. Questa strategia permette di catturare pattern
 specifici dei protagonisti dell'interazione, che i modelli globali
-generalizzerebbero eccessivamente.
+generalizzerebbero eccessivamente \cite{mondalAIdrivenDrugTarget2026a}.
 
 
 \section{Metodologie di Predizione}
