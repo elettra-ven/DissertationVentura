@@ -24,7 +24,7 @@ dimensionalità alta.
 A seconda della natura dell'output $y$, il problema può essere articolato in due formulazioni principali:
 \begin{itemize}
     \item \textbf{Classificazione Binaria} \{0,1\}, se il modello
-    fornisce un output booleano, che indica la assenza/presenza di
+    fornisce un output booleano, che indica l'assenza/presenza di
     interazione con il target \cite{mondalAIdrivenDrugTarget2026a}.
     \item \textbf{Regressione}, se il modello ritorna un valore continuo
     che quantifica la forza di legame, ovvero la
@@ -109,18 +109,17 @@ cui si basano:
     \item I metodi \textbf{ligand-based}, tra cui rientrano i modelli
     \textbf{QSAR (\textit{Quantitative Structure-Activity Relationship})},
     che associano le proprietà strutturali di un determinato composto con
-    la sua attività biologica.
-    Storicamente implementati tramite modelli lineari, i modelli QSAR si
+    la sua attività biologica. Storicamente implementati tramite modelli lineari, i modelli QSAR si
     sono nel tempo evoluti verso modelli di ML e DL di complessità ed
     efficienza maggiore, rimanendo comunque di natura \textit{ligand-based}.
     Anche la \textbf{modellazione farmacoforica} fa parte di questa
     categoria, e serve ad identificare le caratteristiche strutturali
     minime di un composto per ottenere l'interazione desiderata con il
-    bersaglio, stringendo il cerchio di possibili candidati (risulta
+    bersaglio, restringendo il campo dei possibili candidati (risulta
     particolarmente utile nei casi in cui la struttura 3D della proteina
     non è ricavabile \cite{mondalAIdrivenDrugTarget2026a}).
     \item I metodi \textbf{structure-based} che, al contrario dei
-    precedenti, richiedono la conoscenza della struttura 3D della proteina
+    precedenti, richiedono la conoscenza della configurazione tridimensionale della proteina
     target, al fine di simulare l'interazione chimica. Il rappresentante
     principale di questa categoria è il \textbf{docking molecolare},
     che verrà trattato nella sezione successiva (\cref{subsec:docking}).
@@ -140,34 +139,37 @@ cui si basano:
 Come menzionato precedentemente, i modelli computazionali per la predizione delle interazioni farmaco-bersagio si dividono in due paradigmi:
 I metodi \textbf{ligand-based}, che operano unicamente sulle proprietà
 chimiche del farmaco, e i metodi \textbf{structure-based},
-che richiedono la conoscenza della struttura tridimensionale
-del target \cite{ahmadMachineLearningDrugtarget2026}. I primi sono preferiti quando la struttura proteica
-non è disponibile; i secondi offrono una comprensione più profonda dell'interazione, ma richiedono una rappresentazione più complessa e informazioni aggiuntive sui composti.
+che cercano di replicare l'interazione reale del legame \cite{ahmadMachineLearningDrugtarget2026}. 
+
+I primi sono preferiti quando la struttura proteica
+non è disponibile, mentre i secondi offrono una comprensione più profonda dell'interazione, ma richiedono una rappresentazione più complessa e informazioni aggiuntive sui composti.
 
 \subsubsection{QSAR e modelli farmacoforici}
-I modelli \textbf{QSAR} (\textit{Quantitative Structure-Activity Relationship}) stabiliscono una relazione matematica (di tipo statistico) tra i descrittori delle proprietà chimiche di un composto e la sua attività biologica di ligazione \cite{mondalAIdrivenDrugTarget2026a}.
+I modelli \textbf{QSAR} (\textit{Quantitative Structure-Activity Relationship}) stabiliscono una relazione matematica (di tipo statistico) tra i descrittori delle proprietà chimiche di un composto e la sua attività biologica di legame \cite{mondalAIdrivenDrugTarget2026a}.
 
-Si basano spesso su un principio di \textbf{somiglianza chimica} ("\textit{guilt-by-association}"), per il quale molecole tra loro strutturalmente simili tendono a mostrare attività biologiche affini \cite{mondalAIdrivenDrugTarget2026a}.
-Per predire correttamente la somiglianza, il modello tradizionalmente utilizza regressioni lineari noti per la loro semplicità e interpretabilità. Per far ciò però, è necessario tradurre le molecole in parametri quantitativi da poter usare come \textit{feature} nella predizione \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
-Questi \textbf{descrittori molecolari} sono essenziali per caratterizzare correttamente la struttura e il comportamento dei composti e possono essere "estratti" dalle rappresentazioni molcolari in modi diversi:
+Si basano spesso su un principio di \textbf{somiglianza chimica} (\textit{guilt-by-association}) per il quale molecole tra loro strutturalmente simili tendono a mostrare attività biologiche affini \cite{mondalAIdrivenDrugTarget2026a}.
+Per predire correttamente la somiglianza, il modello tradizionalmente utilizza regressioni lineari, note per la loro semplicità e interpretabilità. Per far ciò però, è necessario tradurre le molecole in parametri quantitativi da poter usare come \textit{feature} nella predizione \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
+Questi \textbf{descrittori molecolari} sono essenziali per caratterizzare correttamente la struttura e il comportamento dei composti e possono essere "estratti" dalle rappresentazioni molecolari in modi diversi:
 \begin{itemize}
-    \item Estrazione classica di \textbf{descrittori "hand-crafted"}, in cui vengono usati software specializzati (RDKit, PaDEL-Descriptor, ecc... \cite{ahmadMachineLearningDrugtarget2026}) modellati secondo regole chimiche predefinite. Queste \textit{features} vengono classificate in base alla loro dimensionalità \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
+    \item Estrazione classica di \textbf{descrittori "hand-crafted"}, che fa uso di software specializzati (RDKit, PaDEL-Descriptor, ecc... \cite{ahmadMachineLearningDrugtarget2026}) modellati secondo regole chimiche predefinite. Queste \textit{features} vengono classificate in base alla loro dimensionalità \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
     \begin{itemize}
         \item \textbf{0D e 1D:} derivano dalla formula molecolare e sono tipicamente un semplice conteggio dei gruppi funzionali più rilevanti.
         \item \textbf{2D:} descrittori topologici, sono estratti solitamente da rappresentazioni a grafo e descrivono la connettività e la ramificazione di questo.
         \item \textbf{3D:} descrivono il volume, l'area superficiale, i potenziali elettrostatici e altre caratteristiche spaziali e geometriche.
         \item \textbf{Di dimensionalità superiore:} integrano informazioni aggiuntive come la flessibilità di conformazione del ligando, l'adattamento strutturale del target e l'effetto del solvente sulle interazioni molecolari.
-        \item \textbf{Molecular Fingerprints:} unico caso in cui non è necessaria un'estrazione, la rappresentazione a vettore binario è sufficiente per descrivere in modo dettagliato i pattern complessi.
+        \item \textbf{Molecular Fingerprints:} unico caso in cui non è richiesta un'estrazione manuale basata su regole chimiche, la rappresentazione a vettore binario è sufficiente per descrivere in modo dettagliato i pattern complessi.
     \end{itemize}
-    \item \textbf{Deep Representation Learning}, che sfrutta algoritmi di Deep Learning per apprendere i predittori ("deep descriptors") a partire dalle rappresentazioni. Per esempio, vengono usate le CNN per estrarre pattern chimici dalle stringe testuali SMILES/SELFIES, oppure vengono usati modelli linguistici (PLM) per cogliere descrittori ad alta dimensione dopo un addestramento su dataset di sequenze rappresentative \cite{ahmadMachineLearningDrugtarget2026} \cite{koiralaAIIntegratedQSARModeling2025}. La Deep Representation Learning è alla base dell'utilizzo di DL per i task di DTI e DTA, come vedremo più nel dettaglio nelle sezioni successive.
+    \item \textbf{Deep Representation Learning}, che sfrutta algoritmi di Deep Learning per apprendere i predittori ("deep descriptors") a partire dalle rappresentazioni. Per esempio, vengono usate le CNN per estrarre pattern chimici dalle stringhe testuali SMILES/SELFIES, oppure vengono usati modelli linguistici (PLM) per cogliere descrittori ad alta dimensione dopo un addestramento su dataset di sequenze rappresentative \cite{ahmadMachineLearningDrugtarget2026} \cite{koiralaAIIntegratedQSARModeling2025}. La Deep Representation Learning è alla base dell'utilizzo di DL per i task di DTI e DTA, come vedremo più nel dettaglio nelle sezioni successive.
 \end{itemize}
 
-Il limite dei modelli QSAR rimane legato ai limiti della regressione lineare (o più semplicemente ai limiti di un task basato su relazioni di somiglianza), ovvero l'affidabilità del modello è circoscritta al dominio di applicabilità \cite{ahmadMachineLearningDrugtarget2026} definito dal \textit{training set}. Non è garantita la qualità su set di dati nuovi e mai visti prima dal modello.
+Il limite dei modelli QSAR rimane legato ai vincoli della regressione lineare o, più in generale, ai limiti di un task basato su relazioni di somiglianza:
+
+l'affidabilità del modello è circoscritta al \textbf{dominio di applicabilità} \cite{ahmadMachineLearningDrugtarget2026} definito dal \textit{training set}. Non è garantita la qualità su set di dati nuovi, mai visti prima dal modello.
 
 I \textbf{Modelli Farmacoforici} complementano il QSAR con una visione geometrica dell'interazione.
-Sono definiti come una rappresentazione astratta della disposizione spaziale e delle caratteristiche \textbf{stereoelettroniche} (combinazione tra le geometria tridimensionale e le proprietà di carica della molecola) di una molecola \cite{kohlbacherApplicationsNovelQuantitative2022}.
-Queste carattertistiche sono necessarie per il riconoscimento della molecola da parte del target definendo le "condizioni indispensabili" dirette per formare un legame.
-Una volta identificate le proprietà, queste vengono modellate come sfere o vettori in uno spazio tridimensionale, fornendo una "mappa" del sito di legame.
+Essi sono definiti come una rappresentazione astratta della disposizione spaziale e delle caratteristiche \textbf{stereoelettroniche} (combinazione tra le geometria tridimensionale e le proprietà di carica della molecola) di un composto \cite{kohlbacherApplicationsNovelQuantitative2022}.
+Queste caratteristiche sono necessarie per il riconoscimento della molecola da parte del target, definendo le "condizioni indispensabili" dirette per la formazione di un legame.
+Una volta identificate, queste proprietà vengono modellate come sfere o vettori in uno spazio tridimensionale, fornendo una "mappa" del sito di legame.
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{figures/farmacoforo_img.png}
@@ -178,19 +180,18 @@ Una volta identificate le proprietà, queste vengono modellate come sfere o vett
 \subsubsection{Docking molecolare}
 \label{subsec:docking}
 Il \textbf{docking molecolare} è il principale metodo \textit{structure-based} per la predizione dell'affinità farmaco-bersaglio.
-Il suo funzionamento si basa sulla simulazione del posizionamento del ligando all'interno del sito di legame, in modo da cercare la conformazione più favorevole \cite{fanProgressMolecularDocking2019}. Per questo, a differenza dei metodi \textit{ligand-based} ha bisogno di conoscere la struttura tridimensionale della proteina target.
-
+Il suo funzionamento si basa sulla simulazione del posizionamento del ligando all'interno del sito di legame, in modo da cercare la conformazione più favorevole \cite{fanProgressMolecularDocking2019}.
 Il processo si articola in due fasi distinte \cite{ahmadMachineLearningDrugtarget2026}:
 
-Per prima vi è la fase di \textbf{pose prediction}, in cui viene esplorato lo spazio di conformazione del ligando attraverso \textbf{algoritmi di ricerca} (per esempio il \textit{simulated annealing} con AutoDock).
+La prima è la fase di \textbf{pose prediction}, in cui viene esplorato lo spazio di conformazione del ligando attraverso \textbf{algoritmi di ricerca} (per esempio il \textit{simulated annealing} con AutoDock).
 
-Succede poi la fase di \textbf{scoring} in cui vengono valutate e classificate le pose tramite l'apposita funzione, che pesa i contributi delle interazioni tra gruppi chimici.
+Segue poi la fase di \textbf{scoring} in cui vengono valutate e classificate le pose tramite l'apposita funzione, che pesa i contributi delle interazioni tra gruppi chimici.
 
 A seconda della flessibilità delle molecole, inoltre, il Docking viene suddiviso in tre tipologie di classi \cite{fanProgressMolecularDocking2019}:
 \begin{itemize}
     \item \textbf{Rigid Docking:} in cui entrambe le entità del legame sono fisse (viene di solito utilizzata per le macromolecole).
     \item \textbf{Flexible-Rigid Docking:} in cui il recettore è fisso mentre il ligando è flessibile.
-    \item \textbf{Flexible Docking:} o "Soft" Doking, dove entrambi i componenti sono flessibili. Sono docking più precisi ma con un costo computazionale decisamente maggiore, dato che richiedono la mappatura di tutte le configurazioni possibili.
+    \item \textbf{Flexible Docking:} o "Soft" Docking, dove entrambi i componenti sono flessibili. Sono docking più precisi ma con un costo computazionale decisamente maggiore, dato che richiedono la mappatura di tutte le configurazioni possibili.
 \end{itemize}
 
 \begin{figure}[h]
@@ -203,10 +204,9 @@ A seconda della flessibilità delle molecole, inoltre, il Docking viene suddivis
 Il limite principale del Docking tradizionale risiede proprio nella sua scarsa scalabilità, una conseguenza diretta dell'elevato costo computazionale richiesto.
 
 La spesa in termini di tempo e risorse per la simulazione di una singola coppia ligando-recettore rende infatti questo approccio inadatto ad analisi su librerie di composti massive, che costituiscono invece il dominio operativo dei problemi di DTA.
-Per questo motivo si scelgono algoritmi in grado di "passare in rassegna" dataset molto grandi in modo efficiente, e si fanno uso sempre di più di tecniche AI-enhanced e di Machine Learning.
+Per questo motivo si scelgono algoritmi in grado di "passare in rassegna" dataset molto grandi in modo efficiente, e si fa un uso sempre maggiore di tecniche AI-enhanced e di Machine Learning.
 
 \section{Machine Learning Classico}
-
 Le metodologie computazionali per la predizione di interazioni
 farmaco-target hanno seguito un processo evolutivo motivato dalle
 limitazioni riportate dalle generazioni precedenti.
@@ -216,7 +216,7 @@ e conoscenze scientifiche degli esperti di laboratorio.
 
 \subsection{Modelli lineari}
 
-I modelli di ML tradizionale cercano di stabilire una relazione matematica diretta e proporzionale tra le variabili predittrici di una molecola e la sua attività biologica.
+I modelli di ML tradizionale di tipo lineare cercano di stabilire una relazione matematica diretta e proporzionale tra le features di una molecola e la sua attività biologica.
 
 Si basano spesso sulla \textit{feature
 engineering} manuale, eseguita prima dell'addestramento del modello da
@@ -237,15 +237,12 @@ ovvero l'affinità di legame (variabili $y$, ``dipendenti'')
 \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
 
 In questo modo, il modello è capace di calcolare come i cambiamenti nelle
-proprietà dei composti influenzino l'attività biologica di essi. Diventa
+proprietà dei composti influenzino la loro attività biologica. Diventa
 quindi possibile prevedere in modo trasparente ed interpretabile il comportamento di nuovi composti da analizzare,
 semplicemente ``consultando'' la linea di regressione e inserendo i nuovi
 parametri nella funzione.
 
-Il limite di questi modelli, tuttavia, risiede proprio nella loro completa
-incapacità di catturare  relazioni non-lineari, che esclude quindi dalla predizione
-pattern di interazione più complessi.
-
+Il limite di questi modelli, tuttavia, risiede proprio nella loro incapacità di catturare  relazioni non-lineari, che escludedi fatto, l'analisi di pattern di interazione più complessi.
 
 \subsection{Alberi decisionali e Random Forest}
 
@@ -257,16 +254,16 @@ da funzioni non-lineari.
 I \textbf{DT} sono una struttura dati ad albero in cui i dati vengono
 ricorsivamente partizionati in sottoinsiemi in base a caratteristiche
 specifiche come, in questo caso, particolari proprietà molecolari.
-In questo modo i rami della struttura rappresentano i possibili esiti del
+In questo modo i rami rappresentano i possibili esiti del
 problema di classificazione/regressione (in base al tipo di task che viene
 affrontato, DTI o DTA).
 Una volta ``riempito'', il DT può essere usato come modello predittivo,
-in grado di classificare nuovi composti in base al loro percorso guidato
+in grado di classificare nuovi composti in base al loro percorso di decisioni
 dalla radice fino alle foglie dell'albero
 \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
 Queste tecniche sono efficaci e facili da interpretare, ma soffrono di
-\textbf{overfitting}: questi modelli tendono a ``memorizzare'' le caratteristiche dei
-dati del \textit{training set}, senza realmente apprendere dei pattern
+\textbf{overfitting}: tendono a ``memorizzare'' le caratteristiche dei
+dati del \textit{training set}, senza realmente apprendere i pattern
 per generalizzare il comportamento dei vari input.
 Possono infatti venirsi a generare rami profondi ed eccessivamente precisi, modellati su caratteristiche molto specifiche e non generalizzabili.
 
@@ -275,38 +272,34 @@ prestazioni risultano eccellenti durante la fase di training ma abbastanza
 scarse durante la fase di test o l'identificazione di nuovi dati.
 
 La \textbf{Random Forest (RF)} è una tecnica di \textit{ensemble learning}
-progettata per ridurre il fenomeno di overfitting. È composta da più DT
-combinati e addestrati su sottoinsiemi differenti e randomici del dataset generale.
-La decisione finale avviene tramite voto di maggioranza, nel caso della
-DTI, o tramite media, nel caso della DTA.
+progettata proprio per ridurre il fenomeno di overfitting. Essa aggrega un insieme di DT, ciascuno addestrato su sottoinsiemi casuali del dataset e su differenti sottoinsiemi di \textit{features}.
+La predizione finale è ottenuta combinando i risultati dei singoli alberi, tramite voto di maggioranza per i task di classificazione (DTI) o tramite media aritmetica per quelli di regressione (DTA).
+Essendo un approccio randomizzato, la probabilità che l'intero modello commetta gli stessi errori dei singoli alberi viene drasticamente ridotta, garantendo una maggiore robustezza e affidabilità.
 
 
 \subsection{Support Vector Machines}
 Oltre agli algoritmi \textit{tree-based}, sono utilizzate anche tecniche
-come \textbf{Support Vector Machines (SVM)} (o \textbf{Support Vector Regression (SVR)} per i task di regressione DTA). Queste affrontano la
-classificazione DTI cercando, all'interno dello spazio dei descrittori,
+come \textbf{Support Vector Machines (SVM)} (o \textbf{Support Vector Regression "SVR"} per i task di regressione DTA). Queste affrontano il problema di classificazione cercando, all'interno dello spazio dei descrittori,
 l'\textbf{iperpiano di separazione} con margine massimo tra coppie in
 interazione e non interagenti.
 L'iperpiano ottimale è quello che massimizza la distanza tra i punti più
 vicini di ciascuna delle due classi, infatti più il margine è ampio e
 migliore sarà la capacità del modello di fare previsioni su coppie mai
 osservate.
-Questi punti ``di confine'' vengono chiamati \textbf{vettori di supporto}
+Questi campioni ``di confine'' vengono chiamati \textbf{vettori di supporto}
 e garantiscono la stabilità del sistema
 \cite{montesinoslopezSupportVectorMachines2022}.
 
 Per gestire la non-linearità delle proprietà biologiche, SVM ricorre al
-\textbf{kernel trick}, che ``solleva'' i dati di una dimensione,
-garantendo sempre la separazione lineare.
-Il kernel non necessita delle coordinate dei punti nello spazio, ma
-ricava direttamente il loro \textbf{prodotto scalare} calcolandolo in uno
-spazio a dimensionalità superiore
+\textbf{kernel trick}, una tecnica che "proietta" i dati in uno spazio delle caratteristiche a dimensionalità superiore, dove è possibile trovare un iperpiano che garantisca la separazione lineare delle classi.
+Il kernel non necessita di calcolare le coordinate dei punti nello spazio, ma
+ricava direttamente il loro \textbf{prodotto scalare}, evitando l'esplicita trasformazione verso lo spazio ad alta dimensionalità.
 \cite{montesinoslopezSupportVectorMachines2022}.
 
 \begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{figures/kernel_trick.png}
-    \caption{Principio geometrico del kernel trick. Il grafico bidimensionale mostra una distribuzione di dati non linearmente separabile. La proiezione nello spazio tridimensionale permette di trovare un iperpiano di separazione a massimo margine in grado di dividere la classe interna (blu) da quella esterna (rossa).}
+    \caption{Principio geometrico del kernel trick. Il grafico bidimensionale mostra una distribuzione di dati non linearmente separabile. La proiezione nello spazio tridimensionale permette di trovare un iperpiano di separazione in grado di dividere la classe interna (blu) da quella esterna (rossa).}
     \label{fig:kernel}
 \end{figure}
 
@@ -321,12 +314,12 @@ di \textbf{Deep Learning}, in grado di apprendere in modo autonomo le
 informazioni dai dataset.
 
 \section{Deep Learning}
-Il subentro del \textbf{Deep Learning} ha affrontato i problemi di DTI e
-DTA come un \textbf{task di apprendimento supervisionato}: il modello
+L'avvento del \textbf{Deep Learning} ha permesso di riformulare i problemi di DTI e
+DTA come \textbf{task di apprendimento supervisionato end-to-end}: in generale, il modello
 apprende una funzione di interazione
 in grado di generalizzare su coppie drug-target non osservate,
 riconoscendo pattern chimici e biologici di alta complessità.
-Invece di ricevere parametri calcolati manualmente, questi modelli ricavano
+A differenza dei metodi tradizionali, che richiedono descrittori calcolati manualmente, queste architetture ricavano
 le caratteristiche più informative direttamente dai dati ``grezzi'', siano
 questi stringhe SMILES, sequenze amminoacidiche o grafi molecolari
 \cite{wangUnifiedSurveyDrugtarget2026a}.
@@ -334,9 +327,7 @@ questi stringhe SMILES, sequenze amminoacidiche o grafi molecolari
 \subsection{Modelli sequence-based (CNN, RNN)}
 
 I modelli \textit{sequence-based} affrontano il problema DTI trattando
-direttamente le stringhe SMILES o i fingerprint del farmaco e le sequenze
-delle proteine come dati testuali unidimensionali, senza richiedere input
-formalizzati ``su misura'' \cite{tangTCDTAPredictingDrugTarget2024a}.
+direttamente le stringhe SMILES, le rappresentazioni SELFIES e le sequenze amminoacidiche delle proteine come dati testuali unidimensionali, estraendo caratteristiche informative a partire unicamente dalle sequenze \cite{tangTCDTAPredictingDrugTarget2024a}.
 
 \subsubsection{CNN}
 
@@ -353,8 +344,8 @@ della rete:
     \item \textbf{Layers Convoluzionali}, che scansionano le sequenze dei
     composti e ricercano al loro interno dei pattern strutturali locali,
     detti \textit{\textbf{motif}}.
-    Il risultato del passaggio attraverso questi strati è la composizione
-    di una matrice \textbf{feature map}, che indica le feature estratte e
+    Il risultato del passaggio attraverso questi strati è la generazione
+    di una \textbf{feature map}, che indica le feature estratte e
     il grado di certezza nella loro rilevazione.
     \item \textbf{Layers di Pooling}, che riducono la dimensionalità delle
     feature map ottenute, riassumendo solo le informazioni più importanti
@@ -373,7 +364,7 @@ ma, facendo uso di informazioni 1D, fanno anch'esse fatica ad incorporare
 strutture tridimensionali più complesse e a catturare le dipendenze
 biochimiche tra elementi \cite{houDGCADTADeepGraph2025}.
 
-Un esempio di utilizzo di CNN come base per i task di interazione è il modello \textbf{nCNN-DA} (novel Convolutional Neural Network with Dual Attention) proposto da Kumar e Singh (2026) per la predizione simultanea delle interazioni farmaco-bersaglio e dell'affinità di legame (DTI\&DTA).
+Un esempio di utilizzo di CNN come base per i task di interazione è il modello \textbf{nCNN-DA} (novel Convolutional Neural Network with Dual Attention) proposto da Kumar e Singh (2026) \cite{kumarPredictingDrugtargetInteractions2026a} per la predizione simultanea delle interazioni farmaco-bersaglio e dell'affinità di legame (DTI\&DTA).
 
 L'architettura si articola in tre componenti principali:
 \begin{itemize}
@@ -399,7 +390,7 @@ spazio di embedding condiviso di dimensione $d_e$, ottenendo
 $E_d \in \mathbb{R}^{L_d \times d_e}$ e $E_p \in \mathbb{R}^{L_p \times d_e}$.
 Le feature locali vengono estratte tramite convoluzioni 1D con attivazione
 ReLU, producendo le feature map $F_d$ e $F_p$.
-Il DAM raffina queste rappresentazioni producendo le feature map $F_d^{SA}$ e $F_p^{SA}$. Queste vengono poi appiattite e concatenate in un
+Il DAM raffina queste rappresentazioni producendo le feature map $F_d^{SA}$, $F_p^{SA}$ e $F_d^{CA}$, $F_p^{CA}$. Queste vengono poi appiattite e concatenate in un
 vettore $z$, che attraversa strati fully connected per produrre una
 rappresentazione latente $h$.
 
@@ -407,8 +398,8 @@ Da $h$ si diramano poi le due teste di output:
 
 La predizione DTI tramite attivazione sigmoidea e la predizione DTA tramite proiezione lineare.
 
-L'ottimizzazione avviene infine minimizzando una loss ibrida $\mathcal{L} = \lambda_1 \mathcal{L}_{BCE} + \lambda_2 \mathcal{L}_{MSE}$, che
-bilancia i due task attraverso i coefficienti di ponderazione $\lambda_1$
+L'ottimizzazione avviene infine minimizzando una loss ibrida $\mathcal{L}$, che
+bilancia i due task attraverso i coefficienti $\lambda_1$
 e $\lambda_2$.
 
 
@@ -429,14 +420,14 @@ l'elaborazione della sequenza di input, secondo la transizione deterministica:
 dove $h_t^l$ è lo stato nascosto al passo temporale $t$ e al layer $l$,
 $W_1$ e $W_2$ sono le matrici di trasformazione apprese, $b$ è il vettore di bias, e $f \in
 \{\text{sigm}, \tanh\}$ è la funzione di attivazione.
-In altre parole, ogni stato nascosto $h_t^l$ dipende sia dall'output del
+In altre parole, ogni stato nascosto $h_t^l$ dipende sia dall'input proveniente dal
 layer sottostante $h_t^{l-1}$, sia dallo stato nascosto precedente
 $h_{t-1}^l$, il quale funge da \textbf{memoria} degli elementi già
 elaborati. Questa doppia dipendenza permette alla rete di costruire
 rappresentazioni gerarchiche della sequenza, integrando al contempo il
 contesto locale accumulato nei passi precedenti \cite{zarembaRecurrentNeuralNetwork2015}.
 
-Nel contesto della predizione di interazioni con il target farmacologico, questa dinamica ricorrente è particolarmente adatta all'analisi delle stringhe SMILES dei composti. "Scorrendo" la sequenza di caratteri, la rete accumula nell'\textit{hidden layer} una rappresentazione contestuale e aggiornata dei \textbf{motifs} strutturali e dei pattern nelle
+Nell'ambito della predizione di interazioni con il target farmacologico, questa dinamica ricorrente è particolarmente adatta all'analisi delle stringhe SMILES dei composti. "Scorrendo" la sequenza di caratteri, la rete accumula nell'\textit{hidden layer} una rappresentazione contestuale e aggiornata dei \textbf{motifs} strutturali e dei pattern nelle
 relazioni che determinano l'affinità di legame \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
 
 L'ultimo vettore prodotto $h_t^l$ costituisce quindi un "riassunto" dell'intera molecola o proteina in analisi, che viene poi passato agli strati di predizione per stimare la DTI o la DTA.
@@ -536,7 +527,7 @@ Le architetture basate sul meccanismo di \textbf{attenzione} e sui
 \textbf{Transformer} rappresentano l'attuale stato dell'arte nella
 predizione di DTI e DTA. Il loro punto di forza principale risiede nella
 capacità di catturare \textbf{dipendenze a lungo raggio} all'interno delle
-sequenze molecolari e proteiche \cite{ahmadMachineLearningDrugtarget2026} \cite{mondalAIdrivenDrugTarget2026a}, superando il limite strutturale delle CNN
+sequenze molecolari e proteiche \cite{ahmadMachineLearningDrugtarget2026, mondalAIdrivenDrugTarget2026a}, superando il limite strutturale delle CNN
 e delle RNN, che tendono a perdere il contesto globale quando le sequenze
 diventano molto lunghe.
 
@@ -545,7 +536,7 @@ diventano molto lunghe.
 L'\textit{attention} si basa sulla premessa che non tutte le parti di
 una sequenza sono ugualmente rilevanti per una previsione.
 Si rende quindi necessario \textbf{pesare selettivamente} le sottosequenze più
-informative, ad esempio, applicato alle interazioni farmaco-bersaglio (DTI), i residui amminoacidici del sito di legame, ignorando le regioni che non contribuiscono all'interazione.
+informative, ad esempio, analizzando i residui amminoacidici del sito di legame e ignorando le regioni che non contribuiscono all'interazione.
 
 Dato un insieme di vettori di query $Q$, chiavi $K$ e
 valori $V$, il meccanismo calcola una media pesata dei valori:
@@ -560,8 +551,7 @@ dove $d_k$ è la dimensione delle chiavi, usata come fattore di scala
 per stabilizzare i gradienti.
 
 Il termine $QK^\top$ misura la
-\textbf{compatibilità} tra ogni coppia query-chiave, tale che un valore alto indica che
-due posizioni della sequenza sono mutuamente rilevanti. La funzione
+\textbf{compatibilità} tra ogni coppia query-chiave, tale che un valore elevato indica una forte relazione di dipendenza tra le due posizioni nella sequenza. La funzione
 \textit{softmax} normalizza questi punteggi in una distribuzione di
 probabilità, producendo i \textbf{pesi di attenzione} con cui vengono combinati i valori
 $V$.
@@ -590,91 +580,7 @@ contesto globale più affidabile \cite{wangUnifiedSurveyDrugtarget2026a}.
 
 \begin{figure}[ht]
 \centering
-\begin{tikzpicture}[
-    node distance = 0.55cm and 1.8cm,
-    box/.style = {
-        rectangle, rounded corners=4pt,
-        minimum width=4.2cm, minimum height=0.75cm,
-        text centered, font=\small
-    },
-    addnorm/.style = {
-        box,
-        draw=gray!60, fill=gray!10
-    },
-    mainblock/.style = {
-        box,
-        draw=teal!70!black, fill=teal!12,
-        font=\small\bfseries
-    },
-    ioblock/.style = {
-        box,
-        draw=orange!70!black, fill=orange!12,
-        font=\small
-    },
-    embedblock/.style = {
-        box,
-        draw=violet!60!black, fill=violet!10,
-        font=\small
-    },
-    arrow/.style = {
-        ->, >=stealth, thick, gray!70!black
-    },
-    skiparrow/.style = {
-        ->, >=stealth, thick, dashed, gray!50
-    }
-]
-
-\node[ioblock]      (input)    {Input sequenza (SMILES / FASTA)};
-
-\node[embedblock,
-      above=of input]  (embed)  {Token Embedding};
-
-\node[embedblock,
-      above=of embed]  (posenc) {Positional Encoding};
-
-\node[mainblock,
-      above=of posenc] (mhsa)   {Multi-Head Self-Attention};
-
-\node[addnorm,
-      above=of mhsa]   (an1)    {Add \& Norm};
-
-\node[mainblock,
-      above=of an1]    (ffn)    {Feed-Forward Network};
-
-\node[addnorm,
-      above=of ffn]    (an2)    {Add \& Norm};
-
-\node[ioblock,
-      above=of an2]    (output) {Output: rappresentazione contestuale};
-
-\draw[arrow] (input)  -- (embed);
-\draw[arrow] (embed)  -- (posenc);
-\draw[arrow] (posenc) -- (mhsa);
-\draw[arrow] (mhsa)   -- (an1);
-\draw[arrow] (an1)    -- (ffn);
-\draw[arrow] (ffn)    -- (an2);
-\draw[arrow] (an2)    -- (output);
-
-\draw[skiparrow]
-    (posenc.east)
-    -- ++(1.5,0)
-    |- (an1.east);
-
-\draw[skiparrow]
-    (an1.east)
-    -- ++(1.5,0)
-    |- (an2.east);
-
-\node[
-    draw=teal!50, dashed, rounded corners=6pt,
-    fit=(mhsa)(an1)(ffn)(an2),
-    inner sep=8pt,
-    label={[font=\footnotesize\itshape, text=teal!70!black]
-           left:{\rotatebox{90}{Encoder Block ($\times N$)}}}
-] {};
-
-\end{tikzpicture}
-
+\includegraphics[width=0.35\linewidth]{figures/TransformerEncoder.png}
 \caption{Architettura di un encoder Transformer applicato a sequenze
 molecolari o proteiche. Le frecce tratteggiate indicano le connessioni
 residuali, che sommano l'input di ogni
@@ -720,7 +626,7 @@ Si tratta di un modello di \textbf{deep-learning} avanzato progettato per il tas
 Ad ogni strato cresce il numero di filtri utilizzati per estrarre le caratteristiche molecolari.
 Per le proteine viene usato un \textbf{encoder Transformer}, in grado di modellare dipendenze a lungo raggio nelle sequenze amminoacidiche tramite \textbf{multi-head self-attention} e \textbf{positional encoding}.
 
-Le rappresentazioni prodotte dai due moduli vengono concatenate e passate a un \textbf{Multi-Layer Perceptron (MLP)} composto da quattro strati lineari, con funzioni di attivazione \textbf{ReLU} per prevenire \textit{overfitting}.
+Le rappresentazioni prodotte dai due moduli vengono concatenate e passate a un \textbf{Multi-Layer Perceptron (MLP)} composto da quattro strati lineari, con funzioni di attivazione \textbf{ReLU} e strati di Dropout per regolarizzare l'apprendimento e per prevenire \textit{overfitting}.
 
 
 \begin{figure}[ht]
