@@ -35,7 +35,16 @@
 \frontmatter\frontispiece
 
 \begin{abstract}	
-Max 2000 characters, strict.
+Il processo di sviluppo di nuovi farmaci è caratterizzato da lunghe e costose fasi sperimentali e di ricerca, ostacolate da elevati tassi di fallimento (\textit{attrition rate}), dovuti principalmente alla scarsa efficacia clinica e alla tossicità dei candidati.\\
+Questa tesi analizza come le architetture di Machine Learning e Deep Learning stiano ottimizzando i punti più critici della pipeline farmaceutica, con particolare attenzione alla predizione delle interazioni farmaco-bersaglio e delle proprietà ADMET.\\
+Viene innanzitutto affrontato il problema della \textbf{rappresentazione} delle molecole in formato \textit{machine readable}, analizzando l'evoluzione da formati lineari e da fingerprint molecolari fino ai grafi.\\
+Il nucleo dell'elaborato formalizza la predizione \textbf{DTI} e \textbf{DTA} (\textit{Drug Target Interaction} e \textit{Drug Target Affinity}) come problemi computazionali di classificazione binaria e regressione, rispettivamente. Vengono confrontati i metodi \textit{ligand-based} e \textit{structure-based}, il docking molecolare, gli
+algoritmi di Machine Learning classico (Random Forest, SVM) e le architetture
+di Deep Learning più recenti, tra cui CNN, RNN, GNN e Transformer,
+evidenziando come i modelli ibridi (es. TC-DTA) combinino i punti di forza
+di ciascuna architettura.\\
+Viene poi discussa la valutazione computazionale delle proprietà \textbf{ADMET}, con un approfondimento su un'architettura multimodale di attenzione \textit{cross-aligned} per la predizione della tossicità.\\
+Infine, vengono riportati tre casi di studio (Baricitinib, Halicin, Rentosertib) che dimostrano l'impatto clinico concreto di questi metodi. L'elaborato si conclude analizzando le sfide ancora aperte, tra cui il \textit{cold-start problem}, indicando i vantaggi e gli svantaggi delle architetture più promettenti.
 \end{abstract}
 
 \begin{dedication} % this is optional
