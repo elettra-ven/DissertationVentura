@@ -13,7 +13,8 @@ In questo capitolo verrà analizzata questa pipeline di sviluppo e verranno sott
     \label{fig:pipeline}
 \end{figure}
 \subsection{Target Prediction}
-L'identificazione di un bersaglio biologico rappresenta una delle sfide iniziali della pipeline di sviluppo di un farmaco. L'oggetto di questa ricerca è una molecola \textit{target} che dimostra una particolare importanza nel contesto di una patologia, e la cui attività può essere "attaccata" o "drogata" da un farmaco, per ottenere un effetto terapeutico.\\
+L'identificazione di un bersaglio biologico rappresenta una delle sfide iniziali della pipeline di sviluppo di un farmaco. L'oggetto di questa ricerca è una molecola \textit{target} che dimostra una particolare importanza nel contesto di una patologia, e la cui attività può essere "attaccata" o "drogata" da un farmaco, per ottenere un effetto terapeutico.
+
 Storicamente, l'identificazione dei target si è basata su un processo sperimentale puramente empirico e sull'intuizione scientifica (basata quindi sulle conoscenze dei ricercatori).
 Tra gli approcci tradizionali più comunemente utilizzati si distinguono:
 \begin{itemize}
@@ -22,30 +23,37 @@ Tra gli approcci tradizionali più comunemente utilizzati si distinguono:
     \item L'\textbf{High-Throughput Screening (HTS)}, screening ad alta velocità per l'analisi massiva di interazioni molecolari automatizzate \cite{mondalAIdrivenDrugTarget2026a}.
     \item \textbf{Metodi sperimentali} ad alta precisione, come la \textbf{cristallografia a raggi X} o la \textbf{spettroscopia NMR}, che vengono tutt'ora impiegate per descrivere le interazioni ligando-proteine su scale più ridotte \cite{kumarPredictingDrugtargetInteractions2026a}.
 \end{itemize}
-Tuttavia, questi approcci presentavano ostacoli significativi, che rendevano lo sviluppo di nuovi farmaci particolarmente dispendioso e inefficiente. 
+Tali metodi mostravano forti limiti, rendendo lo sviluppo di nuovi farmaci lungo e costoso. 
 Le cause principali di queste criticità sono spesso ricondicibili a \textbf{bias soggettivi} dei ricercatori, che possono restringere eccessivamente lo spettro della \textit{discovery} ed escludere dal processo composti adeguati ma sconosciuti.
-Inoltre, la limitata scalabilità di questo tipo di approcci sperimentali impedisce la copertura dell'enorme spazio biochimico di candidati possibili (composto da tutte le combinazioni farmaco-target).\\
-Rimane, oltre ai problemi riguardanti l'efficacia dei legami con il bersaglio, la questione della \textbf{druggability}. Oltre il 90\% delle proteine umane è ancora poco conosciuto dal punto di vista strutturale \cite{freedmanHuntingNewDrugs} oppure è privo di opportuni \textit{binding points} (o punti di legame) per l'agganciamento stabile di piccole molecole. Questi target vengono definiti \textbf{"Undruggable"}.\\
-Oggi l'\textbf{Intelligenza Artificiale} sta rivoluzionando questo campo, permettendo l'analisi sistematica di volumi enormi di dati biologici provenienti da fonti diverse, basandosi sul riconoscimento di schemi e pattern ricorrenti tra diverse patologie.\\
+Inoltre, la limitata scalabilità di questo tipo di approcci sperimentali impedisce la copertura dell'enorme spazio biochimico di candidati possibili (composto da tutte le combinazioni farmaco-target).
+
+Rimane, oltre ai problemi riguardanti l'efficacia dei legami con il bersaglio, la questione della \textbf{druggability}. Oltre il 90\% delle proteine umane è ancora poco conosciuto dal punto di vista strutturale \cite{freedmanHuntingNewDrugs} oppure è privo di opportuni \textit{binding points} (o punti di legame) per l'agganciamento stabile di piccole molecole. Questi target vengono definiti \textbf{"Undruggable"}.
+Oggi l'\textbf{Intelligenza Artificiale} sta rivoluzionando questo campo, permettendo l'analisi sistematica di volumi enormi di dati biologici provenienti da fonti diverse, basandosi sul riconoscimento di schemi e pattern ricorrenti tra diverse patologie.
+
 \subsection{Dalla \texorpdfstring{\textit{target discovery}}{target discovery} alla \texorpdfstring{\textit{hit generation}}{hit generation}}
 Seguono le fasi di \textbf{drug discovery} vero e proprio, che si pongono l'obiettivo di identificare gli \textbf{\textit{hits}}, farmaci in grado di interagire con i target precedentemente individuati.
-I geni candidati vengono espressi in grandi quantità in organismi poco complessi (come \textit{E. coli}) tramite la tecnologia del DNA ricombinante, permettendo lo \textbf{High-Throughput Screening} (HTS) su vaste e variegate librerie chimiche \cite{keshTargetBasedScreeningLead2023}.\\
+I geni candidati vengono espressi in grandi quantità in organismi poco complessi (come \textit{E. coli}) tramite la tecnologia del DNA ricombinante, permettendo lo \textbf{High-Throughput Screening} (HTS) su vaste e variegate librerie chimiche \cite{keshTargetBasedScreeningLead2023}.
+
 Sebbene l'HTS sia più performante in termini di costi rispetto ai metodi manuali, non si è dimostrato in grado di garantire la sicurezza o l'efficacia della molecola su organismi più complessi. 
 Per superare tali limiti, emerge la necessità di tecniche di \textbf{Virtual Screening} (VS), che permettono di pre-selezionare \textit{in silico} i composti più promettenti, riducendo drasticamente il numero di test fisici necessari.
 \subsection{Screening dei composti}
-Lo screening rappresenta lo strumento per "setacciare" le librerie chimiche nella ricerca delle giuste interazioni biochimiche e dei composti \textit{hit}, ovvero con caratteristiche affini al problema di interazione posto.\\
+Lo screening rappresenta lo strumento per "setacciare" le librerie chimiche nella ricerca delle giuste interazioni biochimiche e dei composti \textit{hit}, ovvero con caratteristiche affini al problema di interazione posto.
+
 Il \textbf{VS} si distingue dall'HTS per la sua capacità di andare oltre i limiti della ricerca fisica attuabile in laboratorio, valutando computazionalmente composti appartenenti a librerie fisiche o sintetizzabili su richiesta \cite{carlssonStructurebasedVirtualScreening2024}.
 Questo approccio si divide in due macro-famiglie:
 \begin{itemize}
     \item I metodi \textbf{ligand-based}, che si basano sull'ipotesi che molecole con proprietà simili a ligandi noti presentino attività biologica analoga. Tra questi, la \textbf{pharmacophore searching} identifica composti compatibili al target per caratteristiche chimico-spaziali (come la presenza di donatori e accettori di idrogeno o di gruppi aromatici in determinate posizioni) \cite{mcinnesVirtualScreeningStrategies2007a}.
     \item I metodi \textbf{structure-based}, che sfruttano invece la struttura tridimensionale del target tramite strumenti come il \textbf{molecular docking} o l'\textbf{ensemble docking}. Quest'ultimo è un'evoluzione del primo che valuta il ligando su molteplici conformazioni del recettore, ottenendo così risultati più robusti rispetto all'approssimazione del recettore singolo e rigido.
 \end{itemize}
-Il virtual screening accelerato dal Machine Learning rappresenta una risposta al crescente e sempre più insostenibile peso computazionale del docking. Questo approccio prevede che un modello di ML venga addestrato sui risultati del docking su un sottoinsieme della libreria (si usano librerie dette "ultra-large") e che impari a predire i punteggi del docking per i composti incognita, senza eseguire il calcolo fisico. Questo approccio può portare a una riduzione di 100 volte il numero di composti da sottoporre a docking esplicito, mantenendo comunque un arricchimento dei composti top-scoring paragonabile allo screening esaustivo \cite{carlssonStructurebasedVirtualScreening2024}.\\
+Il virtual screening accelerato dal Machine Learning rappresenta una risposta al crescente e sempre più insostenibile peso computazionale del docking. Questo approccio prevede che un modello di ML venga addestrato sui risultati del docking su un sottoinsieme della libreria (si usano librerie dette "ultra-large") e che impari a predire i punteggi del docking per i composti incognita, senza eseguire il calcolo fisico. Questo approccio può portare a una riduzione di 100 volte il numero di composti da sottoporre a docking esplicito, mantenendo comunque un arricchimento dei composti top-scoring paragonabile allo screening esaustivo \cite{carlssonStructurebasedVirtualScreening2024}.
+
 La fase di ricerca appena descritta, ovvero la \textit{hit discovery}, è tuttavia solo il primo passaggio del processo di \textit{lead generation}, o \textit{Hit to Lead} (H2L), che si pone di valutare i composti individuati dagli screening non solo per la loro presenza di attività, ma per la qualità della loro interazione con il target. 
-In questa fase vengono analizzate potenza, selettività e proprietà fisico-chimiche di base, causando una scrematura che può apportare un miglioramento del legame chimico hit-target dell'ordine di grandezza nanomolare \cite{barcelosLeadOptimizationDrug2022}.\\
+In questa fase vengono analizzate potenza, selettività e proprietà fisico-chimiche di base, causando una scrematura che può apportare un miglioramento del legame chimico hit-target dell'ordine di grandezza nanomolare \cite{barcelosLeadOptimizationDrug2022}.
+
 La fase finale di drug discovery è la \textit{Lead Optimization} (LO), che interviene per accentuare caratteristiche desiderate nei composti lead selezionati, o per correggere i difetti strutturali che impedirebbero ad essi di superare i trial clinici.
 La LO moderna è un processo razionale guidato da metodi computazionali che includono studi farmacoforici, docking molecolare, dinamica molecolare (simulazioni e digital-twin con lo scopo di ottenere dati sulle proprietà fisico-strutturali delle molecole) e QSAR. 
-In particolare, la \textbf{QSAR} (Quantitative Structure-Activity Relationship) rappresenta un approccio di modellazione statistica volto a correlare le caratteristiche strutturali con l'attività biologica dei composti, evolvendosi oggi in modelli di Machine Learning capaci di interpretare e prevedere autonomamente queste caratteristiche per generare risultati nuovi \cite{barcelosLeadOptimizationDrug2022}.\\
+In particolare, la \textbf{QSAR} (Quantitative Structure-Activity Relationship) rappresenta un approccio di modellazione statistica volto a correlare le caratteristiche strutturali con l'attività biologica dei composti, evolvendosi oggi in modelli di Machine Learning capaci di interpretare e prevedere autonomamente queste caratteristiche per generare risultati nuovi \cite{barcelosLeadOptimizationDrug2022}.
+
 Una volta ottenute le lead ottimizzate si può passare agli \textbf{studi pre-clinici}, condotti su modelli animali per valutare 
 sicurezza ed efficacia dei farmaci, prima che questi vengano testati sull'essere umano. 
 La fase successiva, quella degli effettivi \textbf{trial clinici}, si 
@@ -61,7 +69,8 @@ Al termine di questo percorso, il farmaco riceve l'approvazione da enti speciali
 di \textbf{post-market surveillance}, in cui vengono monitorati nel 
 lungo periodo gli effetti collaterali e la stabilità della formulazione.
 \section{Attrition Rate e impatto economico}
-Il percorso che racchiude queste fasi è caratterizzato da un problema fondamentale:\\
+Il percorso che racchiude queste fasi è caratterizzato da un problema fondamentale:
+
 Nonostante l'accelerazione in ambito tecnologico degli ultimi anni e la comparsa di nuovi strumenti computazionali ad ausilio del processo, il successo delle fasi cliniche rimane un obiettivo estremamente difficile da raggiungere. Questo fenomeno è descritto dall'\textbf{attrition rate}, ovvero il tasso di riduzione ("logoramento") del numero di candidati farmaci durante l'avanzamento della pipeline.
 Delle migliaia di molecole potenziali individuate dalla prima fase di discovery, solo una piccola frazione sopravvive ai test clinici e meno del 10\% dei composti che entrano nel primo step di trial raggiunge l'approvazione finale dalle autorità regolatorie.\\
 Questo elevato tasso di insuccesso si traduce in elevatissimi costi economici.
@@ -71,26 +80,31 @@ i dodici e i quindici anni \cite{zhangArtificialIntelligenceDrug2025}.
 Inoltre, anche il ritorno economico per le industrie farmaceutiche 
 è drasticamente calato: nell'arco di un decennio, per ogni dollaro 
 investito in ricerca il ritorno economico è crollato drasticamente, passando da 10 a meno di 2 centesimi 
-\cite{freedmanHuntingNewDrugs}.\\
+\cite{freedmanHuntingNewDrugs}.
+
 Le cause di questo elevato tasso di fallimento sono molteplici. 
 In primo luogo, molti farmaci per malattie comuni e con meccanismi biologici noti sono già stati scoperti. Ciò che rimane da 
 esplorare riguarda patologie più rare e complesse, dove l'identificazione 
 di molecole target risulta più difficile \cite{freedmanHuntingNewDrugs}. 
-Inoltre, la selezione delle molecole nelle fasi di \textit{discovery} può essere basata su parametri troppo semplici e poco esaustivi. Infatti, come evidenziato da \textbf{Kenakin} \cite{kenakinKnowYourMolecule2024}, la mancanza di efficacia clinica e i problemi di sicurezza legati alla tossicità rimangono le cause primarie del logoramento dei candidati farmaci, ed entrambi sono imputabili a una descrizione farmacologica superficiale e poco approfondita dei \textbf{lead} stessi.\\
+Inoltre, la selezione delle molecole nelle fasi di \textit{discovery} può essere basata su parametri troppo semplici e poco esaustivi. Infatti, come evidenziato da \textbf{Kenakin} \cite{kenakinKnowYourMolecule2024}, la mancanza di efficacia clinica e i problemi di sicurezza legati alla tossicità rimangono le cause primarie del logoramento dei candidati farmaci, ed entrambi sono imputabili a una descrizione farmacologica superficiale e poco approfondita dei \textbf{lead} stessi.
+
 \section{Il ruolo dell'AI nella pipeline}
 L'integrazione dell'Intelligenza Artificiale (AI) e del Deep Learning (DL)
 ha trasformato la pipeline di ricerca farmaceutica da un processo basato su "trial and error" a un percorso più disciplinato, guidato dalla raccolta e dall'analisi dei dati biologici \cite{zhangArtificialIntelligenceDrug2025}.
-Questi strumenti vengono impiegati trasversalmente, in ciascuna delle diverse fasi più delicate e "logoranti" del processo.\\
+Questi strumenti vengono impiegati trasversalmente, in ciascuna delle diverse fasi più delicate e "logoranti" del processo.
+
 Nella fase di \textbf{target identification}, l'AI sta affiancando 
 e in alcuni casi sostituendo i metodi tradizionali di screening, 
 prima basati sull'analisi dettagliata dell'affinità tra molecole. 
 Il nuovo approccio consiste nel rappresentare i geni per la loro \textit{funzione biologica}, analogamente alle 
-tecniche di \textit{word embedding} sviluppate nel Natural Language Processing (NLP).\\
+tecniche di \textit{word embedding} sviluppate nel Natural Language Processing (NLP).
+
 Negli step successivi dello sviluppo del composto, il contributo più significativo si osserva nella predizione dei comportamenti di interazione farmaco-proteina (DPI o DTI).
 Queste stime sono solitamente compiute su uno spazio chimico di scala molto ampia, e richiedono l'analisi di molte interazioni ancora sconosciute. Proprio per questo, i modelli di Machine Learning vengono addestrati in modalità semi-supervisionata per etichettare queste interazioni incognite, integrando efficacemente informazioni eterogenee, come la struttura chimica del composto, i dati genomici e le reti di interazione.
 L'importanza di affinare tali modelli risiede nella necessità di colmare il \textit{knowledge gap} relativo agli \textbf{effetti collaterali}:
 è stato infatti stimato che circa 1.000 proteine umane sono potenzialmente responsabili di tossicità \textit{off-target}. 
-Identificare precocemente queste interazioni impreviste risulta dunque fondamentale per prevedere e mitigare nocività già nelle fasi preliminari dello sviluppo in silico \cite{daraMachineLearningDrug2022}.\\
+Identificare precocemente queste interazioni impreviste risulta dunque fondamentale per prevedere e mitigare nocività già nelle fasi preliminari dello sviluppo in silico \cite{daraMachineLearningDrug2022}.
+
 A testimonianza di questa transizione, anche il quadro regolatorio
 sta progressivamente adattandosi all'impiego di questi nuovi strumenti, con proposte che integrano la qualità di questi modelli nei parametri di approvazione.
 La FDA, attraverso il \textit{discussion paper} dedicato

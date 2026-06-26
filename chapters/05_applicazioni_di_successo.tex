@@ -1,21 +1,23 @@
 \chapter{Applicazioni di successo}
-Osserviamo ora alcuni modelli di intelligenza 
-artificiale che si sono dimostrati in grado di produrre risultati concreti e validati 
+Osserviamo ora alcuni modelli di Intelligenza 
+Artificiale che si sono dimostrati in grado di produrre risultati concreti e validati 
 clinicamente. 
 I tre casi documentati di seguito illustrano come i 
 metodi trattati in questo elaborato abbiano già cambiato 
-la pratica della \textit{drug discovery}.\\
+la pratica della \textit{drug discovery}.
+
 \section{Baricitinib per COVID-19}
 Nel 2020, il team di BenevolentAI ha pubblicato 
-su \textit{The Lancet} un'analisi che illustra come un 
+su \textit{The Lancet} un'analisi che illustra come una rappresentazione a  
 \textbf{knowledge graph} avanzato, costruito come un archivio strutturato di 
 informazioni biologiche e mediche estratte tramite ML,
 abbia permesso di identificare in pochi giorni il 
 \textbf{baricitinib} come potenziale trattamento per 
 l'infezione da SARS-CoV-2 
-\cite{richardsonBaricitinibPotentialTreatment2020}.\\
-Il baricitinib è un inibitore delle chinasi Janus (JAK) 
-già approvato per il trattamento dell'artrite reumatoide. 
+\cite{richardsonBaricitinibPotentialTreatment2020}.
+
+Il baricitinib è un inibitore delle chinasi Janus (JAK), 
+già conosciuto e approvato per il trattamento dell'artrite reumatoide. 
 Gli algoritmi di predizione DTI di BenevolentAI hanno 
 identificato la sua capacità di inibire la proteina 
 \textbf{AAK1}, un regolatore dell'endocitosi (il meccanismo attraverso cui il virus entra nelle cellule 
@@ -25,34 +27,37 @@ d'azione:
     \item La riduzione dell'ingresso virale all'interno dei tessuti polmonari.
     \item La modulazione della risposta infiammatoria nel caso di avvenuta contaminazione.
 \end{itemize}
-Il farmaco ha 
-successivamente ricevuto l'autorizzazione d'uso 
+Il farmaco ha successivamente ricevuto l'autorizzazione d'uso 
 emergenziale, dimostrando un beneficio significativo 
-sulla mortalità nei pazienti con COVID-19 grave.\\
+sulla mortalità nei pazienti con COVID-19 grave.
+
 Questo caso è emblematico del \textbf{drug repurposing 
 guidato da ML}, ovvero la capacità di identificare nuovi 
 target biologici per farmaci già approvati, 
 riducendo drasticamente i tempi di validazione 
 clinica.
 Si tratta una delle applicazioni più immediate 
-e ad alto impatto dei metodi di predizione DTI 
-discussi in questo elaborato.\\
+e ad efficaci dei metodi di predizione DTI 
+discussi in questo elaborato.
+
 \section{Halicin: un antibiotico scoperto dal Deep 
 Learning}
 Nel 2020, un gruppo di ricercatori del MIT ha pubblicato 
 su \textit{Cell} la scoperta di \textbf{Halicin}, il 
 primo antibiotico ad ampio spettro identificato tramite 
 un approccio di deep learning 
-\cite{stokesDeepLearningApproach2020}.\\
-Il modello adottato è \textit{\textbf{Chemprop}}, una \textbf{D-MPNN} 
-(\textit{Directed Message Passing Neural Network}), 
-una variante delle GNN, descritte nei capitoli precedenti, con lo scopo di prevedere l'attività antibatterica 
-a partire dalla struttura chimica del composto, espressa sotto forma di grafo.\\
-Il modello traduce la rappresentazione in un vettore tramite \textit{message passing} basato sui legami chimici. Durante questo processo le caratteristiche tra atomi adiacenti vengono aggregate iterativamente per costruire una comprensione della chimica locale della molecola.\\
+\cite{stokesDeepLearningApproach2020}.
+
+Il modello adottato è \textit{Chemprop}, un'architettura \textbf{D-MPNN} (\textit{Directed Message Passing Neural Network}). Si tratta di una variante delle GNN (descritte nei capitoli precedenti) con lo scopo di prevedere l'attività antibatterica a partire dalla struttura chimica del composto, espressa sotto forma di grafo.
+
+Il modello traduce la rappresentazione in un vettore tramite \textit{message passing}, per costruire una comprensione della chimica locale della molecola.
+
 Il vantaggio rispetto ai metodi tradizionali che fanno uso di fingerprint Morgan o descrittori RDKit (che nel paper vengono usati come \textit{baseline}), è che il \textit{message passing} permette l'apprendimento automatico in funzione della proprietà da predire, senza aver la necessità di introdurre definizioni manuali.
-Tuttavia, per aumentare le prestazioni della rete neurale, sono stati concatenate alla rappresentazione iniziale, 200 descrittori chimici classici (da RDKit) per bilanciare la difficile propagazione dei messaggi su grafi molecolari molto estesi.\\
-Successivamente è avvenuta la fase di \textit{training}, svolto per il task di classificazione DTI su molecole in grado di inibile la crescita di \textit{E. coli}. Vengono coinvolte nello screening 2.560 molecole e vengono identificate come \textit{hit} 120 composti attivi (5.14\%).
-Dopo deduplicazione, il dataset finale è di 2.335 molecole, binarizzate come hit/non-hit.\\
+Tuttavia, per aumentare le prestazioni della rete neurale, sono stati concatenate alla rappresentazione iniziale, 200 descrittori chimici classici (da RDKit) per bilanciare la difficile propagazione dei messaggi su grafi molecolari molto estesi.
+
+Successivamente è avvenuta la fase di \textit{training}, svolto per il task di classificazione DTI su molecole in grado di inibire la crescita di \textit{E. coli}. Vengono coinvolte nello screening 2.560 molecole e vengono identificate come \textit{hit} 120 composti attivi (5.14\%).
+Dopo deduplicazione, il dataset finale è di 2.335 molecole, binarizzate come hit/non-hit.
+
 Il training viene sottoposto a un \textit{fine tuning} attraverso l'\textbf{ottimizzazione Bayesiana dei parametri}, che usa \textit{Bayesian optimization} con 20 iterazioni, esplorando diverse tipologie di iperparametri.
 
 \begin{table}[ht]
@@ -71,23 +76,29 @@ Il training viene sottoposto a un \textit{fine tuning} attraverso l'\textbf{otti
     \end{tabular}
 \end{table}
 
-Inoltre, il modello finale utilizza un \textit{ensemble} di 20 istanze pesate in modo diverso per aumentare la robustezza della predizione.\\
+Inoltre, il modello finale utilizza un \textit{ensemble} di 20 istanze pesate in modo diverso per aumentare la robustezza della predizione.
+
 La predizione avviene tramite applicazione sulla \textbf{Drug Repurposing Hub}, completa di 6.111 molecole da cui vengono escluse quelle già presenti nel Training-Set.
-Vengono individuate le 99 candidate con punteggi più alti, che vengono testate sperimentalmente. Di queste, 51 si confermano veri positivi.\\
+Vengono individuate le 99 candidate con punteggi più alti, che passano alla fase di testing sperimentalmente. Di queste, 51 si confermano veri positivi.
+
 Un modello Chemprop specifico viene poi addestrato sul dataset \textbf{ClinTox} per prevedere la tossicità delle molecole candidate rimaste.
-Ognuna delle entry del dataset è composta da due proprietà binarie, la tossicità rilevata negli studi clinici e lo stato di approvazione della FDA.\\
-Un \textit{ensemble} di 5 modelli seleziona infine \textbf{halicin} come antibiotico migliore. Si tratta di un inibitore della c-Jun N-terminal kinase originariamente sviluppato per il diabete.\\
+Ognuna delle entry del dataset è composta da due proprietà binarie, la tossicità rilevata negli studi clinici e lo stato di approvazione della FDA.
+
+Un \textit{ensemble} di 5 modelli seleziona infine \textbf{Halicin} come antibiotico migliore. Si tratta di un inibitore della c-Jun N-terminal kinase originariamente sviluppato per il diabete.
+
 Il risultato informaticamente più rilevante è che 
 Halicin ha una struttura chimica radicalmente diversa 
 da tutti gli antibiotici convenzionali. Il modello ha quindi dimostrato capacità di \textbf{scaffold hopping},
 apprendendo relazioni struttura-attività che sfuggirebbero
 all'intuizione umana dei ricercatori e superando il bias
-verso strutture chimiche note tipico dei metodi tradizionali.\\
+verso strutture chimiche note tipico dei metodi tradizionali.
+
 Testata su modelli murini, 
 Halicin ha eliminato infezioni da 
 \textit{Clostridioides difficile} e 
 \textit{Acinetobacter baumannii} che resistono 
-agli antibiotici convenzionali.\\
+agli antibiotici convenzionali.
+
 Infine, espandendo lo 
 screening al database \textbf{ZINC15}, composto da oltre 107 
 milioni di molecole, il modello ha identificato in 4 giorni
@@ -99,13 +110,15 @@ Il caso più avanzato e recente è quello del
 \textbf{rentosertib} (ISM001-055), sviluppato da 
 Insilico Medicine e documentato in uno studio pubblicato su 
 \textit{Nature Medicine} nel giugno 2025 
-\cite{xuGenerativeAIDiscoveredTNIK2025}.\\
+\cite{xuGenerativeAIDiscoveredTNIK2025}.
+
 A differenza dei casi precedenti, i quali applicano ML 
 a composti già esistenti, il rentosertib rappresenta 
 il primo farmaco in cui sia il \textbf{target biologico} 
 che la \textbf{struttura molecolare} del composto sono stati 
 identificati o progettati interamente da algoritmi di 
-AI generativa.\\
+AI generativa.
+
 La piattaforma \textbf{PandaOmics} ha 
 identificato \textbf{TNIK} come target critico per la 
 fibrosi polmonare idiopatica (IPF), una patologia 
@@ -114,35 +127,25 @@ di chimica generativa ha poi progettato il suo
 inibitore, completando l'intera pipeline dalla target 
 identification al candidato preclinico in 
 \textbf{soli 18 mesi} (tempi molto ridotti in confronto alle pipeline tradizionali), con meno di 80 molecole 
-sintetizzate e testate.\\
-La generazione dell'inibitore specifico di TNIK è avvenuta tramite la piattaforma di chimica generativa \textbf{Chemistry42}, che ha messo in parallelo 30 modelli con gli stessi punteggi e strutture condivisi, in modo da permettere l'esplorazione dello spazio chimico in modo collaborativo e non ridondante \cite{renSmallmoleculeTNIKInhibitor2025}.\\
-Il sito di legame selezionato come luogo dell'interazione bersaglio è il 
+sintetizzate e testate.
+
+La generazione dell'inibitore specifico di TNIK è avvenuta tramite la piattaforma di chimica generativa \textit{Chemistry42}. Questa ha messo in parallelo 30 modelli generativi che, basandosi su metriche di valutazione e vincoli strutturali condivisi, hanno permesso un'esplorazione dello spazio chimico collaborativa e priva di ridondanze \cite{renSmallmoleculeTNIKInhibitor2025}.
+
+Il sito di legame selezionato come luogo dell'interazione con il bersaglio è risultato il
 \textbf{sito di legame dell'ATP di TNIK}.
 La generazione è stata vincolata dalle seguenti ipotesi 
 \textbf{farmacoforiche} \cite{renSmallmoleculeTNIKInhibitor2025}: 
 \begin{enumerate}
     \item Le strutture 
     candidate devono formare un legame idrogeno con 
-    l'NH di \textbf{Cys108} nella regione hinge della 
+    l'NH di \textbf{Cys108} nella regione "hinge" (snodo flessibile) della 
     chinasi.
-    \item I centri idrofobici devono essere posizionati nello spazio adiacente al gatekeeper \textbf{Met105}.
+    \item I centri idrofobici devono essere posizionati nello spazio adiacente al gatekeeper \textbf{Met105} (amminoacido che determina l'accessibilità al sito attivo).
 \end{enumerate}
 Questi vincoli strutturali, gestiti dai moduli 
 \textit{Pocket} e \textit{Pharmacophore} della 
 piattaforma, guidano la generazione verso strutture 
 con le caratteristiche di binding necessarie 
-per l'inibizione competitiva dell'ATP.\\
-Il flusso di lavoro integra approcci 
-\textit{ligand-based} e \textit{structure-based}: 
-le informazioni sui ligandi noti e la struttura 
-cristallina del target guidano congiuntamente la 
-generazione di nuove strutture molecolari.
-Il \textbf{reinforcement learning} è utilizzato per 
-ottimizzare iterativamente le molecole generate 
-attraverso cicli di feedback durante lo screening 
-virtuale, premiando strutture con profili farmacologici 
-favorevoli. Modelli di ML aggiuntivi filtrano e 
-classificano i composti candidati in base a novità 
-strutturale, proprietà chimico-fisiche e accessibilità 
-sintetica, riducendo drasticamente il numero di 
-molecole da sintetizzare fisicamente \cite{renSmallmoleculeTNIKInhibitor2025}.
+per l'inibizione dell'ATP.
+
+Infine, algoritmi di screening secondari rifiniscono la selezione scartando le strutture chimicamente instabili o troppo complesse da sintetizzare. Questo stringente processo di filtraggio computazionale converte un immenso spazio di generazione in un set ristretto di molecole ad alto potenziale, massimizzando il tasso di successo della sperimentazione in vitro \cite{renSmallmoleculeTNIKInhibitor2025}.

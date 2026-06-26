@@ -11,6 +11,7 @@
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc}
 \usepackage{booktabs}
 \usepackage{microtype} % prevent some over/underfull hboxes errors
+\usepackage{tabularx}
 
 \school{\unibo}
 \programme{Corso di Laurea in Ingegneria e Scienze Informatiche}
@@ -35,21 +36,23 @@
 \frontmatter\frontispiece
 
 \begin{abstract}	
-Il processo di sviluppo di nuovi farmaci è caratterizzato da lunghe e costose fasi sperimentali e di ricerca, ostacolate da elevati tassi di fallimento (\textit{attrition rate}), dovuti principalmente alla scarsa efficacia clinica e alla tossicità dei candidati.\\
-Questa tesi analizza come le architetture di Machine Learning e Deep Learning stiano ottimizzando i punti più critici della pipeline farmaceutica, con particolare attenzione alla predizione delle interazioni farmaco-bersaglio e delle proprietà ADMET.\\
-Viene innanzitutto affrontato il problema della \textbf{rappresentazione} delle molecole in formato \textit{machine readable}, analizzando l'evoluzione da formati lineari e da fingerprint molecolari fino ai grafi.\\
-Il nucleo dell'elaborato formalizza la predizione \textbf{DTI} e \textbf{DTA} (\textit{Drug Target Interaction} e \textit{Drug Target Affinity}) come problemi computazionali di classificazione binaria e regressione, rispettivamente. Vengono confrontati i metodi \textit{ligand-based} e \textit{structure-based}, il docking molecolare, gli
-algoritmi di Machine Learning classico (Random Forest, SVM) e le architetture
-di Deep Learning più recenti, tra cui CNN, RNN, GNN e Transformer,
-evidenziando come i modelli ibridi (es. TC-DTA) combinino i punti di forza
-di ciascuna architettura.\\
-Viene poi discussa la valutazione computazionale delle proprietà \textbf{ADMET}, con un approfondimento su un'architettura multimodale di attenzione \textit{cross-aligned} per la predizione della tossicità.\\
-Infine, vengono riportati tre casi di studio (Baricitinib, Halicin, Rentosertib) che dimostrano l'impatto clinico concreto di questi metodi. L'elaborato si conclude analizzando le sfide ancora aperte, tra cui il \textit{cold-start problem}, indicando i vantaggi e gli svantaggi delle architetture più promettenti.
+Il processo di sviluppo di nuovi farmaci è caratterizzato da fasi sperimentali lunghe e costose, ostacolate da un elevato tasso di fallimento (\textit{attrition rate}), dovuto principalmente alla scarsa efficacia clinica e alla tossicità dei candidati.
+
+Questa tesi analizza come le architetture di Machine Learning e Deep Learning stiano ottimizzando i punti più critici della pipeline farmaceutica, concentrandosi sulla predizione delle interazioni farmaco-bersaglio e sulla valutazione ADMET.
+
+Viene innanzitutto affrontato il problema della \textbf{rappresentazione molecolare} in formato \textit{machine readable}, analizzando l'evoluzione dai formati lineari e dai fingerprint molecolari fino ai grafi.
+
+Il nucleo dell'elaborato formalizza la predizione \textbf{DTI} e \textbf{DTA} (\textit{Drug-Target Interaction} e \textit{Drug-Target Affinity}) come problemi di classificazione binaria e regressione. Vengono confrontati i metodi \textit{ligand-based} e \textit{structure-based}, il docking molecolare, gli algoritmi di Machine Learning classico (Random Forest, SVM) e le architetture di Deep Learning più recenti (CNN, RNN, GNN, Transformer), evidenziando come i modelli ibridi, come TC-DTA, ne combinino i punti di forza.
+
+Viene poi discussa la valutazione computazionale delle proprietà \textbf{ADMET}, approfondendo un'architettura multimodale ad attenzione \textit{cross-aligned} per la predizione della tossicità.
+
+Infine, i casi di Baricitinib, Halicin e Rentosertib mostrano 
+l'impatto clinico attuale e concreto di questi metodi. L'elaborato si conclude analizzando le sfide ancora aperte, tra cui il \textit{cold-start problem}, e discutendo vantaggi e svantaggi delle architetture più promettenti.
 \end{abstract}
 
-\begin{dedication} % this is optional
-Optional. Max a few lines.
-\end{dedication}
+%\begin{dedication} % this is optional
+%Optional. Max a few lines.
+%\end{dedication}
 
 %----------------------------------------------------------------------------------------
 \tableofcontents   
@@ -128,8 +131,8 @@ Optional. Max a few lines.
 \bibliographystyle{alpha}
 \bibliography{references}
 
-\begin{acknowledgements} % this is optional
-Optional. Max 1 page.
-\end{acknowledgements}
+%\begin{acknowledgements} % this is optional
+%Optional. Max 1 page.
+%\end{acknowledgements}
 
 \end{document}
