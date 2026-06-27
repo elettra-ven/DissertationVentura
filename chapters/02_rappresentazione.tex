@@ -21,7 +21,7 @@ Senza una rappresentazione standardizzata che rispetti i principi \textbf{FAIR} 
 \section{Rappresentazioni lineari: SMILES e SELFIES}
 La necessità di disporre di dati FAIR e \textit{machine readable/actionable} ha portato allo sviluppo di diverse metodologie di codifica di dati chimici in formati meno complessi, processabili da algoritmi e metodi di machine learning.
 \subsection{SMILES}
-Il sistema \textbf{SMILES} (Simplified Molecular-Input Line-Entry System) rappresenta lo standard moderno più diffuso per la rappresentazione di molecole chimiche nell'ambito delle applicazioni di intelligienza artificiale.
+Il sistema \textbf{SMILES} (Simplified Molecular-Input Line-Entry System) rappresenta lo standard moderno più diffuso per la rappresentazione di molecole chimiche nell'ambito delle applicazioni di intelligenza artificiale.
 
 Si basa sulla descrizione delle strutture chimiche attraverso stringhe di caratteri alfanumerici ASCII \cite{aksamitHybridFragmentSMILESTokenization2024}. %sottoponibili a processi NLP.
 Una stringa SMILES rappresenta la molecola come una catena di atomi, dove le ramificazioni sono indicate tra parentesi tonde, le chiusure degli anelli da numeri corrispondenti (per esempio, 1 con 1, ecc...), i simboli "-", "=", "\#" \cite{sadeghiCanLargeLanguage2024} rappresentano diversi tipi di legame e "@", "/", "\textbackslash" diverse conformazioni isomeriche \cite{aksamitHybridFragmentSMILESTokenization2024}.
@@ -169,7 +169,7 @@ Si tratta di un processo computazionale basato sull'architettura \textbf{Transfo
 Il modello riesce quindi a decodificare i fingerprint strutturali riconducendoli nuovamente a rappresentazioni lineari (SMILES o SELFIES) \cite{ucakReconstructionLosslessMolecular2023}.
 
 \section{Rappresentazione a grafo}
-La rappresentazione a \textbf{grafo} contituisce l'approccio più intuitivo e fedele alla realtà fisica per la digitalizzazione delle strutture chimiche, superando i limiti informativi delle notazioni lineari e minimizzando la perdita di dati.
+La rappresentazione a \textbf{grafo} consituisce l'approccio più intuitivo e fedele alla realtà fisica per la digitalizzazione delle strutture chimiche, superando i limiti informativi delle notazioni lineari e minimizzando la perdita di dati.
 
 La molecola viene rappresentata come un grafo non orientato  $G=(V,E)$ \cite{wangGraphNeuralNetworks2023}, in cui:
 \begin{description}
@@ -251,11 +251,12 @@ La rete prende in input una sequenza FASTA e la processa per ricercare le zone c
 
 Il modello si divide in due fasi principali:
 \begin{enumerate}
-    \item \textbf{Evoformer:} Primo modulo incaricato della previsione della struttura. Si approccia al problema computazionale interpretandolo come un \textbf{problema di inferenza di grafi} nello spazio tridimensionale. Tiene traccia degli amminoacidi propensi a mutare insieme, e a creare quindi strutture di avvolgimento complesse, tramite \textbf{Multiple Sequence Alignments} o \textbf{MSA}. Queste sono collezioni di sequenze di proteine omologhe allineate tra loro in un array bidimensionale, la cui analisi risulta utile per la previsone di coordinazioni tra amminoacidi e siti di ripiegamento proteico \cite{jumperHighlyAccurateProtein2021}.
+    \item \textbf{Evoformer:} Primo modulo incaricato della previsione della struttura. Si approccia al problema computazionale interpretandolo come un \textbf{problema di inferenza di grafi} nello spazio tridimensionale. Tiene traccia degli amminoacidi propensi a mutare insieme, e a creare quindi strutture di avvolgimento complesse, tramite \textbf{Multiple Sequence Alignments} o \textbf{MSA}. Queste sono collezioni di sequenze di proteine omologhe allineate tra loro in un array bidimensionale, la cui analisi risulta utile per la previsione di coordinazioni tra amminoacidi e siti di ripiegamento proteico \cite{jumperHighlyAccurateProtein2021}.
     \item \textbf{Modulo di Struttura:} Trasforma le informazioni ricavate dall'Evoformer in coordinate 3D reali. Ogni amminoacido è trattato come un corpo rigido indipendente, o "residue gas", che può ruotare e traslare nello spazio fino ad assumere la sua posizione "corretta" all'interno della conformazione della catena proteica.
     Viene usato un meccanismo di \textbf{Attenzione} (\textbf{Invariant Point Attention, o IPA}) le cui iterazioni raffinano le informazioni spaziali degli elementi.
 \end{enumerate}
-\begin{figure}
+
+\begin{figure}[htbp]
     \centering
     \includegraphics[width=1\linewidth]{figures/alphafold_pipeline.png}
     \caption{Schema semplificato della rete neurale di AlphaFold. Adattato e modificato dall'opera originale di Jumper et al. (2021), disponibile in Open Access sotto licenza Creative Commons Attribution 4.0 International (\url{http://creativecommons.org/licenses/by/4.0/}).}
