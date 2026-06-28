@@ -8,8 +8,7 @@ la pratica della \textit{drug discovery}.
 
 \section{Baricitinib per COVID-19}
 Nel 2020, il team di BenevolentAI ha pubblicato 
-su \textit{The Lancet} un'analisi che illustra come una rappresentazione a  
-\textbf{knowledge graph} avanzato, costruito come un archivio strutturato di 
+su \textit{The Lancet} un'analisi che illustra come un \textbf{knowledge graph} avanzato, costruito come un archivio strutturato di 
 informazioni biologiche e mediche estratte tramite ML,
 abbia permesso di identificare in pochi giorni il 
 \textbf{baricitinib} come potenziale trattamento per 
@@ -17,7 +16,7 @@ l'infezione da SARS-CoV-2
 \cite{richardsonBaricitinibPotentialTreatment2020}.
 
 Il baricitinib è un inibitore delle chinasi Janus (JAK), 
-già conosciuto e approvato per il trattamento dell'artrite reumatoide. 
+già approvato per il trattamento dell'artrite reumatoide. 
 Gli algoritmi di predizione DTI di BenevolentAI hanno 
 identificato la sua capacità di inibire la proteina 
 \textbf{AAK1}, un regolatore dell'endocitosi (il meccanismo attraverso cui il virus entra nelle cellule 
@@ -36,8 +35,8 @@ guidato da ML}, ovvero la capacità di identificare nuovi
 target biologici per farmaci già approvati, 
 riducendo drasticamente i tempi di validazione 
 clinica.
-Si tratta una delle applicazioni più immediate 
-e ad efficaci dei metodi di predizione DTI 
+Si tratta di una delle applicazioni più immediate 
+ed efficaci dei metodi di predizione DTI 
 discussi in questo elaborato.
 
 \section{Halicin: un antibiotico scoperto dal Deep 
@@ -48,7 +47,7 @@ primo antibiotico ad ampio spettro identificato tramite
 un approccio di deep learning 
 \cite{stokesDeepLearningApproach2020}.
 
-Il modello adottato è \textit{Chemprop}, un'architettura \textbf{D-MPNN} (\textit{Directed Message Passing Neural Network}). Si tratta di una variante delle GNN (descritte nei capitoli precedenti) con lo scopo di prevedere l'attività antibatterica a partire dalla struttura chimica del composto, espressa sotto forma di grafo.
+Il modello adottato è \textit{Chemprop}, un'architettura \textbf{D-MPNN} (\textit{Directed Message Passing Neural Network}). Si tratta di una variante delle GNN (\ref{subsec:gnn}) con lo scopo di prevedere l'attività antibatterica a partire dalla struttura chimica del composto, espressa sotto forma di grafo.
 
 Il modello traduce la rappresentazione in un vettore tramite \textit{message passing}, per costruire una comprensione della chimica locale della molecola.
 
