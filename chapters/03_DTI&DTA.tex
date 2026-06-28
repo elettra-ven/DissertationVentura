@@ -249,7 +249,7 @@ Oltre agli algoritmi \textit{tree-based}, sono utilizzate anche tecniche
 come \textbf{Support Vector Machines "SVM"} (o \textbf{Support Vector Regression "SVR"} per i task di regressione DTA). Queste affrontano il problema di classificazione cercando, all'interno dello spazio dei descrittori, l'\textbf{iperpiano di separazione} che massimizza il margine, ovvero la distanza tra i punti più vicini di ciascuna delle due classi (in interazione e non interagenti).
 Un margine più ampio garantisce infatti una maggiore capacità del modello di generalizzare su coppie mai osservate.
 
-Questi campioni ``di confine'' vengono chiamati \textbf{vettori di supporto}, e sono gli unici punti del training set che determinano la posizione dell'iperpiano, rendendo il modello più robusto ed efficiente dal punto di vista computazionale.
+Questi campioni ``di confine'' vengono chiamati \textbf{vettori di supporto}, e sono gli unici punti del training set che determinano la posizione dell'iperpiano, rendendo il modello più robusto ed efficiente dal punto di vista computazionale
 \cite{montesinoslopezSupportVectorMachines2022}.
 \begin{figure}[h]
     \centering
@@ -315,10 +315,6 @@ della rete:
     combinano tra loro le caratteristiche apprese dalle mappature nei
     livelli precedenti, per generare una previsione finale.
 \end{itemize}
-Questo tipo di reti neurali sono facilmente scalabili e molto efficienti
-ma, facendo uso di informazioni 1D, fanno anch'esse fatica ad incorporare
-strutture tridimensionali più complesse e a catturare le dipendenze
-biochimiche tra elementi \cite{houDGCADTADeepGraph2025}.
 
 Un esempio di utilizzo di CNN come base per i task di interazione è il modello \textbf{nCNN-DA} (novel Convolutional Neural Network with Dual Attention) proposto da Kumar e Singh (2026) \cite{kumarPredictingDrugtargetInteractions2026a} per la predizione simultanea delle interazioni farmaco-bersaglio e dell'affinità di legame (DTI\&DTA).
 
@@ -333,7 +329,7 @@ L'architettura si articola in tre componenti principali:
 \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth]{figures/CNN-DA_algorithm.png}
-    \caption{Pseudocodice dell'approccio di deep learning ottimizzato per la predizione delle interazioni farmaco-bersaglio (DTI) e dell'affinità di legame (DTA). Figura riprodotta con il permesso di Elsevier, da Kumar et al., "Predicting drug-target interactions and binding affinity using an optimized deep learning approach", 2026. Licenza numero: 6287110356663.}
+    \caption{Pseudocodice dell'approccio di deep learning nCNN-DA per la predizione delle interazioni farmaco-bersaglio (DTI) e dell'affinità di legame (DTA). Figura riprodotta con il permesso di Elsevier, da Kumar et al., "Predicting drug-target interactions and binding affinity using an optimized deep learning approach", 2026. Licenza numero: 6287110356663.}
     \label{fig:CNN_DA}
 \end{figure}
 \clearpage
@@ -355,12 +351,15 @@ La predizione DTI tramite attivazione sigmoidea e la predizione DTA tramite proi
 L'ottimizzazione avviene infine minimizzando una loss ibrida $\mathcal{L}$, che
 bilancia i due task attraverso i coefficienti $\lambda_1$
 e $\lambda_2$.
+
+Questo tipo di reti neurali è facilmente scalabile e molto efficiente
+ma, facendo uso di informazioni 1D, fatica ad incorporare
+strutture tridimensionali più complesse e a catturare le dipendenze
+biochimiche tra elementi \cite{houDGCADTADeepGraph2025}.
+
 \subsubsection{RNN}
 Le \textbf{RNN (Recurrent Neural Networks)} sono un'altra architettura
 di Deep Learning progettata per l'elaborazione di dati sequenziali.
-Tuttavia queste reti non sono in grado di modellare
-in modo corretto e affidabile le dipendenze tra atomi tra loro distanti
-\cite{wangUnifiedSurveyDrugtarget2026a}, limite parzialmente superato solo da architetture come i Transformer.
 
 Operano mantenendo un \textbf{layer nascosto}, che si evolve con
 l'elaborazione della sequenza di input, secondo la transizione deterministica:
@@ -377,56 +376,57 @@ elaborati. Questa doppia dipendenza permette alla rete di costruire
 rappresentazioni gerarchiche della sequenza, integrando al contempo il
 contesto locale accumulato nei passi precedenti \cite{zarembaRecurrentNeuralNetwork2015}.
 
-Nell'ambito della predizione di interazioni con il target farmacologico, questa dinamica ricorrente è particolarmente adatta all'analisi delle stringhe SMILES dei composti. "Scorrendo" la sequenza di caratteri, la rete accumula nell'\textit{hidden layer} una rappresentazione contestuale e aggiornata dei \textbf{motifs} strutturali e dei pattern nelle
+Nell'ambito della predizione di interazioni con il target farmacologico, questa dinamica ricorrente si sposa particolarmente bene con l'analisi delle stringhe SMILES dei composti. "Scorrendo" la sequenza di caratteri, la rete accumula nell'\textit{hidden layer} una rappresentazione contestuale e aggiornata dei \textbf{motifs} strutturali e dei pattern nelle
 relazioni che determinano l'affinità di legame \cite{odugbemiArtificialIntelligenceAntidiabetic2024}.
 
 L'ultimo vettore prodotto $h_t^l$ costituisce quindi un "riassunto" dell'intera molecola o proteina in analisi, che viene poi passato agli strati di predizione per stimare la DTI o la DTA.
 \begin{figure}[ht]
-\centering
-\begin{tikzpicture}[
-    node distance=1.6cm,
-    box/.style={draw=black, rounded corners=2pt, minimum width=1.1cm,
-                minimum height=0.7cm, align=center, font=\small},
-    arr/.style={->, >=stealth, thick, draw=black}
-]
+    \centering
+    \begin{tikzpicture}[
+        node distance=1.6cm,
+        box/.style={draw=black, rounded corners=2pt, minimum width=1.1cm,
+        minimum height=0.7cm, align=center, font=\small},
+        arr/.style={->, >=stealth, thick, draw=black}
+        ]
+        
+        \foreach \i/\t in {1/$x_1$, 2/$x_2$, 3/$x_3$, 4/$x_t$} {
+            \node[box] (x\i) at ({(\i-1)*2.2}, 0) {\t};
+            }
+            
+            \foreach \i/\h in {1/$h_1$, 2/$h_2$, 3/$h_3$} {
+                \node[box] (h\i) at ({(\i-1)*2.2}, 1.8) {\h};
+                }
+                
+                \node[box, thick] (h4) at ({3*2.2}, 1.8) {$h_t$};
+                
+                \foreach \i in {1,2,3,4} {
+                    \draw[arr] (x\i) -- (h\i);
+                    }
+                    
+                    \draw[arr] (h1) -- (h2);
+                    \draw[arr] (h2) -- (h3);
+                    \draw[arr] (h3) -- node[above, font=\scriptsize]{$\dots$} (h4);
+                    
+                    \node[box] (out) at (6.6, 3.5) {DTI / DTA};
+                    \draw[arr] (h4) -- (out);
+                    
+                    \node[font=\scriptsize\itshape, left=0.3cm of x1] {SMILES:};
+                \end{tikzpicture}
+                \caption{Schema del flusso ricorrente in una RNN applicata a una stringa SMILES. Ogni token aggiorna lo stato nascosto $h_t$, che trasporta la memoria contestuale della sequenza.}
+                \label{fig:rnn_smiles}
+            \end{figure}
 
-\foreach \i/\t in {1/$x_1$, 2/$x_2$, 3/$x_3$, 4/$x_t$} {
-    \node[box] (x\i) at ({(\i-1)*2.2}, 0) {\t};
-}
+Tuttavia, come le CNN, anche queste reti non sono in grado di modellare
+in modo corretto e affidabile le dipendenze tra atomi tra loro distanti
+\cite{wangUnifiedSurveyDrugtarget2026a}, limite parzialmente superato solo da architetture come i Transformer (Vedi \ref{subsubsection:modelli_transformer}).
 
-\foreach \i/\h in {1/$h_1$, 2/$h_2$, 3/$h_3$} {
-    \node[box] (h\i) at ({(\i-1)*2.2}, 1.8) {\h};
-}
-
-\node[box, thick] (h4) at ({3*2.2}, 1.8) {$h_t$};
-
-\foreach \i in {1,2,3,4} {
-    \draw[arr] (x\i) -- (h\i);
-}
-
-\draw[arr] (h1) -- (h2);
-\draw[arr] (h2) -- (h3);
-\draw[arr] (h3) -- node[above, font=\scriptsize]{$\dots$} (h4);
-
-\node[box] (out) at (6.6, 3.5) {DTI / DTA};
-\draw[arr] (h4) -- (out);
-
-\node[font=\scriptsize\itshape, left=0.3cm of x1] {SMILES:};
-\end{tikzpicture}
-\caption{Schema del flusso ricorrente in una RNN applicata a una stringa SMILES. Ogni token aggiorna lo stato nascosto $h_t$, che trasporta la memoria contestuale della sequenza.}
-\label{fig:rnn_smiles}
-\end{figure}
 \subsection{Modelli graph-based (GNN)}
 \label{subsec:gnn}
-I modelli \textit{sequence-based}, anche se risultano più semplici nella
-formattazione degli input e più facilmente scalabili, faticano a prendere
-conoscenza del contesto tridimensionale del sito di legame
-\cite{wangUnifiedSurveyDrugtarget2026a}. Questa perdita di informazioni
-può essere superata grazie alla rappresentazione a grafo tipica dei modelli
-trattati in questa sezione.
+Per superare i limiti appena descritti, caratteristici dei modelli \textit{sequence-based}, si è consolidato l'approccio basato sui \textbf{grafo molecolare}
+\cite{wangUnifiedSurveyDrugtarget2026a}.
 
-Come accennato brevemente nel capitolo precedente, questo tipo di rappresentazione
-permette l'elaborazione dei contesti da parte delle \textbf{GNN (Graph
+Come accennato brevemente nel capitolo precedente (Vedi \ref{sec:graph_representation}), questo tipo di rappresentazione
+permette l'elaborazione dei contesti molecolari da parte delle \textbf{GNN (Graph
 Neural Networks)}, che operano simulando la topologia e le relazioni
 spaziali reali dei composti chimici (legami tra atomi \textit{intra} e
 \textit{inter} composto) propagando informazioni tra i nodi tramite il
@@ -434,14 +434,17 @@ meccanismo di \textit{message passing}. Questo processo avviene
 in due passaggi iterativi \cite{wangGraphNeuralNetworks2023}:
 \begin{itemize}
     \item \textbf{Computazione e Aggregazione:} Il modello calcola un
-    messaggio elaborando le caratteristiche del nodo centrale, con quelle
-    dei nodi e degli archi ad esso adiacenti.
+    messaggio elaborando le caratteristiche del nodo centrale con quelle
+    dei nodi e degli archi ad esso adiacenti (\textit{neighbourhood}).
     \item \textbf{Aggiornamento:} Lo stato del nodo viene aggiornato
     integrando il nuovo messaggio con la sua informazione precedente.
 \end{itemize}
-Queste informazioni elaborate vengono poi lette tramite l'operazione di
+Il risultato dell'elaborazione viene poi letto tramite l'operazione di
 \textbf{Readout}.
-$$ \hat{y} = R(\{h_u^{(L)} | u \in \mathcal{V}\}) $$
+\begin{equation}
+    \hat{y} = R(\{h_u^{(L)} | u \in \mathcal{V}\})
+\end{equation}
+
 Attraverso un meccanismo simile al pooling, le
 caratteristiche di tutti i nodi vengono aggregate e aggiornate in un
 unico vettore di caratteristiche globali, in grado di rappresentare lo
@@ -464,6 +467,7 @@ Nel contesto del problema computazionale DTI/DTA, le GNN risultano fondamentali 
 \end{itemize}
 Una volta che i messaggi sono stati propagati all'interno delle rispettive strutture, le operazioni di \textit{readout} generano \textbf{due vettori di feature ad alta dimensionalità}. Questi vettori vengono successivamente combinati all'interno di un modulo di interazione, spesso arricchito da meccanismi di attenzione (o \textit{Graph Attention Networks}) per pesare l'importanza relativa dei vari atomi e residui nel complesso farmaco-bersaglio \cite{ozsariDTAGNNToolkitConstructing2026}. Il vettore risultante viene infine processato da strati \textit{Fully Connected} per mappare l'interazione nell'output finale $y$, traducendosi in una classificazione booleana per i task di DTI o in un valore continuo di affinità ($K_d$, $K_i$, $IC_{50}$) per i task di DTA.
 \subsection{Modelli attention-based e Transformer}
+\label{subsubsection:modelli_transformer}
 Le architetture basate sul meccanismo di \textbf{attenzione} e sui
 \textbf{Transformer} rappresentano l'attuale stato dell'arte nella
 predizione di DTI e DTA. Il loro punto di forza principale risiede nella
@@ -486,42 +490,39 @@ valori $V$, il meccanismo calcola una media pesata dei valori:
     \right) V
     \label{eq:attention}
 \end{equation}
-dove $d_k$ è la dimensione delle chiavi, usata come fattore di scala
-per stabilizzare i gradienti.
 Il termine $QK^\top$ misura la
 \textbf{compatibilità} tra ogni coppia query-chiave, tale che un valore elevato indica una forte relazione di dipendenza tra le due posizioni nella sequenza. La funzione
-\textit{softmax} normalizza questi punteggi in una distribuzione di
+\textit{softmax} normalizza i punteggi in una distribuzione di
 probabilità, producendo i \textbf{pesi di attenzione} con cui vengono combinati i valori
 $V$.
+Infine, $d_k$ è la dimensione delle chiavi, usata come fattore di scala
+per evitare che il prodotto scalare $QK^\top$ assuma valori eccessivamente
+elevati al crescere di $d_k$, condizione che spingerebbe la funzione
+\textit{softmax} verso regioni a gradiente prossimo allo zero, rendendo
+l'addestramento instabile.
 
 Nelle sequenze molecolari, le tre matrici $Q$, $K$ e $V$
 derivano dallo stesso input, di conseguenza si parla di \textbf{self-attention}.
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.75\linewidth]{figures/heatmap_interazione.png}
-    \caption{Visualizzazione dell'attenzione (Attention Heatmap) tra SMILES e residui proteici. La mappa illustra come il modello assegna pesi differenti alle componenti molecolari: le regioni in rosso evidenziano i segmenti di farmaco e i residui amminoacidici che contribuiscono maggiormente all'interazione, confermando la capacità del meccanismo di attention di focalizzarsi selettivamente sulle informazioni rilevanti. Figura riprodotta con il permesso di Elsevier, da Kumar et al., "Predicting drug-target interactions and binding affinity using an optimized deep learning approach", 2026. Licenza numero: 6287110356663.}
-    \label{fig:heatmap}
-\end{figure}
-\clearpage
 \subsubsection{Architetture Transformer per DTI e DTA}
 I \textbf{Transformer} estendono il meccanismo di attention trattando le stringhe SMILES e le sequenze
 amminoacidiche FASTA come se fossero un linguaggio naturale da
 interpretare.
 A differenza delle RNN, che elaborano i token uno alla
 volta in modo sequenziale, i Transformer processano l'intera sequenza
-simultaneamente, rendendo il training più efficiente e la cattura del
-contesto globale più affidabile \cite{wangUnifiedSurveyDrugtarget2026a}.
+simultaneamente, parallelizzando il calcolo e rendendo il training
+notevolmente più efficiente \cite{wangUnifiedSurveyDrugtarget2026a}.
 
 \begin{figure}[ht]
-\centering
-\includegraphics[width=0.35\linewidth]{figures/TransformerEncoder.png}
-\caption{Architettura di un encoder Transformer applicato a sequenze
-molecolari o proteiche. Le frecce tratteggiate indicano le connessioni
-residuali, che sommano l'input di ogni
-sotto-blocco al suo output prima della normalizzazione.}
-\label{fig:transformer-encoder}
+    \centering
+    \includegraphics[width=0.35\linewidth]{figures/TransformerEncoder.png}
+    \caption{Architettura di un encoder Transformer applicato a sequenze
+    molecolari o proteiche. Le frecce indicano le connessioni
+    residuali, che sommano l'input di ogni
+    sotto-blocco al suo output prima della normalizzazione.}
+    \label{fig:transformer-encoder}
 \end{figure}
+\clearpage
 
 \subsubsection{Vantaggi e limiti}
 Uno dei punti di forza più rilevanti di questi modelli in ambito
@@ -534,8 +535,15 @@ strumento offre ai ricercatori la possibilità di \textbf{validare
 biologicamente} il risultato computazionale, verificando se le regioni
 evidenziate corrispondono a siti di legame noti.
 
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth]{figures/heatmap_interazione.png}
+    \caption{Visualizzazione dell'attenzione (Attention Heatmap) tra SMILES e residui proteici. La mappa illustra come il modello assegna pesi differenti alle componenti molecolari: le regioni in rosso evidenziano i segmenti di farmaco e i residui amminoacidici che contribuiscono maggiormente all'interazione, confermando la capacità del meccanismo di attention di focalizzarsi selettivamente sulle informazioni rilevanti. Figura riprodotta con il permesso di Elsevier, da Kumar et al., "Predicting drug-target interactions and binding affinity using an optimized deep learning approach", 2026. Licenza numero: 6287110356663.}
+    \label{fig:heatmap}
+\end{figure}
+
 Il principale limite rimane la \textbf{complessità computazionale}:
-l'\textit{attention} ha complessità quadratica rispetto alla lunghezza della
+l'\textit{attention} ha complessità quadratica $O(n^2)$ rispetto alla lunghezza della
 sequenza, il che rende il training particolarmente oneroso in termini di
 tempo e memoria quando si lavora con sequenze proteiche molto lunghe \cite{mondalAIdrivenDrugTarget2026a}.
 
@@ -680,6 +688,9 @@ l'indice $r^2_m$, una metrica che penalizza le predizioni sistematicamente
 distorte rispetto alla bisettrice ideale tra valori predetti e osservati,
 risultando più severa del coefficiente $R^2$ standard.
 L'indice $r^2_m > 0.5$ ottenuto da TC-DTA in entrambi i dataset indica una solida capacità di generalizzazione su dati esterni.
+
+Questa scelta architetturale risponde direttamente al limite di complessità computazionale descritto in precedenza. Infatti, il costo quadratico dell'Attenzione viene riservato solo alla sequenza proteica, dove la cattura di dipendenze a lungo raggio è più critica, mentre il farmaco, rappresentato da stringhe SMILES più brevi, viene elaborato con un modulo CNN più efficiente.
+
 \subsubsection{Graph Transformer}
 Un'ulteriore evoluzione consiste nell'applicare la logica dei Transformer
 direttamente alle strutture a grafo delle molecole, dando origine ai
@@ -693,11 +704,17 @@ Il modello \textbf{GraphormerDTI} rappresenta un esempio di questa
 categoria applicata al problema DTI, dimostrando miglioramenti rispetto
 alle GNN classiche grazie all'integrazione di queste feature informative strutturali
 nell'attenzione \cite{kumarPredictingDrugtargetInteractions2026a}.
+
 \subsubsection{Modelli linguistici pre-addestrati (PLM)}
 I Transformer costituiscono la spina dorsale dei cosiddetti
-\textbf{Foundation Models}, ovvero modelli pre-addestrati su database
-massivi in modalità auto-supervisionata e successivamente adattati a
-compiti specifici tramite \textit{fine-tuning}. Questo paradigma
-\textit{pre-train / fine-tune} permette di sfruttare la conoscenza
-biochimica e chimica generale acquisita su larga scala verso i task di DTI e DTA
-con dataset di dimensioni più ridotte \cite{wangUnifiedSurveyDrugtarget2026a}.
+\textbf{Foundation Models}, ossia modelli di grandi dimensioni
+addestrati una sola volta su dataset massivi e successivamente
+riutilizzabili come base per molteplici task specifici, senza
+richiedere un addestramento da zero per ciascuno di essi.
+Nell'ambito farmaceutico, questi modelli vengono pre-addestrati su
+database massivi in modalità auto-supervisionata e successivamente
+adattati a compiti specifici tramite \textit{fine-tuning}. Questo
+paradigma \textit{pre-train / fine-tune} permette di sfruttare la
+conoscenza biochimica e chimica generale acquisita su larga scala
+verso i task di DTI e DTA con dataset di dimensioni più ridotte
+\cite{wangUnifiedSurveyDrugtarget2026a}.
