@@ -121,13 +121,13 @@ L'idea centrale è proprio quella di rappresentare la molecola come in un \textb
 ]
 
 \node[box] (Q) {
-    \begin{tabular}{c} \textbf{Q — Grafo (GNN)}\\[2pt] {\footnotesize GROVER | $\approx 36\%$} \end{tabular}
+    \begin{tabular}{c} \textbf{Q — Grafo (GNN)}\\[2pt] {\footnotesize GROVER} \end{tabular}
 };
 \node[box, right=of Q] (K) {
-    \begin{tabular}{c} \textbf{K — Fingerprint}\\[2pt] {\footnotesize MACCS | $\approx 42\%$} \end{tabular}
+    \begin{tabular}{c} \textbf{K — Fingerprint}\\[2pt] {\footnotesize MACCS} \end{tabular}
 };
 \node[box, right=of K] (V) {
-    \begin{tabular}{c} \textbf{V — Immagine (CNN)}\\[2pt] {\footnotesize ResNet-50 | $\approx 22\%$} \end{tabular}
+    \begin{tabular}{c} \textbf{V — Immagine (CNN)}\\[2pt] {\footnotesize ResNet-50} \end{tabular}
 };
 
 \node[midbox, below=1.5cm of K] (scores) {
@@ -151,9 +151,7 @@ L'idea centrale è proprio quella di rappresentare la molecola come in un \textb
 (CMA). La modalità Query (grafo molecolare via GROVER) interroga la 
 modalità Key (fingerprint MACCS) per calcolare i punteggi di attenzione. 
 Il risultato finale è una media pesata modulata dalla modalità Value 
-(immagine molecolare via ResNet-50). Le percentuali indicano il 
-contributo medio di ciascuna modalità alla predizione 
-\cite{liEnhancingADMETProperty2026a}.}
+(immagine molecolare via ResNet-50) \cite{liEnhancingADMETProperty2026a}.}
 \label{fig:cma-attention}
 \end{figure}
 

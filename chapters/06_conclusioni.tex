@@ -2,9 +2,7 @@
 
 \section{Sintesi del Lavoro}
 Questa tesi ha ripercorso l'evoluzione degli strumenti 
-computazionali applicati alla pipeline di sviluppo farmaceutico, 
-con un focus sulla predizione delle interazioni farmaco-bersaglio 
-e sulla valutazione delle proprietà ADMET. 
+computazionali applicati alla pipeline di sviluppo farmaceutico.
 Il filo conduttore 
 che attraversa tutti i capitoli è il modo in cui la ricerca si è trasformata da un 
 processo empirico incerto a un 
@@ -12,18 +10,15 @@ problema computazionale di ottimizzazione in spazi ad alta dimensionalità,
 affrontabile attraverso strumenti di apprendimento automatico.
 
 Il capitolo sulla rappresentazione molecolare ha mostrato come 
-il primo ostacolo computazionale, ovvero la traduzione di entità biochimiche 
-complesse in formati leggibili ed elaborabili da algoritmi, sia stato 
+l'ostacolo di traduzione delle entità biochimiche in formati leggibili ed elaborabili da algoritmi sia stato 
 affrontato attraverso rappresentazioni progressivamente più 
-espressive:
-
-dalle stringhe SMILES ai fingerprint molecolari, 
+espressive, dalle stringhe SMILES ai fingerprint molecolari, 
 fino ai grafi molecolari che preservano la topologia e le caratteristiche
 stereochimiche particolari alle singole molecole. 
 
 Il capitolo sulla DTI e DTA ha mostrato come la formalizzazione 
 del problema computazionale abbia 
-permesso di riformulare la ricerca farmacologica in due task 
+permesso di riformulare la ricerca in due task 
 distinti di apprendimento supervisionato:
 
 \textbf{classificazione binaria} per la presenza dell'interazione e \textbf{regressione} su valore continuo per 
@@ -35,9 +30,10 @@ catturare.
 
 Il capitolo ADMET ha completato il quadro mostrando come la 
 valutazione della sicurezza farmacologica, storicamente 
-relegata alle fasi cliniche avanzate, possa essere anticipata 
+affrontata durante i trial clinici avanzati, possa essere anticipata 
 computazionalmente, riducendo il tasso di logoramento dei 
 candidati nelle fasi più costose della pipeline.
+
 \section{Lo Stato dell'Arte e le Sfide Aperte}
 Nonostante i progressi documentati, il campo presenta sfide 
 algoritmiche e metodologiche ancora aperte che condizionano 
@@ -51,37 +47,39 @@ attuali possiedono solo parzialmente \cite{wangUnifiedSurveyDrugtarget2026a}.
 \begin{figure}
     \centering
     \includegraphics[width=0.5\linewidth]{figures/cold_start.png}
-    \caption{(a) Warm-Start: il modello prevede interazioni tra farmaci e target già presenti nel training set. (b) Cold-Start (Drug): predizione per un nuovo farmaco mai visto prima. (c) Cold-Start (Target): predizione per una nuova proteina bersaglio. (d) Cold-Start (Both): scenario di massima complessità in cui sia il farmaco che il target sono inediti.
+    \caption{(a) Warm-Start: il modello prevede interazioni tra farmaci e target già presenti nel training set. (b) Cold-Start (Drug): predizione per un nuovo farmaco mai visto prima. (c) Cold-Start (Target): predizione per una nuova proteina bersaglio. (d) Cold-Start (Both): scenario di massima complessità in cui sia il farmaco che il target sono sconosciuti.
     Figura riprodotta con il permesso di Elsevier, da Wang et al., A unified survey on drug-target interaction and binding affinity prediction: Models, representations, and challenges", Biotechnology Advances, 2026. Licenza numero: 6286991125834.}
     \label{fig:placeholder}
 \end{figure}
 I modelli basati su 
-Transformer e i PLM mostrano la maggiore robustezza in 
+Transformer e i PLM mostrano una maggiore robustezza in 
 questi scenari, grazie alla conoscenza biochimica generale 
 acquisita durante il pre-training, che permette loro di colmare l'assenza di esempi specifici.
 Tuttavia, la questione rimane ancora
 aperta per target biologicamente distanti da quelli 
 rappresentati nei dataset, che rappresentano vere e proprie "zone inesplorate" dello spazio chimico.
+\clearpage
 
 Lo \textbf{sbilanciamento dei dati} costituisce un problema 
 strutturale della classificazione per cui i dataset DTI contengono molte più coppie 
 non interagenti che interagenti, e in cui molte coppie etichettate 
 come negative sono in realtà non testate.
 
-Questo sbilanciamento porta i modelli a essere eccessivamente ottimisti nelle predizioni (che sono portate a seguire la classe maggioritaria) e a fallire nell'identificazione di interazioni rare ma biologicamente significative.
+Questo sbilanciamento porta i modelli a essere eccessivamente ottimisti nelle predizioni (che tendono a seguire la classe maggioritaria) e a fallire nell'identificazione di interazioni rare ma biologicamente significative.
 
 Tecniche come 
 SMOTE (\textit{Synthetic Minority Over-sampling Technique}) e sampling randomico \cite{ahmadMachineLearningDrugtarget2026} mitigano parzialmente il problema e aiutano a ridurre l'\textit{overfitting}, 
 ma non lo risolvono alla radice, che risiede nella natura 
 stessa dei dati sperimentali disponibili. Infatti, visto che i dataset forniti includono spesso solo interazioni note, trattando tutte le altre coppie come negative, le metriche di validazione della classificazione, ad esempio AUROC (\textit{Area Under the Receiver Operating Characteristic curve}), possono risultare "gonfiate" artificialmente, portando a scarse prestazioni \cite{ahmadMachineLearningDrugtarget2026}.
 
-Infine, come menzionato in precedenza, l'\textbf{interpretabilità} dei modelli deep learning 
+Infine, come menzionato in precedenza, l'\textbf{interpretabilità} dei modelli Deep Learning 
 rappresenta un requisito necessario per l'approvazione e 
 l'adozione clinica \cite{wangUnifiedSurveyDrugtarget2026a}. 
 Le mappe di \textit{Attention}, soprattutto nel contesto di predizione ADMET, hanno aperto la strada alla validazione biologica 
 delle predizioni, ma rimangono processi non investigabili e difficili da seguire nella loro esecuzione "Black Box".
 
 La mancanza di spiegazioni trasparenti ostacola l'accettazione dei medicinali individuati da parte delle aziende regolatorie.
+
 \section{Riflessioni Finali}
 I metodi 
 computazionali studiati non hanno sostituito la validazione 
