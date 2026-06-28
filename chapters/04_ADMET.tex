@@ -54,7 +54,7 @@ sperimentazione \textit{in vivo}.
 
 La nocività vera e propria è data dall'interazione delle molecole con proteine o recettori vitali per il funzionamento dell'organismo \cite{houckUnderstandingMechanismsToxicity2008}. Per esempio:
 \begin{itemize}
-    \item Blocco del canale ionico \textbf{hERG}: questo canale ionico è incaricato di consentire il corretto flusso degli ioni di potassio $K^{+}$ tra le pareti delle cellule cardiache, consentendo la normale attività elettrica cardiaca \cite{houckUnderstandingMechanismsToxicity2008}. Se questo canale viene bloccato da determinate sostanze, possono insorgere episodi di cardiotossicità, manifestati sotto forma di gravi aritmie.
+    \item Blocco del canale ionico \textbf{hERG}: questo canale ionico è incaricato di consentire il corretto flusso degli ioni di potassio $K^{+}$ tra le pareti delle cellule cardiache, consentendo la normale attività elettrica del cuore \cite{houckUnderstandingMechanismsToxicity2008}. Se questo canale viene bloccato da determinate sostanze, possono insorgere episodi di cardiotossicità, manifestati sotto forma di gravi aritmie.
     \item Interazione con \textbf{interruttori endocrini}: Alcuni composti tossici agiscono come ligandi per i recettori ormonali stereoidei, alterando il sistema endocrino e portando a gravi disfunzionalità dell'organismo.
 \end{itemize}
 Infine, la tossicità può derivare dalla perturbazione di complessi 
@@ -65,42 +65,44 @@ questi percorsi innesca risposte a cascata, spesso difficili
 da rilevare nelle fasi precoci dello sviluppo farmacologico \cite{houckUnderstandingMechanismsToxicity2008}.
 
 Un segnale concreto di come queste tecniche stiano entrando nella
-pratica regolatoria proviene dal programma pilota \textit{Innovative Science and Technology Approaches for New Drugs} (ISTAND), creato dal \textit{Center for Drug Evaluation and Research} (CDER) della FDA, con lo scopo di espandere le tipologie di strumenti di sviluppo farmaceutico qualificabili.
+pratica regolatoria proviene dal programma pilota \textit{Innovative
+Science and Technology Approaches for New Drugs} (ISTAND), istituito
+dal CDER della FDA per accogliere strumenti di sviluppo farmaceutico
+che non rientrano nei percorsi di qualificazione tradizionali
+\cite{fdaAIMLDrugDev2025}. 
 
-Viene proposto uno strumento
-interamente \textit{in silico} 
-basato su AI per la predizione della tossicità
-epatica indotta da farmaci (\textit{Drug-Induced Liver Injury},
-DILI) \cite{fdaAIMLDrugDev2025}. Il modello opera
-confrontando le strutture chimiche dei nuovi candidati con un
-archivio di farmaci di riferimento a tossicità epatica nota,
-applicando di fatto il medesimo principio di similarità strutturale
-("\textit{guilt by association}") alla base dei modelli QSAR. Si tratta, al momento, solo del primo dei tre
-passaggi del processo di qualificazione previsto da ISTAND, ma
-rappresenta un primo passo verso il riconoscimento formale di
-strumenti predittivi basati su AI come alternativa, seppur parziale,
-ai test preclinici sugli animali.
+Nel giugno 2026, per la prima volta,
+il CDER ha accettato la \textit{Letter of Intent} per uno strumento
+interamente \textit{in silico}: l'\textit{AI-Driven Digital Liver
+Model}, un modello basato su AI per la predizione della tossicità
+epatica indotta da farmaci (\textit{Drug-Induced Liver Injury}, DILI)
+\cite{fdaISTANDDili2026}. Il modello opera confrontando le strutture
+chimiche dei nuovi candidati con un archivio di farmaci di riferimento
+a tossicità epatica nota, applicando di fatto il medesimo principio
+di \textit{guilt by association} alla base dei modelli QSAR. Si tratta, al
+momento, solo del primo dei tre passaggi del processo di
+qualificazione previsto da ISTAND, ma rappresenta un primo passo
+verso il riconoscimento formale di strumenti predittivi basati su AI
+come alternativa, seppur parziale, ai test preclinici sugli animali.
 
 \section{Evoluzione verso il Machine Learning per la predizione ADMET}
-L'impiego del Machine Learning in questo campo rappresenta un'importante svolta metodologica rispetto ai test empirici tradizionali \cite{yangPredictionEffectADMET2022}, poiché permette di processare grandi volumi di dati molecolari per prevederne il comportamento farmacocinetico con costi e tempi drasticamente ridotti, allargando il primo "collo di bottiglia" del processo di ricerca.
+L'impiego del Machine Learning in questo campo rappresenta un'importante svolta metodologica rispetto ai test empirici tradizionali \cite{yangPredictionEffectADMET2022}, poiché permette di processare grandi volumi di dati molecolari per prevederne il comportamento farmacocinetico con costi e tempi drasticamente ridotti, allargando questo "collo di bottiglia" del processo di ricerca.
 
-Storicamente, i primi tentativi di razionalizzare le proprietà e l'attività biologica delle molecole si basava su metodi come \textit{quantitative structure-activity relationship} (QSAR) e \textit{structure-activity relationship} (SAR) \cite{liEnhancingADMETProperty2026a}.
+Storicamente, i primi tentativi di razionalizzare le proprietà e l'attività biologica delle molecole si basavano su metodi come \textit{quantitative structure-activity relationship} (QSAR) e \textit{structure-activity relationship} (SAR) \cite{liEnhancingADMETProperty2026a}.
 Tuttavia questi metodi presentavano un limite fondamentale: la necessità di una selezione manuale e di un'accurata rappresentazione delle \textit{feature} chimiche.
 
 Con l'avvento del ML classico, tuttavia, l'attenzione si è spostata verso l'uso di rappresentazioni come i \textit{chemical fingerprints}, che vengono presi come input da algoritmi come \textbf{Random Forest}, \textbf{Support Vector Machines}, \textbf{k-Nearest Neighbors} e \textbf{XGBoost}. 
-Questi ultimi hanno permesso di apprendere classificazioni complesse, trattando la molecola come un vettore binario che indica presenza/assenza di frammenti chimici, e raggiungendo risultati in modo veloce e con processi parzialmente interpretabili.
+Questi ultimi hanno permesso di apprendere classificazioni complesse, trattando la molecola come un vettore binario che indica presenza/assenza di frammenti chimici potenzialmente tossici, e raggiungendo risultati in modo veloce e con processi parzialmente interpretabili.
 Tuttavia, questi algoritmi ignorano la struttura tridimensionale e la connettività delle molecole, e le leggono invece come una sequenza di caratteristiche booleane, rendendo le interazioni tra frammenti vicini nello spazio ma lontani nella stringa di difficile predizione.
 
 Per una predizione più accurata di queste interazioni più complesse, \textbf{Li et al. (2026)} \cite{liEnhancingADMETProperty2026a} propongono un modello chiamato \textbf{CMA}, ovvero "Cross-Aligned Multimodal Attention". 
-L'idea centrale è proprio quella di rappresentare la molecola come in un \textbf{attention cross-modale}, ovvero tramite tre le matrici Query (Q), Key (K) e Value (V) del meccanismo di attention dei Transformer. Ogni matriche viene mappata a partire da una rappresentazione diversa, e solo una di queste fa riferimento ai \textit{fingerprints}:
+L'idea centrale è proprio quella di rappresentare la molecola come in un \textbf{attention cross-modale}, ovvero tramite le matrici Query (Q), Key (K) e Value (V) del meccanismo di attention dei Transformer. Ogni matrice viene mappata a partire da una rappresentazione diversa, e solo una di queste fa riferimento ai \textit{fingerprints}:
 \begin{itemize}
-    \item Query utilizza \textbf{GROVER}, un \textbf{GNN} (Graph Neural Networks) preaddestrato su 10 milioni di molecole e permette la rappresentazione più ricca strutturalmente. Contruibuisce a circa il 36\% della contibuzione media finale dello studio \cite{liEnhancingADMETProperty2026a}.
-    \item Value viene processata da \textbf{ResNet-50}, una CNN in grado di estrarre immagini molecolari bidimensionali e catturare così la forma, la simmetria e l'arrangiamento degli atomi dei soggetti candidati. La rete viene preaddestrata su 10 milioni di molecole. Contruibuisce a circa il 22\% della contibuzione media finale.
-    \item Key, infine, fa uso di \textbf{fingerprint MACCS}, composta da 166 bit che codifica l'occorrenza di gruppi chimici specifici. Contruibuisce a circa il 42\% della contibuzione media finale.
+    \item Query utilizza \textbf{GROVER}, un \textbf{GNN} (Graph Neural Networks) preaddestrato su 10 milioni di molecole e permette la rappresentazione più ricca strutturalmente \cite{liEnhancingADMETProperty2026a}.
+    \item Value viene processata da \textbf{ResNet-50}, una CNN in grado di estrarre immagini molecolari bidimensionali e catturare così la forma, la simmetria e l'arrangiamento degli atomi dei soggetti candidati. La rete viene preaddestrata su 10 milioni di molecole.
+    \item Key, infine, fa uso di \textbf{fingerprint MACCS}, composta da 166 bit che codifica l'occorrenza di gruppi chimici specifici.
 \end{itemize}
-La modalità Query "interroga" la modalità Key per determinare quali elementi siano più rilevanti all'interno del contesto corrente. Il risultato è infine un media pesata dalla modalità Value. Tradotto nell'ambito molecolare, la rappresentazione a grafo può interrogare le \textit{fingerprint} per comprendere al meglio quali siano le caratteristiche strutturali locali più coerenti con la topologia generale, mentre il risultato finale viene modulato dalle immagini estratte da ResNet
-\cite{liEnhancingADMETProperty2026a}.
-
+\clearpage
 \begin{figure}[ht]
 \centering
 \resizebox{\textwidth}{!}{%
@@ -155,6 +157,10 @@ contributo medio di ciascuna modalità alla predizione
 \label{fig:cma-attention}
 \end{figure}
 
+La modalità Query "interroga" la modalità Key per determinare quali elementi siano più rilevanti all'interno del contesto corrente. Il risultato è infine una media pesata dalla modalità Value. Tradotto nell'ambito molecolare, la rappresentazione a grafo può interrogare le \textit{fingerprint} per comprendere al meglio quali siano le caratteristiche strutturali locali più coerenti con la topologia generale, mentre il risultato finale viene modulato dalle immagini estratte da ResNet
+\cite{liEnhancingADMETProperty2026a}.
+
+
 \section{Interpretabilità}
 Un aspetto critico della predizione moderna di proprietà sensibili è la \textbf{spiegabilità}, ovvero la capacità di interpretare perché un modello classifichi una molecola come tossica o difficilmente assorbibile \cite{liEnhancingADMETProperty2026a}.
 
@@ -168,7 +174,7 @@ le regioni strutturali che hanno maggiormente influenzato la predizione.
 Applicato alla predizione della permeabilità della barriera 
 emato-encefalica ("blood-brain barrier", BBB), Grad-CAM ha mostrato come gruppi polari quali 
 ossidrili ($OH$) e carbossili ($COOH$) vengano identificati come 
-fattori che riducono la permeabilità, mentre le regioni aromatiche la 
+fattori che riducono la proprietà in analisi, mentre le regioni aromatiche la 
 favoriscono. Questo risultato è coerente con le proprietà chimiche 
 note e che conferma la capacità del modello di apprendere 
 relazioni significative \cite{liEnhancingADMETProperty2026a}.
