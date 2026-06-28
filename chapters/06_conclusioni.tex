@@ -2,7 +2,7 @@
 
 \section{Sintesi del Lavoro}
 Questa tesi ha ripercorso l'evoluzione degli strumenti 
-computazionali applicati alla pipeline di sviluppo farmaceutico.
+computazionali applicati alla pipeline di \textit{drug discovery}.
 Il filo conduttore 
 che attraversa tutti i capitoli è il modo in cui la ricerca si è trasformata da un 
 processo empirico incerto a un 
@@ -10,7 +10,7 @@ problema computazionale di ottimizzazione in spazi ad alta dimensionalità,
 affrontabile attraverso strumenti di apprendimento automatico.
 
 Il capitolo sulla rappresentazione molecolare ha mostrato come 
-l'ostacolo di traduzione delle entità biochimiche in formati leggibili ed elaborabili da algoritmi sia stato 
+l'ostacolo di traduzione delle entità biochimiche in formati leggibili ed elaborabili dagli algoritmi sia stato 
 affrontato attraverso rappresentazioni progressivamente più 
 espressive, dalle stringhe SMILES ai fingerprint molecolari, 
 fino ai grafi molecolari che preservano la topologia e le caratteristiche
@@ -28,7 +28,7 @@ architetture di Deep Learning, rispecchia l'avanzamento tecnologico moderno e la
 complessità delle relazioni che i modelli sono chiamati a 
 catturare.
 
-Il capitolo ADMET ha completato il quadro mostrando come la 
+Il capitolo concentrato su ADMET ha completato il quadro mostrando come la 
 valutazione della sicurezza farmacologica, storicamente 
 affrontata durante i trial clinici avanzati, possa essere anticipata 
 computazionalmente, riducendo il tasso di logoramento dei 
@@ -57,7 +57,7 @@ questi scenari, grazie alla conoscenza biochimica generale
 acquisita durante il pre-training, che permette loro di colmare l'assenza di esempi specifici.
 Tuttavia, la questione rimane ancora
 aperta per target biologicamente distanti da quelli 
-rappresentati nei dataset, che rappresentano vere e proprie "zone inesplorate" dello spazio chimico.
+rappresentati nei dataset, che costituiscono vere e proprie "zone inesplorate" dello spazio chimico.
 \clearpage
 
 Lo \textbf{sbilanciamento dei dati} costituisce un problema 
@@ -75,8 +75,7 @@ stessa dei dati sperimentali disponibili. Infatti, visto che i dataset forniti i
 Infine, come menzionato in precedenza, l'\textbf{interpretabilità} dei modelli Deep Learning 
 rappresenta un requisito necessario per l'approvazione e 
 l'adozione clinica \cite{wangUnifiedSurveyDrugtarget2026a}. 
-Le mappe di \textit{Attention}, soprattutto nel contesto di predizione ADMET, hanno aperto la strada alla validazione biologica 
-delle predizioni, ma rimangono processi non investigabili e difficili da seguire nella loro esecuzione "Black Box".
+Sebbene le mappe di \textit{Attention} abbiano aperto la strada alla validazione biologica delle predizioni, specialmente nel contesto ADMET, la natura \textit{Black Box} delle architetture descritte rende tuttora i processi decisionali complessi da investigare e difficili da seguire.
 
 La mancanza di spiegazioni trasparenti ostacola l'accettazione dei medicinali individuati da parte delle aziende regolatorie.
 
@@ -88,11 +87,11 @@ drasticamente lo spazio di ricerca da esplorare in
 laboratorio, concentrando le risorse sui candidati più promettenti.
 
 I casi di studio descritti suggeriscono che i progressi 
-futuri più significativi non deriveranno 
-dall'affinamento di singole architetture, ma dalla capacità di scegliere la combinazione più appropriata
+futuri più significativi non deriveranno unicamente
+dall'affinamento di singole architetture, ma anche e soprattutto dalla capacità di scegliere la combinazione più appropriata
 di rappresentazione e modello in funzione della natura del problema:
 
-In particolare le architetture di tipo \textbf{ibrido} (come TC-DTA) si dimostrano ideali per fornire un buon compromesso tra l'efficienza di predizione e l'accuratezza della rappresentazione. Separando l'elaborazione del farmaco e del target in due rami paralleli, il modello ottimizza l'analisi delle feature su scale diverse.
+In particolare le architetture di tipo \textbf{ibrido} (come TC-DTA) si dimostrano ideali per fornire un buon compromesso tra l'\textbf{efficienza di predizione} e l'\textbf{accuratezza della rappresentazione}. Separando l'elaborazione del farmaco e del target in due rami paralleli, il modello ottimizza l'analisi delle feature su scale diverse.
 
 Inoltre, la crescente 
 disponibilità di dati biologici annotati, unita 
