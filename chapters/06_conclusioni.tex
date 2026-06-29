@@ -10,17 +10,16 @@ problema computazionale di ottimizzazione in spazi ad alta dimensionalità,
 affrontabile attraverso strumenti di apprendimento automatico.
 
 Il capitolo sulla rappresentazione molecolare ha mostrato come 
-l'ostacolo di traduzione delle entità biochimiche in formati leggibili ed elaborabili dagli algoritmi sia stato 
+la difficoltà di tradurre le entità biochimiche in formati leggibili ed elaborabili dagli algoritmi sia stato 
 affrontato attraverso rappresentazioni progressivamente più 
 espressive, dalle stringhe SMILES ai fingerprint molecolari, 
 fino ai grafi molecolari che preservano la topologia e le caratteristiche
-stereochimiche particolari alle singole molecole. 
+stereochimiche particolari di ciascuna molecola. 
 
 Il capitolo sulla DTI e DTA ha mostrato come la formalizzazione 
 del problema computazionale abbia 
 permesso di riformulare la ricerca in due task 
-distinti di apprendimento supervisionato:
-
+distinti di apprendimento supervisionato:\\
 \textbf{classificazione binaria} per la presenza dell'interazione e \textbf{regressione} su valore continuo per 
 la stima quantitativa dell'affinità. L'evoluzione dei metodi, 
 dai modelli lineari QSAR al docking molecolare fino alle 
@@ -39,7 +38,7 @@ Nonostante i progressi documentati, il campo presenta sfide
 algoritmiche e metodologiche ancora aperte che condizionano 
 l'affidabilità e la generalizzabilità dei modelli.
 
-Il \textbf{cold-start problem} rimane la sfida critica più 
+Il \textbf{cold-start problem} rimane la sfida più 
 rilevante. Sebbene molti algoritmi eccellano in scenari "warm", in cui le molecole del Test-Set assomigliano a quelle dell'addestramento, la predizione di interazioni per farmaci o target \textbf{mai 
 osservati} durante il \textit{training} richiede modelli con 
 capacità di generalizzazione induttiva che le architetture 
@@ -55,29 +54,26 @@ I modelli basati su
 Transformer e i PLM mostrano una maggiore robustezza in 
 questi scenari, grazie alla conoscenza biochimica generale 
 acquisita durante il pre-training, che permette loro di colmare l'assenza di esempi specifici.
-Tuttavia, la questione rimane ancora
-aperta per target biologicamente distanti da quelli 
+Tuttavia, la questione rimane aperta per target biologicamente distanti da quelli 
 rappresentati nei dataset, che costituiscono vere e proprie "zone inesplorate" dello spazio chimico.
 \clearpage
 
 Lo \textbf{sbilanciamento dei dati} costituisce un problema 
-strutturale della classificazione per cui i dataset DTI contengono molte più coppie 
-non interagenti che interagenti, e in cui molte coppie etichettate 
-come negative sono in realtà non testate.
+strutturale della classificazione: i dataset DTI contengono molte più coppie non interagenti che interagenti, e molte di quelle etichettate come negative sono in realtà non testate.
 
-Questo sbilanciamento porta i modelli a essere eccessivamente ottimisti nelle predizioni (che tendono a seguire la classe maggioritaria) e a fallire nell'identificazione di interazioni rare ma biologicamente significative.
+Questo sbilanciamento porta i modelli a essere eccessivamente conservativi nelle predizioni (che tendono a seguire la classe maggioritaria) e a fallire nell'identificazione di interazioni rare ma biologicamente significative.
 
 Tecniche come 
 SMOTE (\textit{Synthetic Minority Over-sampling Technique}) e sampling randomico \cite{ahmadMachineLearningDrugtarget2026} mitigano parzialmente il problema e aiutano a ridurre l'\textit{overfitting}, 
 ma non lo risolvono alla radice, che risiede nella natura 
-stessa dei dati sperimentali disponibili. Infatti, visto che i dataset forniti includono spesso solo interazioni note, trattando tutte le altre coppie come negative, le metriche di validazione della classificazione, ad esempio AUROC (\textit{Area Under the Receiver Operating Characteristic curve}), possono risultare "gonfiate" artificialmente, portando a scarse prestazioni \cite{ahmadMachineLearningDrugtarget2026}.
+stessa dei dati sperimentali disponibili. Infatti, visto che i dataset forniti includono spesso solo interazioni note, trattando tutte le altre coppie come negative, le metriche di validazione della classificazione, ad esempio AUROC (\textit{Area Under the Receiver Operating Characteristic curve}), possono risultare "gonfiate" artificialmente, mascherando le reali e scarse prestazioni del modello \cite{ahmadMachineLearningDrugtarget2026}.
 
 Infine, come menzionato in precedenza, l'\textbf{interpretabilità} dei modelli Deep Learning 
 rappresenta un requisito necessario per l'approvazione e 
 l'adozione clinica \cite{wangUnifiedSurveyDrugtarget2026a}. 
 Sebbene le mappe di \textit{Attention} abbiano aperto la strada alla validazione biologica delle predizioni, specialmente nel contesto ADMET, la natura \textit{Black Box} delle architetture descritte rende tuttora i processi decisionali complessi da investigare e difficili da seguire.
 
-La mancanza di spiegazioni trasparenti ostacola l'accettazione dei medicinali individuati da parte delle aziende regolatorie.
+La mancanza di spiegazioni trasparenti ostacola l'accettazione dei medicinali individuati da parte delle autorità regolatorie.
 
 \section{Riflessioni Finali}
 I metodi 
@@ -89,8 +85,7 @@ laboratorio, concentrando le risorse sui candidati più promettenti.
 I casi di studio descritti suggeriscono che i progressi 
 futuri più significativi non deriveranno unicamente
 dall'affinamento di singole architetture, ma anche e soprattutto dalla capacità di scegliere la combinazione più appropriata
-di rappresentazione e modello in funzione della natura del problema:
-
+di rappresentazione e modello in funzione della natura del problema:\\
 In particolare le architetture di tipo \textbf{ibrido} (come TC-DTA) si dimostrano ideali per fornire un buon compromesso tra l'\textbf{efficienza di predizione} e l'\textbf{accuratezza della rappresentazione}. Separando l'elaborazione del farmaco e del target in due rami paralleli, il modello ottimizza l'analisi delle feature su scale diverse.
 
 Inoltre, la crescente 
